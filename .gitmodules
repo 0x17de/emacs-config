@@ -1,0 +1,3 @@
+[submodule "ext/tex-switch-quotes"]
+	path = ext/tex-switch-quotes
+	url = https://gist.github.com/smoeding/1f3e06757f80b1057324
