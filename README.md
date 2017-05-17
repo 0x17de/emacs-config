@@ -12,5 +12,5 @@ After that the following should be your .emacs file:
 
 ```
 (add-to-list 'load-path "~/.emacs.d/_0x17de/")
-(load "_0x17-emacs")
+(load "_0x17de-emacs")
 ```

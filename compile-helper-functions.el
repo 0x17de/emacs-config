@@ -3,7 +3,7 @@
   "Compile a project in the tree"
   (interactive)
   (let* ((default-directory (or (upward-find-dir "build") "."))
-         (compile-command (concat "cd " default-directory " && " compile-command " -C build")))
+         (compile-command (concat "cd " default-directory "/build && " compile-command)))
     (compile compile-command)))
 
 (defun compile-make ()

@@ -7,6 +7,8 @@
 
 ;;Just kill buffer without asking
 (global-set-key [(control x) (k)] 'kill-this-buffer)
+(global-set-key (kbd "C-M-<up>") 'text-scale-increase)
+(global-set-key (kbd "C-M-<down>") 'text-scale-decrease)
 
 ;;Git diff fix
 (setq vc-handled-backends ())

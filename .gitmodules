@@ -1,3 +1,6 @@
 [submodule "ext/tex-switch-quotes"]
 	path = ext/tex-switch-quotes
 	url = https://gist.github.com/smoeding/1f3e06757f80b1057324
+[submodule "ext/google-styleguide"]
+	path = ext/google-styleguide
+	url = https://github.com/google/styleguide/

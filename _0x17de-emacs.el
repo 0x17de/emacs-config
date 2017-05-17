@@ -2,19 +2,19 @@
 ;; all contents were installed into ~/.emacs/_0x17de/
 ;
 ; (add-to-list 'load-path "~/.emacs.d/_0x17de/")
-; (load "_0x17-emacs")
+; (load "_0x17de-emacs")
 
 (load "melpa-source")
 
 ;;initial setup of recommended packages i use
 (defun dotemacs-install()
   (interactive)
-  (package-install "doremi")
-  (package-install "doremi-cmd")
-  (package-install "doremi-frm")
-  (package-install "multiple-cursors")
-  (package-install "cmake-mode")
-  (package-install "color-theme-sanityinc-tomorrow"))
+  (package-install #'doremi)
+  (package-install #'doremi-cmd)
+  (package-install #'doremi-frm)
+  (package-install #'multiple-cursors)
+  (package-install #'cmake-mode)
+  (package-install #'color-theme-sanityinc-tomorrow))
 
 (load "ext/tex-switch-quotes/tex-switch-quotes")
 
@@ -22,6 +22,10 @@
 (load "indentation-settings")
 (load "display-settings")
 (load "mouse-settings")
+
+;(load "ext/google-styleguide/google-c-style")
+;(add-hook 'c-mode-common-hook 'google-set-c-style)
+;(add-hook 'c-mode-common-hook 'google-make-newline-indent)
 
 ;(when
 ;(require 'auto-complete-c-headers)
