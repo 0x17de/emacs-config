@@ -7,14 +7,22 @@
 (load "melpa-source")
 
 ;;initial setup of recommended packages i use
-(defun dotemacs-install()
-  (interactive)
-  (package-install #'doremi)
-  (package-install #'doremi-cmd)
-  (package-install #'doremi-frm)
-  (package-install #'multiple-cursors)
-  (package-install #'cmake-mode)
-  (package-install #'color-theme-sanityinc-tomorrow))
+(defvar dotemacs-packages
+  '(doremi doremi-cmd doremi-frm multiple-cursors cmake-mode color-theme-sanityinc-tomorrow)
+  "All packages i require")
+(defvar dotemacs-needs-install nil)
+(dolist (p dotemacs-packages)
+  (message "Checking if %s is installed: %s" p (package-installed-p p))
+  (when (not (package-installed-p p))
+    (setq dotemacs-needs-install t)))
+(when dotemacs-needs-install
+  (message "Installing missing packages...")
+  (package-refresh-contents)
+  ;; install missing packages
+  (dolist (p dotemacs-packages)
+    (when (not (package-installed-p p))
+      (message "Installing: %s" p)
+      (package-install p))))
 
 (load "ext/tex-switch-quotes/tex-switch-quotes")
 
