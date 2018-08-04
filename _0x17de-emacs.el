@@ -19,6 +19,7 @@
 (defvar dotemacs-packages
   ; doremi doremi-cmd doremi-frm 
   '(multiple-cursors cmake-mode color-theme-sanityinc-tomorrow
+                     multi-term
                      flycheck flycheck-irony
                      company-irony company-irony-c-headers company-rtags cmake-ide)
   "All packages i require")
@@ -37,6 +38,7 @@
       (message "Installing: %s" p)
       (package-install p))))
 
+(setq multi-term-program "/bin/zsh")
 (load "ext/tex-switch-quotes/tex-switch-quotes")
 
 
