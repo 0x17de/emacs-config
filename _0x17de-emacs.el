@@ -40,6 +40,10 @@
 
 (setq multi-term-program "/bin/zsh")
 (load "ext/tex-switch-quotes/tex-switch-quotes")
+(load "ext/misc/hl-line+")
+(load "ext/misc/vline")
+(load "ext/misc/col-highlight")
+(load "ext/misc/crosshairs")
 
 
 
