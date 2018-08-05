@@ -1,0 +1,3 @@
+#!/bin/bash
+
+exec nohup emacsclient -c "$@" >& /dev/null &
