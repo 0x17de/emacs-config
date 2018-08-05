@@ -19,7 +19,7 @@
 (defvar dotemacs-packages
   ; doremi doremi-cmd doremi-frm 
   '(multiple-cursors cmake-mode color-theme-sanityinc-tomorrow
-                     multi-term
+                     multi-term buffer-move
                      flycheck flycheck-irony
                      cmake-mode yaml-mode
                      demangle-mode elf-mode
@@ -61,6 +61,14 @@
 (load "ext/misc/vline")
 (load "ext/misc/col-highlight")
 (load "ext/misc/crosshairs")
+
+
+
+(require 'buffer-move)
+(global-set-key (kbd "<C-M-S-up>")     'buf-move-up)
+(global-set-key (kbd "<C-M-S-down>")   'buf-move-down)
+(global-set-key (kbd "<C-M-S-left>")   'buf-move-left)
+(global-set-key (kbd "<C-M-S-right>")  'buf-move-right)
 
 
 
