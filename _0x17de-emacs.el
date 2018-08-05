@@ -21,6 +21,7 @@
   '(multiple-cursors cmake-mode color-theme-sanityinc-tomorrow
                      multi-term
                      flycheck flycheck-irony
+                     company company-lsp
                      company-irony company-irony-c-headers company-rtags cmake-ide)
   "All packages i require")
 (defvar
@@ -103,10 +104,11 @@
 (setq inhibit-startup-message t)
 
 ;;Disable bars
-(when (display-graphic-p)
-      (scroll-bar-mode -1)
-      (tool-bar-mode -1))
-(menu-bar-mode -1)
+(add-hook 'server-switch-hook (lambda ()
+                                (when (display-graphic-p)
+                                  (scroll-bar-mode -1)
+                                  (tool-bar-mode -1))
+                                (menu-bar-mode -1)))
 
 ;;Diff adjustements
 (setq ediff-split-window-function 'split-window-horizontally)
@@ -153,6 +155,9 @@
 
 
 
+(add-hook 'emacs-lisp-mode-hook 'company-mode)
+(add-hook 'lisp-mode-hook 'company-mode)
+
 (load "ext/google-styleguide/google-c-style")
 (add-hook 'c-mode-common-hook 'google-set-c-style)
 ;(add-hook 'c-mode-common-hook 'google-make-newline-indent)
@@ -162,7 +167,7 @@
   '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
 (eval-after-load 'company
   '(add-to-list
-    'company-backends '(company-rtags company-irony-c-headers company-irony)))
+    'company-backends '(company-rtags company-irony-c-headers company-irony company-lsp)))
 (eval-after-load 'flycheck
   '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
 
