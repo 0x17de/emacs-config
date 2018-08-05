@@ -73,6 +73,11 @@
 (global-set-key (kbd "C-M-<down>") 'text-scale-decrease)
 (global-set-key (kbd "C-M-z C-e") 'eval-region)
 (global-set-key (kbd "C-M-z C-M-e") 'eval-buffer)
+(global-set-key (kbd "C-M-S-c") 'find-emacs-config)
+(defun find-emacs-config ()
+  "Open the emacs configuration file"
+  (interactive)
+  (find-file "~/.emacs.d/_0x17de/_0x17de-emacs.el"))
 
 ;;Git diff fix
 (setq vc-handled-backends ())
