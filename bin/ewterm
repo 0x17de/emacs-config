@@ -1,0 +1,2 @@
+#!/bin/bash
+exec ew --eval '(cd "'$PWD'")' --eval '(term "/bin/zsh")' --eval '(rename-uniquely)'

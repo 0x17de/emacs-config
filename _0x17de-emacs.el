@@ -40,6 +40,17 @@
       (package-install p))))
 
 (setq multi-term-program "/bin/zsh")
+(defun term-handle-exit--close-buffer (&rest args)
+  (when (null (get-buffer-process (current-buffer)))
+    (insert "Press <C-d> to kill the buffer.")
+    (use-local-map (let ((map (make-sparse-keymap)))
+                     (define-key map (kbd "C-d")
+                       (lambda ()
+                         (interactive)
+                         (kill-buffer (current-buffer))))
+                     map))))
+(advice-add 'term-handle-exit :after #'term-handle-exit--close-buffer)
+
 (load "ext/tex-switch-quotes/tex-switch-quotes")
 (load "ext/misc/hl-line+")
 (load "ext/misc/vline")
@@ -56,7 +67,8 @@
 (defalias 'yes-or-no-p 'y-or-n-p)
 
 ;;Just kill buffer without asking
-(global-set-key [(control x) (k)] 'kill-this-buffer)
+(global-set-key (kbd "C-M-S-q") 'kill-this-buffer)
+(global-set-key (kbd "C-x k") 'kill-this-buffer)
 (global-set-key (kbd "C-M-<up>") 'text-scale-increase)
 (global-set-key (kbd "C-M-<down>") 'text-scale-decrease)
 (global-set-key (kbd "C-M-z C-e") 'eval-region)
@@ -104,11 +116,19 @@
 (setq inhibit-startup-message t)
 
 ;;Disable bars
-(add-hook 'server-switch-hook (lambda ()
-                                (when (display-graphic-p)
-                                  (scroll-bar-mode -1)
-                                  (tool-bar-mode -1))
-                                (menu-bar-mode -1)))
+(add-hook 'after-make-frame-functions 'simplify-ui)
+(defun simplify-ui (frame)
+  (interactive)
+  "Remove unwanted menubar/scrollbar/etc"
+  (modify-frame-parameters frame
+                           '((menu-bar-lines . 0)
+                             (tool-bar-lines . 0)
+                             (vertical-scroll-bars . nil)
+                             (horizontal-scroll-bars . nil))))
+(when (display-graphic-p)
+  (scroll-bar-mode -1)
+  (tool-bar-mode -1)
+  (menu-bar-mode -1))
 
 ;;Diff adjustements
 (setq ediff-split-window-function 'split-window-horizontally)
