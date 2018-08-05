@@ -21,6 +21,11 @@
   '(multiple-cursors cmake-mode color-theme-sanityinc-tomorrow
                      multi-term
                      flycheck flycheck-irony
+                     cmake-mode yaml-mode
+                     demangle-mode elf-mode
+                     dockerfile-mode docker-compose-mode
+                     dot-mode
+                     easy-hugo
                      company company-lsp
                      company-irony company-irony-c-headers company-rtags cmake-ide)
   "All packages i require")
@@ -149,6 +154,7 @@
 
 
 (require 'recentf)
+(setq recentf-auto-cleanup 'never)
 (recentf-mode 1)
 (setq recentf-max-menu-items 25)
 (global-set-key (kbd "C-x C-r") 'recentf-open-files)
