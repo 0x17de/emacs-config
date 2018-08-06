@@ -19,12 +19,14 @@
 (defvar dotemacs-packages
   ; doremi doremi-cmd doremi-frm 
   '(multiple-cursors cmake-mode color-theme-sanityinc-tomorrow
-                     multi-term buffer-move
+                     multi-term sudo-edit buffer-move refine
+                     treemacs x509-mode
                      flycheck flycheck-irony
                      cmake-mode yaml-mode
                      demangle-mode elf-mode
                      dockerfile-mode docker-compose-mode
-                     dot-mode
+                     dot-mode json-mode yaml-mode
+                     systemd
                      easy-hugo
                      company company-lsp
                      company-irony company-irony-c-headers company-rtags cmake-ide)
@@ -64,6 +66,19 @@
 
 
 
+(require 'yasnippet)
+(yas-global-mode 1)
+
+
+
+; reuse compilation buffer from other frames
+(add-to-list
+ 'display-buffer-alist
+ '("\\*compilation\\*" . (display-buffer-reuse-window
+                          . ((reusable-frames . t)))))
+
+
+
 (require 'buffer-move)
 (global-set-key (kbd "<C-M-S-up>")     'buf-move-up)
 (global-set-key (kbd "<C-M-S-down>")   'buf-move-down)
@@ -87,6 +102,8 @@
 (global-set-key (kbd "C-M-z C-e") 'eval-region)
 (global-set-key (kbd "C-M-z C-M-e") 'eval-buffer)
 (global-set-key (kbd "C-M-S-c") 'find-emacs-config)
+(global-set-key (kbd "C-M-S-z") 'cmake-ide-compile)
+(global-set-key [f5] 'recompile)
 (defun find-emacs-config ()
   "Open the emacs configuration file"
   (interactive)
@@ -105,6 +122,8 @@
 (transient-mark-mode t)
 (setq x-select-enable-clipboard t)
 (setq mouse-yank-at-point t)
+;;focus follow mouse
+(setq mouse-autoselect-window 0)
 ;(setq interprogram-paste-function 'x-cut-buffer-or-selection-value)
 
 
@@ -199,14 +218,14 @@
 
 (load "ext/google-styleguide/google-c-style")
 (add-hook 'c-mode-common-hook 'google-set-c-style)
+(add-hook 'c-mode-common-hook 'hs-minor-mode)
 ;(add-hook 'c-mode-common-hook 'google-make-newline-indent)
 
 ; autocompletion and highlighting modules
-(eval-after-load 'flycheck
-  '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
+(require 'cc-mode)
 (eval-after-load 'company
   '(add-to-list
-    'company-backends '(company-rtags company-irony-c-headers company-irony company-lsp)))
+    'company-backends '(company-irony-c-headers company-irony company-lsp)))
 (eval-after-load 'flycheck
   '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
 
@@ -217,33 +236,34 @@
 ; rtags navigation
 (require 'rtags)
 (require 'flycheck-rtags)
-(require 'company-rtags)
+(require 'flycheck-irony)
 (require 'company-irony-c-headers)
-(setq rtags-completions-enabled t)
-(setq rtags-autostart-diagnostics t)
-(rtags-enable-standard-keybindings)
+;(setq rtags-completions-enabled t)
+;(setq rtags-autostart-diagnostics t)
+;(rtags-enable-standard-keybindings)
 (add-hook 'c-mode-common-hook 'flycheck-mode)
 (add-hook 'c-mode-common-hook 'company-mode)
 
-(defun my-flycheck-rtags-setup ()
+(defun my-flycheck-setup ()
   (flycheck-select-checker 'rtags)
   (setq-local flycheck-highlighting-mode nil) ;; RTags creates more accurate overlays.
   (setq-local flycheck-check-syntax-automatically nil))
-(add-hook 'c-mode-common-hook #'my-flycheck-rtags-setup)
+(add-hook 'c-mode-common-hook #'my-flycheck-setup)
 
 ; company+irony autocompletion
 (add-hook 'c-mode-common-hook 'irony-mode)
 (add-hook 'irony-mode-hook 'company-irony-setup-begin-commands)
+(add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
 (setq company-backends (delete 'company-semantic company-backends))
 (setq company-idle-delay 0)
-(define-key c-mode-map [(tab)] 'company-complete)
-(define-key c++-mode-map [(tab)] 'company-complete)
+;(define-key c-mode-map [(tab)] 'company-complete)
+(define-key c++-mode-map [(tab)] 'company-indent-or-complete-common)
 
-(defun my-irony-mode-hook ()
-  (define-key irony-mode-map [remap completion-at-point]
-    'irony-completion-at-point-async)
-  (define-key irony-mode-map [remap complete-symbol]
-    'irony-completion-at-point-async))
+;(defun my-irony-mode-hook ()
+;  (define-key irony-mode-map [remap completion-at-point]
+;    'irony-completion-at-point-async)
+;  (define-key irony-mode-map [remap complete-symbol]
+;    'irony-completion-at-point-async))
 
 (cmake-ide-setup)
 
@@ -270,29 +290,3 @@
 
 
 (load "directory-helper-functions")
-
-
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(ansi-color-faces-vector
-   [default default default italic underline success warning error])
- '(ansi-color-names-vector
-   ["#242424" "#e5786d" "#95e454" "#cae682" "#8ac6f2" "#333366" "#ccaa8f" "#f6f3e8"])
- '(custom-enabled-themes (quote (sanityinc-tomorrow-bright)))
- '(custom-safe-themes
-   (quote
-    ("1b8d67b43ff1723960eb5e0cba512a2c7a2ad544ddb2533a90101fd1852b426e" default)))
- '(dired-mode-hook (quote (dired-hide-details-mode)))
- '(show-paren-mode t))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(default ((t (:height 102 :width semi-condensed)))))
-
-
