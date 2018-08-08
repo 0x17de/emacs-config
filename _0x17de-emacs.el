@@ -46,17 +46,11 @@
       (message "Installing: %s" p)
       (package-install p))))
 
-(setq multi-term-program "/bin/zsh")
-(defun term-handle-exit--close-buffer (&rest args)
-  (when (null (get-buffer-process (current-buffer)))
-    (insert "Press <C-d> to kill the buffer.")
-    (use-local-map (let ((map (make-sparse-keymap)))
-                     (define-key map (kbd "C-d")
-                       (lambda ()
-                         (interactive)
-                         (kill-buffer (current-buffer))))
-                     map))))
-(advice-add 'term-handle-exit :after #'term-handle-exit--close-buffer)
+(global-unset-key (kbd "C-z")) ; stop me from freezing emacs
+
+(load "multi-term-settings.el")
+
+(load "ext/misc/dired+")
 
 (load "ext/tex-switch-quotes/tex-switch-quotes")
 (load "ext/misc/hl-line+")

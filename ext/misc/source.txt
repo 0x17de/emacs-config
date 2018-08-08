@@ -1,3 +1,4 @@
+https://www.emacswiki.org/emacs/download/dired%2b.el
 https://www.emacswiki.org/emacs/download/hl-line%2b.el
 https://www.emacswiki.org/emacs/download/vline.el
 https://www.emacswiki.org/emacs/download/col-highlight.el
