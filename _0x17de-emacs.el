@@ -249,7 +249,8 @@
 (add-hook 'irony-mode-hook 'company-irony-setup-begin-commands)
 (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
 (setq company-backends (delete 'company-semantic company-backends))
-(setq company-idle-delay 0)
+(setq company-dabbrev-downcase 0)
+(setq company-idle-delay 0.5)
 ;(define-key c-mode-map [(tab)] 'company-complete)
 (define-key c++-mode-map [(tab)] 'company-indent-or-complete-common)
 

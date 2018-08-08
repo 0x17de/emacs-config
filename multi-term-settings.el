@@ -39,7 +39,7 @@
             (add-to-list 'term-bind-key-alist '("C-z p" . multi-term-prev))
             (add-to-list 'term-bind-key-alist '("C-z n" . multi-term-next))
             (add-to-list 'term-bind-key-alist '("C-z e" . term-send-esc))
-            (add-to-list 'term-bind-key-alist '("C-z z" . term-send-ctrl-z))
+            (add-to-list 'term-bind-key-alist '("C-z z" . term-send-ctrl-z))))
 
 (defun term-send-jump-word-left ()
   "Send ESC in term mode."
