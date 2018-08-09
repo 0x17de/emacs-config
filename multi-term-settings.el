@@ -51,7 +51,7 @@
   (interactive)
   (term-send-raw-string "\e\e[C"))
 
-(defun term-send-esce ()
+(defun term-send-esc ()
   "Send ESC in term mode."
   (interactive)
   (term-send-raw-string "\e"))
