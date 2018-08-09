@@ -4,6 +4,8 @@
 ; (add-to-list 'load-path "~/.emacs.d/_0x17de/")
 ; (load "_0x17de-emacs")
 
+(setq debug-on-error t)
+
 ;;http://ergoemacs.org/emacs/emacs_package_system.html
 (when (>= emacs-major-version 24)
   (require 'package)
@@ -12,6 +14,7 @@
    '("melpa" . "http://melpa.org/packages/")
    t)
   (package-initialize))
+; '("marmalade" . "http://marmalade-repo.org/packages/")
 
 
 
@@ -29,7 +32,7 @@
                      systemd
                      easy-hugo
                      company company-lsp
-                     company-irony company-irony-c-headers company-rtags cmake-ide)
+                     company-irony company-irony-c-headers cmake-ide)
   "All packages i require")
 (defvar
   dotemacs-needs-install nil)
@@ -90,7 +93,13 @@
 
 ;;Just kill buffer without asking
 (global-set-key (kbd "C-M-S-q") 'kill-this-buffer)
-(global-set-key (kbd "C-x k") 'kill-this-buffer)
+(global-set-key (kbd "C-M-S-x") 'multi-term)
+(global-set-key (kbd "C-M-S-w") (lambda () (interactive)
+                                  (kill-this-buffer)
+                                  (if (equal 1 (length (window-list)))
+                                      (delete-frame)
+                                    (delete-window))))
+(global-set-key (kbd "C-M-S-y") 'yas-describe-tables)
 (global-set-key (kbd "C-M-<up>") 'text-scale-increase)
 (global-set-key (kbd "C-M-<down>") 'text-scale-decrease)
 (global-set-key (kbd "C-M-z C-e") 'eval-region)
@@ -227,9 +236,9 @@
 ;   M-x rtags-install
 ;   M-x irony-install-server
 
-; rtags navigation
-(require 'rtags)
-(require 'flycheck-rtags)
+(require 'flycheck)
+;(require 'rtags)
+;(require 'flycheck-rtags)
 (require 'flycheck-irony)
 (require 'company-irony-c-headers)
 ;(setq rtags-completions-enabled t)
@@ -238,11 +247,11 @@
 (add-hook 'c-mode-common-hook 'flycheck-mode)
 (add-hook 'c-mode-common-hook 'company-mode)
 
-(defun my-flycheck-setup ()
-  (flycheck-select-checker 'rtags)
-  (setq-local flycheck-highlighting-mode nil) ;; RTags creates more accurate overlays.
-  (setq-local flycheck-check-syntax-automatically nil))
-(add-hook 'c-mode-common-hook #'my-flycheck-setup)
+;(defun my-flycheck-setup ()
+;  (flycheck-select-checker 'rtags)
+;  (setq-local flycheck-highlighting-mode nil) ;; RTags creates more accurate overlays.
+;  (setq-local flycheck-check-syntax-automatically nil))
+;(add-hook 'c-mode-common-hook #'my-flycheck-setup)
 
 ; company+irony autocompletion
 (add-hook 'c-mode-common-hook 'irony-mode)
@@ -251,7 +260,7 @@
 (setq company-backends (delete 'company-semantic company-backends))
 (setq company-dabbrev-downcase 0)
 (setq company-idle-delay 0.5)
-;(define-key c-mode-map [(tab)] 'company-complete)
+(define-key c-mode-map [(tab)] 'company-indent-or-complete-common)
 (define-key c++-mode-map [(tab)] 'company-indent-or-complete-common)
 
 ;(defun my-irony-mode-hook ()
@@ -285,3 +294,7 @@
 
 
 (load "directory-helper-functions")
+
+(setq-default custom-enabled-themes '(sanityinc-tomorrow-bright))
+(setq-default dired-mode-hook 'dired-hide-details-mode)
+(setq-default show-paren-mode t)
