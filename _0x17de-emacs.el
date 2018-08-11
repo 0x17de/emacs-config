@@ -31,6 +31,7 @@
                      dot-mode json-mode yaml-mode
                      systemd
                      easy-hugo
+                     magit magit-gh-pulls magithub
                      company company-lsp
                      company-irony company-irony-c-headers cmake-ide)
   "All packages i require")
@@ -51,6 +52,7 @@
 
 (global-unset-key (kbd "C-z")) ; stop me from freezing emacs
 
+(load "magit.el")
 (load "multi-term-settings.el")
 
 (load "ext/misc/dired+")
