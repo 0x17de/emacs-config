@@ -65,6 +65,7 @@
 
 
 
+
 (require 'yasnippet)
 (yas-global-mode 1)
 
@@ -128,8 +129,58 @@
 (setq x-select-enable-clipboard t)
 (setq mouse-yank-at-point t)
 ;;focus follow mouse
-(setq mouse-autoselect-window 0)
+(setq mouse-autoselect-window 0
+      focus-follows-mouse t)
 ;(setq interprogram-paste-function 'x-cut-buffer-or-selection-value)
+
+;; See https://github.com/ch11ng/exwm/wiki
+;; https://github.com/ch11ng/exwm/wiki/Configuration-Example
+(when (boundp 'use-exwm)
+  (ido-mode 1)
+  (require 'exwm)
+  (require 'exwm-config)
+  (exwm-config-ido)
+  ;(exwm-config-default)
+  (require 'exwm-randr)
+  ;(add-hook 'exwm-randr-screen-change-hook
+  ;        (lambda ()
+  ;          (start-process-shell-command
+  ;           "xrandr" nil "xrandr --output VGA1 --left-of LVDS1 --auto")))
+  (exwm-randr-enable)
+  (require 'exwm-systemtray)
+  (exwm-systemtray-enable)
+  ;(setq exwm-workspace-number 4)
+  ;(setq mouse-autoselect-window nil)
+  (add-hook 'exwm-update-class-hook
+            (lambda ()
+              (unless (or (string-prefix-p "sun-awt-X11-" exwm-instance-name)
+                          (string= "gimp" exwm-instance-name))
+                (exwm-workspace-rename-buffer exwm-class-name))))
+  (add-hook 'exwm-update-title-hook
+            (lambda ()
+              (when (or (not exwm-instance-name)
+                        (string-prefix-p "sun-awt-X11-" exwm-instance-name)
+                        (string= "gimp" exwm-instance-name))
+                (exwm-workspace-rename-buffer exwm-title))))
+  (setq exwm-input-global-keys
+        `(([?\s-r] . exwm-reset)
+          ([?\s-w] . exwm-workspace-switch)
+          ,@(mapcar (lambda (i)
+                      `(,(kbd (format "s-%d" i)) .
+                        (lambda ()
+                          (interactive)
+                          (exwm-workspace-switch-create ,i))))
+                    (number-sequence 0 9))
+          ([?\s-&] . (lambda (command)
+                       (interactive (list (read-shell-command "$ ")))
+                       (start-process-shell-command command nil command)))
+          [s-o] . (lambda ()
+		    (interactive)
+		    (start-process "" nil "/usr/bin/slock"))))
+  (define-key exwm-mode-map [?\C-q] #'exwm-input-send-next-key)
+  (exwm-enable))
+
+(global-set-key [mode-line mouse-2] 'exwm-layout-toggle-fullscreen)
 
 
 
@@ -170,7 +221,9 @@
 (when (display-graphic-p)
   (scroll-bar-mode -1)
   (tool-bar-mode -1)
-  (menu-bar-mode -1))
+  (menu-bar-mode -1)
+  (fringe-mode 1)
+  (display-time-mode t))
 
 ;;Diff adjustements
 (setq ediff-split-window-function 'split-window-horizontally)
