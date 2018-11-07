@@ -1,4 +1,4 @@
 #!/bin/bash
-emacs --daemon --eval "(setq use-exwm t)"
+emacs --daemon -q --eval "(setq use-exwm t)" -l "$HOME/.emacs"
 #"(require 'exwm)" --eval "(require 'exwm-config)" --eval "(exwm-config-default)" --eval "(setq mouse-autoselect-window nil)"
 exec emacsclient -a "" -c

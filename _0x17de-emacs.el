@@ -25,14 +25,14 @@
                      multi-term sudo-edit buffer-move refine
                      treemacs x509-mode
                      flycheck flycheck-irony
-                     cmake-mode yaml-mode
+                     cmake-mode yaml-mode jedi
                      demangle-mode elf-mode
                      dockerfile-mode docker-compose-mode
                      dot-mode json-mode yaml-mode
                      systemd
                      easy-hugo
                      magit magit-gh-pulls magithub
-                     company company-lsp
+                     company company-lsp company-jedi
                      company-irony company-irony-c-headers cmake-ide)
   "All packages i require")
 (defvar
@@ -70,7 +70,7 @@
 (yas-global-mode 1)
 
 
-
+(add-to-list 'auto-mode-alist '("CMakeInstallTargets\\.txt\\'" . cmake-mode))
 ; reuse compilation buffer from other frames
 (add-to-list
  'display-buffer-alist
@@ -103,6 +103,7 @@
                                       (delete-frame)
                                     (delete-window))))
 (global-set-key (kbd "C-M-S-y") 'yas-describe-tables)
+(global-set-key (kbd "C-x k") 'kill-this-buffer)
 (global-set-key (kbd "C-M-<up>") 'text-scale-increase)
 (global-set-key (kbd "C-M-<down>") 'text-scale-decrease)
 (global-set-key (kbd "C-M-z C-e") 'eval-region)
@@ -136,19 +137,19 @@
 ;; See https://github.com/ch11ng/exwm/wiki
 ;; https://github.com/ch11ng/exwm/wiki/Configuration-Example
 (when (boundp 'use-exwm)
-  (ido-mode 1)
+  (setq mouse-autoselect-window nil
+        focus-follows-mouse nil)
+  ;(ido-mode 1)
   (require 'exwm)
   (require 'exwm-config)
-  (exwm-config-ido)
+  ;(exwm-config-ido)
   ;(exwm-config-default)
   (require 'exwm-randr)
   ;(add-hook 'exwm-randr-screen-change-hook
   ;        (lambda ()
   ;          (start-process-shell-command
   ;           "xrandr" nil "xrandr --output VGA1 --left-of LVDS1 --auto")))
-  (exwm-randr-enable)
   (require 'exwm-systemtray)
-  (exwm-systemtray-enable)
   ;(setq exwm-workspace-number 4)
   ;(setq mouse-autoselect-window nil)
   (add-hook 'exwm-update-class-hook
@@ -178,7 +179,9 @@
 		    (interactive)
 		    (start-process "" nil "/usr/bin/slock"))))
   (define-key exwm-mode-map [?\C-q] #'exwm-input-send-next-key)
-  (exwm-enable))
+  (exwm-enable)
+  (exwm-randr-enable)
+  (exwm-systemtray-enable))
 
 (global-set-key [mode-line mouse-2] 'exwm-layout-toggle-fullscreen)
 
@@ -270,6 +273,9 @@
         (setq mouse-sel-mode t))
 
 
+(require 'company)
+(cmake-ide-setup)
+(setq company-backends (delete 'company-semantic company-backends))
 
 (add-hook 'emacs-lisp-mode-hook 'company-mode)
 (add-hook 'lisp-mode-hook 'company-mode)
@@ -280,10 +286,11 @@
 ;(add-hook 'c-mode-common-hook 'google-make-newline-indent)
 
 ; autocompletion and highlighting modules
+;(require 'python-mode)
 (require 'cc-mode)
 (eval-after-load 'company
   '(add-to-list
-    'company-backends '(company-irony-c-headers company-irony company-lsp)))
+    'company-backends '(company-irony-c-headers company-irony company-lsp company-jedi)))
 (eval-after-load 'flycheck
   '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
 
@@ -291,6 +298,8 @@
 ;   M-x rtags-install
 ;   M-x irony-install-server
 
+(require 'company)
+(setq company-async-timeout 5)
 (require 'flycheck)
 ;(require 'rtags)
 ;(require 'flycheck-rtags)
@@ -301,6 +310,7 @@
 ;(rtags-enable-standard-keybindings)
 (add-hook 'c-mode-common-hook 'flycheck-mode)
 (add-hook 'c-mode-common-hook 'company-mode)
+(add-hook 'python-mode-hook 'company-mode)
 
 ;(defun my-flycheck-setup ()
 ;  (flycheck-select-checker 'rtags)
@@ -309,23 +319,22 @@
 ;(add-hook 'c-mode-common-hook #'my-flycheck-setup)
 
 ; company+irony autocompletion
-(add-hook 'c-mode-common-hook 'irony-mode)
+(add-hook 'c++-mode-hook 'irony-mode)
+(add-hook 'c-mode-hook 'irony-mode)
+(add-hook 'objc-mode-hook 'irony-mode)
 (add-hook 'irony-mode-hook 'company-irony-setup-begin-commands)
 (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
-(setq company-backends (delete 'company-semantic company-backends))
 (setq company-dabbrev-downcase 0)
 (setq company-idle-delay 0.5)
 (define-key c-mode-map [(tab)] 'company-indent-or-complete-common)
 (define-key c++-mode-map [(tab)] 'company-indent-or-complete-common)
+;(define-key python-mode-map [(tab)] 'company-indent-or-complete-common)
 
 ;(defun my-irony-mode-hook ()
 ;  (define-key irony-mode-map [remap completion-at-point]
 ;    'irony-completion-at-point-async)
 ;  (define-key irony-mode-map [remap complete-symbol]
 ;    'irony-completion-at-point-async))
-
-(cmake-ide-setup)
-
 
 (setq compile-command "ewcompile")
 (defun my-compile ()
@@ -346,6 +355,16 @@
 	(insert "\n#endif")
 	(jump-to-register)))
 
+
+;; nXML mode customization
+(add-to-list 'auto-mode-alist '("\\.xsd\\'" . xml-mode))
+(add-to-list 'auto-mode-alist '("\\.xslt\\'" . xml-mode))
+(add-hook 'nxml-mode-hook
+	  '(lambda ()
+	     (make-local-variable 'indent-tabs-mode)
+	     (setq indent-tabs-mode nil)
+	     (add-to-list 'rng-schema-locating-files
+			  "~/.emacs.d/nxml-schemas/schemas.xml")))
 
 
 (load "directory-helper-functions")
