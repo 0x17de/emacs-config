@@ -6,21 +6,17 @@
 
 (setq debug-on-error t)
 
-;;http://ergoemacs.org/emacs/emacs_package_system.html
-(when (>= emacs-major-version 24)
-  (require 'package)
-  (add-to-list
-   'package-archives
-   '("melpa" . "http://melpa.org/packages/")
-   t)
-  (package-initialize))
-; '("marmalade" . "http://marmalade-repo.org/packages/")
-
-
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
+(package-initialize)
+(when (not package-archive-contents)
+  (package-refresh-contents))
+(unless (package-installed-p 'use-package)
+  (package-install 'use-package))
 
 ;;initial setup of recommended packages i use
 (defvar dotemacs-packages
-  ; doremi doremi-cmd doremi-frm 
+                                        ; doremi doremi-cmd doremi-frm
   '(multiple-cursors cmake-mode color-theme-sanityinc-tomorrow
                      multi-term sudo-edit buffer-move refine
                      treemacs x509-mode
@@ -33,7 +29,8 @@
                      easy-hugo
                      magit magit-gh-pulls magithub
                      company company-lsp company-jedi
-                     company-irony company-irony-c-headers cmake-ide)
+                     company-irony company-irony-c-headers cmake-ide
+                     helm-gtags counsel projectile ede)
   "All packages i require")
 (defvar
   dotemacs-needs-install nil)
@@ -52,6 +49,123 @@
 
 (global-unset-key (kbd "C-z")) ; stop me from freezing emacs
 
+
+(use-package color-theme-sanityinc-tomorrow)
+(use-package multi-term)
+(use-package multiple-cursors
+             :init
+             (global-unset-key (kbd "M-<down-mouse-1>"))
+             :bind
+             (("C-M-z C-c" . mc/edit-lines)
+              ("C-M-z >" . mc/mark-next-like-this)
+              ("C-M-z <" . mc/mark-previous-like-this)
+              ("C-M-z |" . mc/mark-all-like-this)
+              ("M-<mouse-1>" . mc/add-cursor-on-click)))
+(use-package sudo-edit)
+(use-package buffer-move)
+(use-package refine)
+(use-package treemacs)
+(use-package x509-mode)
+(use-package yaml-mode)
+(use-package dot-mode)
+(use-package dockerfile-mode)
+(use-package json-mode)
+(use-package elf-mode)
+(use-package demangle-mode)
+(use-package systemd)
+(use-package easy-hugo)
+(use-package magit)
+(use-package magit-gh-pulls)
+(use-package magithub)
+
+(use-package function-args)
+(use-package helm-gtags)
+(use-package counsel)
+(use-package semantic
+             :config
+             (global-semanticdb-minor-mode 1)
+             (global-semantic-idle-scheduler-mode 1)
+             (global-semantic-stickyfunc-mode 1)
+             (semantic-mode 1))
+(use-package irony)
+(use-package company
+             :init
+             (setq company-dabbrev-downcase 0)
+             (setq company-idle-delay 0.5)
+             (setq company-async-timeout 5)
+             :config
+             ;(global-company-mode 1)
+             (setq company-backends (delete 'company-semantic company-backends))
+             (add-hook 'python-mode-hook 'company-mode)
+             (add-hook 'c-mode-common-hook 'company-mode)
+             (add-hook 'c-mode-common-hook 'irony-mode)
+             (add-hook 'emacs-lisp-mode-hook 'company-mode)
+             (add-hook 'lisp-mode-hook 'company-mode))
+(use-package company-lsp
+             :config
+             (add-to-list 'company-backends 'company-lsp))
+(use-package company-jedi
+             :config
+             (add-to-list 'company-backends 'company-jedi))
+(use-package company-irony
+             :config
+             (add-to-list 'company-backends '(company-irony-c-headers company-irony))
+             (add-hook 'irony-mode-hook 'company-irony-setup-begin-commands)
+             (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options))
+(use-package company-c-headers
+             :config
+             (add-to-list 'company-backends 'company-c-headers))
+(use-package flycheck)
+(use-package flycheck-irony
+             :config
+             (add-hook 'flycheck-mode-hook 'flycheck-irony-setup))
+(use-package irony
+             :config
+             (add-hook 'irony-mode-hook 'company-irony-setup-begin-commands)
+             (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options))
+(use-package cmake-mode
+             :config
+             (cmake-ide-setup))
+
+(defun alexott/cedet-hook ()
+  (local-set-key "\C-c\C-j" 'semantic-ia-fast-jump)
+  (local-set-key "\C-c\C-s" 'semantic-ia-show-summary))
+
+(use-package cc-mode
+             :config
+             (add-hook 'c-mode-common-hook 'hs-minor-mode)
+             (add-hook 'c-mode-common-hook 'company-mode)
+             (add-hook 'c-mode-common-hook 'irony-mode)
+             (add-hook 'c-mode-common-hook 'flycheck-mode)
+             (load "ext/google-styleguide/google-c-style")
+             (add-hook 'c-mode-common-hook 'google-set-c-style)
+             ;(add-hook 'c-mode-common-hook 'alexott/cedet-hook)
+             (define-key c-mode-map [(tab)] 'company-indent-or-complete-common)
+             (define-key c++-mode-map [(tab)] 'company-indent-or-complete-common))
+
+(use-package projectile
+             :config
+             (projectile-global-mode)
+             (setq projectile-enable-caching t))
+
+;(use-package zygospore
+;             :bind (("C-x 1" . zygospore-toggle-delete-other-windows)
+;                    ("RET" . newline-and-indent)))
+
+(use-package ede
+             :config
+             (global-ede-mode))
+
+(use-package yasnippet
+             :config
+             (yas-global-mode 1))
+
+;(global-set-key (kbd "C-c w") 'whitespace-mode)
+;(windmove-default-keybindings)
+
+; notes: speedbar, sr-speedbar
+
+
 (load "magit.el")
 (load "multi-term-settings.el")
 
@@ -62,13 +176,6 @@
 (load "ext/misc/vline")
 (load "ext/misc/col-highlight")
 (load "ext/misc/crosshairs")
-
-
-
-
-(require 'yasnippet)
-(yas-global-mode 1)
-
 
 (add-to-list 'auto-mode-alist '("CMakeInstallTargets\\.txt\\'" . cmake-mode))
 ; reuse compilation buffer from other frames
@@ -240,7 +347,6 @@
 (setq show-paren-delay 0)
 
 
-
 (require 'recentf)
 (setq recentf-auto-cleanup 'never)
 (recentf-mode 1)
@@ -249,14 +355,6 @@
 
 
 
-;;Multi cursor edit
-(when (require 'multiple-cursors nil 'noerror)
-      (global-set-key (kbd "C-M-z C-c") 'mc/edit-lines)
-      (global-set-key (kbd "C-M-z >") 'mc/mark-next-like-this)
-      (global-set-key (kbd "C-M-z <") 'mc/mark-previous-like-this)
-      (global-set-key (kbd "C-M-z |") 'mc/mark-all-like-this)
-      (global-unset-key (kbd "M-<down-mouse-1>"))
-      (global-set-key (kbd "M-<mouse-1>") 'mc/add-cursor-on-click))
 
 ;;Mouse scroll
 (defun up-slightly () (interactive) (scroll-up 5))
@@ -272,45 +370,24 @@
         (defun track-mouse (e))
         (setq mouse-sel-mode t))
 
-
-(require 'company)
-(cmake-ide-setup)
-(setq company-backends (delete 'company-semantic company-backends))
-
 (add-hook 'emacs-lisp-mode-hook 'company-mode)
 (add-hook 'lisp-mode-hook 'company-mode)
 
-(load "ext/google-styleguide/google-c-style")
-(add-hook 'c-mode-common-hook 'google-set-c-style)
-(add-hook 'c-mode-common-hook 'hs-minor-mode)
 ;(add-hook 'c-mode-common-hook 'google-make-newline-indent)
 
 ; autocompletion and highlighting modules
 ;(require 'python-mode)
-(require 'cc-mode)
-(eval-after-load 'company
-  '(add-to-list
-    'company-backends '(company-irony-c-headers company-irony company-lsp company-jedi)))
-(eval-after-load 'flycheck
-  '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
 
 ; TODO:
 ;   M-x rtags-install
 ;   M-x irony-install-server
 
-(require 'company)
-(setq company-async-timeout 5)
-(require 'flycheck)
 ;(require 'rtags)
 ;(require 'flycheck-rtags)
-(require 'flycheck-irony)
-(require 'company-irony-c-headers)
 ;(setq rtags-completions-enabled t)
 ;(setq rtags-autostart-diagnostics t)
 ;(rtags-enable-standard-keybindings)
-(add-hook 'c-mode-common-hook 'flycheck-mode)
-(add-hook 'c-mode-common-hook 'company-mode)
-(add-hook 'python-mode-hook 'company-mode)
+;(add-hook 'python-mode-hook 'company-mode)
 
 ;(defun my-flycheck-setup ()
 ;  (flycheck-select-checker 'rtags)
@@ -319,15 +396,6 @@
 ;(add-hook 'c-mode-common-hook #'my-flycheck-setup)
 
 ; company+irony autocompletion
-(add-hook 'c++-mode-hook 'irony-mode)
-(add-hook 'c-mode-hook 'irony-mode)
-(add-hook 'objc-mode-hook 'irony-mode)
-(add-hook 'irony-mode-hook 'company-irony-setup-begin-commands)
-(add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
-(setq company-dabbrev-downcase 0)
-(setq company-idle-delay 0.5)
-(define-key c-mode-map [(tab)] 'company-indent-or-complete-common)
-(define-key c++-mode-map [(tab)] 'company-indent-or-complete-common)
 ;(define-key python-mode-map [(tab)] 'company-indent-or-complete-common)
 
 ;(defun my-irony-mode-hook ()
