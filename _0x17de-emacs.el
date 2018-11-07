@@ -143,6 +143,9 @@
              ;(add-hook 'c-mode-common-hook 'alexott/cedet-hook)
              (define-key c-mode-map [(tab)] 'company-indent-or-complete-common)
              (define-key c++-mode-map [(tab)] 'company-indent-or-complete-common))
+(use-package python
+             :config
+             (define-key python-mode-map [(tab)] 'company-indent-or-complete-common))
 
 (use-package projectile
              :config
