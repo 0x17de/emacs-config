@@ -125,6 +125,7 @@
              (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options))
 (use-package cmake-mode
              :config
+             (add-to-list 'auto-mode-alist '("CMakeInstallTargets\\.txt\\'" . cmake-mode))
              (cmake-ide-setup))
 
 (defun alexott/cedet-hook ()
@@ -177,7 +178,6 @@
 (load "ext/misc/col-highlight")
 (load "ext/misc/crosshairs")
 
-(add-to-list 'auto-mode-alist '("CMakeInstallTargets\\.txt\\'" . cmake-mode))
 ; reuse compilation buffer from other frames
 (add-to-list
  'display-buffer-alist
@@ -185,13 +185,11 @@
                           . ((reusable-frames . t)))))
 
 
-
 (require 'buffer-move)
 (global-set-key (kbd "<C-M-S-up>")     'buf-move-up)
 (global-set-key (kbd "<C-M-S-down>")   'buf-move-down)
 (global-set-key (kbd "<C-M-S-left>")   'buf-move-left)
 (global-set-key (kbd "<C-M-S-right>")  'buf-move-right)
-
 
 
 ;;No backup files
@@ -354,8 +352,6 @@
 (global-set-key (kbd "C-x C-r") 'recentf-open-files)
 
 
-
-
 ;;Mouse scroll
 (defun up-slightly () (interactive) (scroll-up 5))
 (defun down-slightly () (interactive) (scroll-down 5))
@@ -370,39 +366,6 @@
         (defun track-mouse (e))
         (setq mouse-sel-mode t))
 
-(add-hook 'emacs-lisp-mode-hook 'company-mode)
-(add-hook 'lisp-mode-hook 'company-mode)
-
-;(add-hook 'c-mode-common-hook 'google-make-newline-indent)
-
-; autocompletion and highlighting modules
-;(require 'python-mode)
-
-; TODO:
-;   M-x rtags-install
-;   M-x irony-install-server
-
-;(require 'rtags)
-;(require 'flycheck-rtags)
-;(setq rtags-completions-enabled t)
-;(setq rtags-autostart-diagnostics t)
-;(rtags-enable-standard-keybindings)
-;(add-hook 'python-mode-hook 'company-mode)
-
-;(defun my-flycheck-setup ()
-;  (flycheck-select-checker 'rtags)
-;  (setq-local flycheck-highlighting-mode nil) ;; RTags creates more accurate overlays.
-;  (setq-local flycheck-check-syntax-automatically nil))
-;(add-hook 'c-mode-common-hook #'my-flycheck-setup)
-
-; company+irony autocompletion
-;(define-key python-mode-map [(tab)] 'company-indent-or-complete-common)
-
-;(defun my-irony-mode-hook ()
-;  (define-key irony-mode-map [remap completion-at-point]
-;    'irony-completion-at-point-async)
-;  (define-key irony-mode-map [remap complete-symbol]
-;    'irony-completion-at-point-async))
 
 (setq compile-command "ewcompile")
 (defun my-compile ()
