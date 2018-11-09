@@ -1,5 +1,5 @@
 #!/bin/bash
-pgrep emacs >&/dev/null || emacs --daemon >&/dev/null
+kill -0 emacs >&/dev/null || emacs --daemon >&/dev/null
 EMACSCLIENT_ARGS=()
 [ -z "$INSIDE_EMACS" ] && EMACSCLIENT_ARGS+=(-c)
 exec nohup emacsclient "${EMACSCLIENT_ARGS[@]}" "$@" >& /dev/null &

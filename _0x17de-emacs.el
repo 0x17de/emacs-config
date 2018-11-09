@@ -28,9 +28,10 @@
                      systemd
                      easy-hugo
                      magit magit-gh-pulls magithub
-                     company company-lsp company-jedi
+                     company company-lsp company-jedi company-c-headers
                      company-irony company-irony-c-headers cmake-ide
-                     helm-gtags counsel projectile ede)
+                     helm-gtags counsel projectile ede
+                     function-args)
   "All packages i require")
 (defvar
   dotemacs-needs-install nil)
@@ -145,7 +146,10 @@
              (define-key c++-mode-map [(tab)] 'company-indent-or-complete-common))
 (use-package python
              :config
-             (define-key python-mode-map [(tab)] 'company-indent-or-complete-common))
+             (add-hook 'python-mode-hook 'hs-minor-mode)
+             (add-hook 'python-mode-hook 'auto-complete-mode)
+             (add-hook 'python-mode-hook 'jedi:ac-setup)
+             (define-key python-mode-map [(tab)] 'jedi:complete))
 
 (use-package projectile
              :config
