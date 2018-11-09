@@ -31,7 +31,7 @@
                      company company-lsp company-jedi company-c-headers
                      company-irony company-irony-c-headers cmake-ide
                      helm-gtags counsel projectile ede
-                     function-args)
+                     function-args org ein ess)
   "All packages i require")
 (defvar
   dotemacs-needs-install nil)
@@ -150,6 +150,13 @@
              (add-hook 'python-mode-hook 'auto-complete-mode)
              (add-hook 'python-mode-hook 'jedi:ac-setup)
              (define-key python-mode-map [(tab)] 'jedi:complete))
+(use-package org)
+(use-package ein)
+(use-package ess
+             :config
+             (add-hook 'ess-mode-hook 'company-mode)
+             (define-key ess-mode-map [(tab)] 'company-indent-or-complete-common)
+             :bind (("<f1>" . company-show-doc-buffer)))
 
 (use-package projectile
              :config
@@ -166,7 +173,12 @@
 
 (use-package yasnippet
              :config
+             (add-to-list 'yas-snippet-dirs (concat (file-name-directory load-file-name) "snippets"))
              (yas-global-mode 1))
+
+
+(define-key lisp-mode-map [(tab)] 'company-indent-or-complete-common)
+(define-key emacs-lisp-mode-map [(tab)] 'company-indent-or-complete-common)
 
 ;(global-set-key (kbd "C-c w") 'whitespace-mode)
 ;(windmove-default-keybindings)
