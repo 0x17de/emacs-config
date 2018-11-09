@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: read csv file
+# key: csv
+# --
+data = read.csv(${1:filename}, sep = ";", header = TRUE)
