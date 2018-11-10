@@ -30,7 +30,7 @@
                      magit magit-gh-pulls magithub
                      company company-lsp company-jedi company-c-headers
                      company-irony company-irony-c-headers cmake-ide
-                     helm-gtags counsel projectile ede
+                     helm-swoop helm-gtags counsel projectile ede
                      function-args org ein ess)
   "All packages i require")
 (defvar
@@ -80,6 +80,7 @@
 (use-package magithub)
 
 (use-package function-args)
+(use-package helm-swoop)
 (use-package helm-gtags)
 (use-package counsel)
 (use-package semantic
