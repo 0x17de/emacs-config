@@ -21,7 +21,7 @@
                      multi-term sudo-edit buffer-move refine
                      treemacs x509-mode
                      flycheck flycheck-irony
-                     cmake-mode yaml-mode jedi
+                     cmake-mode cpputils-cmake yaml-mode jedi
                      demangle-mode elf-mode
                      dockerfile-mode docker-compose-mode
                      dot-mode json-mode yaml-mode
@@ -127,12 +127,19 @@
              (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options))
 (use-package cmake-mode
              :config
-             (add-to-list 'auto-mode-alist '("CMakeInstallTargets\\.txt\\'" . cmake-mode))
+             (add-to-list 'auto-mode-alist '("CMakeInstallTargets\\.txt\\'" . cmake-mode)))
+(use-package cmake-ide
+             :config
+             (defun cide--build-dir-var ()
+               "Use cmake-ide-build-dir, cmake-ide-dir or the build directory inside the project root"
+               (or cmake-ide-build-dir
+                   cmake-ide-dir
+                   (concat (cide--locate-project-dir) "build")))
              (cmake-ide-setup))
-
-(defun alexott/cedet-hook ()
-  (local-set-key "\C-c\C-j" 'semantic-ia-fast-jump)
-  (local-set-key "\C-c\C-s" 'semantic-ia-show-summary))
+(use-package cpputils-cmake
+             :config
+             (add-hook 'cmake-mode-hook 'company-mode)
+             (define-key cmake-mode-map [(tab)] 'company-indent-or-complete-common))
 
 (use-package cc-mode
              :config
@@ -142,9 +149,10 @@
              (add-hook 'c-mode-common-hook 'flycheck-mode)
              (load "ext/google-styleguide/google-c-style")
              (add-hook 'c-mode-common-hook 'google-set-c-style)
-             ;(add-hook 'c-mode-common-hook 'alexott/cedet-hook)
              (define-key c-mode-map [(tab)] 'company-indent-or-complete-common)
-             (define-key c++-mode-map [(tab)] 'company-indent-or-complete-common))
+             (define-key c++-mode-map [(tab)] 'company-indent-or-complete-common)
+             :bind (("C-c C-j" . moo-jump-local)
+                    ("C-c M-j" . semantic-ia-fast-jump)))
 (use-package python
              :config
              (add-hook 'python-mode-hook 'hs-minor-mode)
