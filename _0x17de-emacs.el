@@ -84,11 +84,11 @@
 (use-package helm-gtags)
 (use-package counsel)
 (use-package semantic
-             :config
-             (global-semanticdb-minor-mode 1)
-             (global-semantic-idle-scheduler-mode 1)
-             (global-semantic-stickyfunc-mode 1)
-             (semantic-mode 1))
+             :config)
+;             (global-semanticdb-minor-mode 1)
+;             (global-semantic-idle-scheduler-mode 1)
+;             (global-semantic-stickyfunc-mode 1)
+;             (semantic-mode 1))
 (use-package irony)
 (use-package company
              :init

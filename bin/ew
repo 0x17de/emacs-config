@@ -1,5 +1,7 @@
 #!/bin/bash
-kill -0 emacs >&/dev/null || emacs --daemon >&/dev/null || notify-send EW 'emacs failed to start'
+if ! pkill -0 emacs >&/dev/null; then
+    emacs --daemon >&/dev/null || notify-send EW 'emacs failed to start'
+fi
 EMACSCLIENT_ARGS=()
 [ -z "$INSIDE_EMACS" ] && EMACSCLIENT_ARGS+=(-c)
 exec nohup emacsclient "${EMACSCLIENT_ARGS[@]}" "$@" >& /dev/null &
