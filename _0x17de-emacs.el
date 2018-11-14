@@ -175,6 +175,7 @@
              (projectile-global-mode)
              (setq projectile-enable-caching t))
 
+(use-package auto-complete)
 (use-package auto-complete-auctex)
 (defun my/latex-setup ()
   "Setup the latex environment"
