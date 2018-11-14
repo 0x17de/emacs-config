@@ -26,12 +26,13 @@
                      dockerfile-mode docker-compose-mode
                      dot-mode json-mode yaml-mode
                      systemd
-                     easy-hugo
+                     easy-hugo gh-md
                      magit magit-gh-pulls magithub
                      company company-lsp company-jedi company-c-headers
                      company-irony company-irony-c-headers cmake-ide
                      helm-swoop helm-gtags counsel projectile ede
-                     function-args org ein ess)
+                     function-args org ein ess
+                     auctex)
   "All packages i require")
 (defvar
   dotemacs-needs-install nil)
@@ -149,6 +150,8 @@
              (add-hook 'c-mode-common-hook 'flycheck-mode)
              (load "ext/google-styleguide/google-c-style")
              (add-hook 'c-mode-common-hook 'google-set-c-style)
+             (define-key c-mode-map [(f5)] 'recompile)
+             (define-key c++-mode-map [(f5)] 'recompile)
              (define-key c-mode-map [(tab)] 'company-indent-or-complete-common)
              (define-key c++-mode-map [(tab)] 'company-indent-or-complete-common)
              :bind (("C-c C-j" . moo-jump-local)
@@ -165,12 +168,34 @@
              :config
              (add-hook 'ess-mode-hook 'company-mode)
              (define-key ess-mode-map [(tab)] 'company-indent-or-complete-common)
-             :bind (("<f1>" . company-show-doc-buffer)))
+             (define-key ess-mode-map [(f1)] 'company-show-doc-buffer))
 
 (use-package projectile
              :config
              (projectile-global-mode)
              (setq projectile-enable-caching t))
+
+(use-package auto-complete-auctex)
+(defun my/latex-setup ()
+  "Setup the latex environment"
+  (reftex-mode t)
+  (TeX-engine-set "luatex")
+  (setq font-latex-fontify-script 'multi-level)
+  (setq TeX-PDF-mode t)
+  (setq TeX-source-correlate-mode t)
+  (TeX-fold-mode 1))
+(use-package latex
+             :init
+             (setq ac-math-unicode-in-math-p t)
+             :config
+             (add-hook 'Tex-mode-hook 'my/latex-setup)
+             (add-to-list 'ac-modes 'latex-mode)
+             (add-to-list 'ac-sources '(ac-source-math-unicode ac-source-math-latex ac-source-latex-commands))
+             (add-hook 'TeX-mode-hook 'auto-complete-mode)
+             (define-key TeX-mode-map [(f5)] 'TeX-command-run-all)
+             (define-key TeX-mode-map [(f6)] 'TeX-command-run-all-region)
+             (define-key TeX-mode-map [(tab)] 'ac-complete)
+             (define-key TeX-mode-map [(f1)] 'ac-help))
 
 ;(use-package zygospore
 ;             :bind (("C-x 1" . zygospore-toggle-delete-other-windows)
@@ -197,6 +222,7 @@
 
 (load "magit.el")
 (load "multi-term-settings.el")
+(load "latex-compile-on-save.el")
 
 (load "ext/misc/dired+")
 
@@ -243,7 +269,6 @@
 (global-set-key (kbd "C-M-z C-M-e") 'eval-buffer)
 (global-set-key (kbd "C-M-S-c") 'find-emacs-config)
 (global-set-key (kbd "C-M-S-z") 'cmake-ide-compile)
-(global-set-key [f5] 'recompile)
 (defun find-emacs-config ()
   "Open the emacs configuration file"
   (interactive)
