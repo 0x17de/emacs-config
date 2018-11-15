@@ -33,7 +33,7 @@
                      helm-swoop helm-gtags counsel projectile ede
                      function-args org ein ess
                      auctex
-                     rust-mode ac-racer flycheck-rust)
+                     rust-mode racer ac-racer flycheck-rust)
   "All packages i require")
 (defvar
   dotemacs-needs-install nil)
@@ -92,6 +92,8 @@
 ;             (global-semantic-stickyfunc-mode 1)
 ;             (semantic-mode 1))
 (use-package irony)
+(use-package auto-complete)
+(use-package auto-complete-auctex)
 (use-package company
              :init
              (setq company-dabbrev-downcase 0)
@@ -171,20 +173,23 @@
              (define-key python-mode-map [(tab)] 'jedi:complete))
 
 (defun my/rust-setup ()
-  "Setup the rust environment"
+  "Setup the rust variables; Environment variables overwrite internal variables"
   (unless (getenv "RUST_SRC_PATH")
-    (setenv "RUST_SRC_PATH" (expand-file-name "~/src/rust/src"))))
+    (let ((rust-source-dir (expand-file-name "~/src/rust/src")))
+      (setenv "RUST_SRC_PATH" rust-source-dir)
+      (setq racer-rust-src-path rust-source-dir)))
+  (unless racer-rust-src-path
+    (setq racer-rust-src-path (getenv "RUST_SRC_PATH"))))
 
 (use-package rust-mode
-             :init
-             (setq ac-delay nil)
-             (setq ac-quick-help-timer nil)
-             (setq ac-show-menu-timer nil)
              :config
+             (add-to-list 'ac-modes 'racer-mode)
              (add-hook 'rust-mode-hook 'my/rust-setup)
-             (add-hook 'rust-mode-hook 'ac-mode)
+             (add-hook 'rust-mode-hook 'auto-complete-mode)
+             (add-hook 'rust-mode-hook 'racer-mode)
              (add-hook 'rust-mode-hook 'ac-racer-setup)
-             (add-hook 'c-mode-common-hook 'flycheck-mode)
+             (add-hook 'rust-mode-hook 'flycheck-mode)
+             (define-key rust-mode-map [(f1)] 'racer-describe)
              (define-key rust-mode-map [(f5)] 'rust-compile)
              (define-key rust-mode-map [(tab)] 'ac-complete))
 (use-package org)
@@ -200,8 +205,6 @@
              (projectile-global-mode)
              (setq projectile-enable-caching t))
 
-(use-package auto-complete)
-(use-package auto-complete-auctex)
 (defun my/latex-setup ()
   "Setup the latex environment"
   (reftex-mode t)
