@@ -32,7 +32,8 @@
                      company-irony company-irony-c-headers cmake-ide
                      helm-swoop helm-gtags counsel projectile ede
                      function-args org ein ess
-                     auctex)
+                     auctex
+                     rust-mode ac-racer flycheck-rust)
   "All packages i require")
 (defvar
   dotemacs-needs-install nil)
@@ -118,10 +119,16 @@
 (use-package company-c-headers
              :config
              (add-to-list 'company-backends 'company-c-headers))
+;(use-package company-racer
+;             :config
+;             (add-to-list 'company-backends 'company-racer))
 (use-package flycheck)
 (use-package flycheck-irony
              :config
              (add-hook 'flycheck-mode-hook 'flycheck-irony-setup))
+(use-package flycheck-rust
+             :config
+             (add-hook 'flycheck-mode-hook 'flycheck-rust-setup))
 (use-package irony
              :config
              (add-hook 'irony-mode-hook 'company-irony-setup-begin-commands)
@@ -162,6 +169,24 @@
              (add-hook 'python-mode-hook 'auto-complete-mode)
              (add-hook 'python-mode-hook 'jedi:ac-setup)
              (define-key python-mode-map [(tab)] 'jedi:complete))
+
+(defun my/rust-setup ()
+  "Setup the rust environment"
+  (unless (getenv "RUST_SRC_PATH")
+    (setenv "RUST_SRC_PATH" (expand-file-name "~/src/rust/src"))))
+
+(use-package rust-mode
+             :init
+             (setq ac-delay nil)
+             (setq ac-quick-help-timer nil)
+             (setq ac-show-menu-timer nil)
+             :config
+             (add-hook 'rust-mode-hook 'my/rust-setup)
+             (add-hook 'rust-mode-hook 'ac-mode)
+             (add-hook 'rust-mode-hook 'ac-racer-setup)
+             (add-hook 'c-mode-common-hook 'flycheck-mode)
+             (define-key rust-mode-map [(f5)] 'rust-compile)
+             (define-key rust-mode-map [(tab)] 'ac-complete))
 (use-package org)
 (use-package ein)
 (use-package ess
