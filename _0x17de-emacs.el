@@ -49,7 +49,6 @@
 (use-package sudo-edit)
 (use-package buffer-move)
 (use-package refine)
-(use-package treemacs)
 (use-package x509-mode)
 (use-package yaml-mode)
 (use-package dot-mode)
