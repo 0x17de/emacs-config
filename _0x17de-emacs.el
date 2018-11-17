@@ -67,17 +67,18 @@
 (use-package helm-gtags)
 (use-package counsel)
 (use-package semantic
-             :config)
-;             (global-semanticdb-minor-mode 1)
-;             (global-semantic-idle-scheduler-mode 1)
-;             (global-semantic-stickyfunc-mode 1)
-;             (semantic-mode 1))
+             :config
+             (global-semanticdb-minor-mode 1)
+             (global-semantic-idle-scheduler-mode 1)
+             (global-semantic-stickyfunc-mode 1)
+             (semantic-mode 1))
 (use-package irony)
 (use-package auto-complete
              :init
              (setq tab-always-indent 'complete)
              (setq ac-disable-inline t)
              :config
+             (setq ac-sources (delete 'ac-sources '(ac-source-semantic ac-source-semantic-raw)))
              (ac-config-default))
 (use-package auto-complete-auctex)
 (use-package company
@@ -101,7 +102,8 @@
              (add-to-list 'company-backends 'company-jedi))
 (use-package company-irony
              :config
-             (add-to-list 'company-backends '(company-irony-c-headers company-irony))
+             (add-to-list 'company-backends 'company-irony-c-headers)
+             (add-to-list 'company-backends 'company-irony)
              (add-hook 'irony-mode-hook 'company-irony-setup-begin-commands)
              (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options))
 (use-package company-c-headers
@@ -201,7 +203,9 @@
              :config
              (add-hook 'Tex-mode-hook 'my/latex-setup)
              (add-to-list 'ac-modes 'latex-mode)
-             (add-to-list 'ac-sources '(ac-source-math-unicode ac-source-math-latex ac-source-latex-commands))
+             (add-to-list 'ac-sources 'ac-source-math-unicode)
+             (add-to-list 'ac-sources 'ac-source-math-latex)
+             (add-to-list 'ac-sources 'ac-source-latex-commands)
              (add-hook 'TeX-mode-hook 'auto-complete-mode)
              (define-key TeX-mode-map [(f5)] 'TeX-command-run-all)
              (define-key TeX-mode-map [(f6)] 'TeX-command-run-all-region)
