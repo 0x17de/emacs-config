@@ -73,7 +73,12 @@
 ;             (global-semantic-stickyfunc-mode 1)
 ;             (semantic-mode 1))
 (use-package irony)
-(use-package auto-complete)
+(use-package auto-complete
+             :init
+             (setq ac-disable-inline t)
+             :config
+             (ac-config-default)
+             (define-key ac-mode-map (kbd "TAB") 'auto-complete))
 (use-package auto-complete-auctex)
 (use-package company
              :init
@@ -172,7 +177,7 @@
              (add-hook 'rust-mode-hook 'flycheck-mode)
              (define-key rust-mode-map [(f1)] 'racer-describe)
              (define-key rust-mode-map [(f5)] 'rust-compile)
-             (define-key rust-mode-map [(tab)] 'ac-complete))
+             (define-key rust-mode-map [(tab)] 'auto-complete))
 (use-package org)
 (use-package ein)
 (use-package ess
