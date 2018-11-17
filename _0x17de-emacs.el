@@ -13,7 +13,7 @@
 ;;initial setup of recommended packages i use
 (defvar dotemacs-packages
   '(use-package
-     ac-racer auctex auto-complete-auctex buffer-move cmake-ide
+     auctex auto-complete-auctex buffer-move cmake-ide
      cmake-mode cmake-mode color-theme-sanityinc-tomorrow company
      company-c-headers company-irony company-irony-c-headers
      company-jedi company-lsp counsel cpputils-cmake demangle-mode
@@ -75,18 +75,18 @@
 (use-package irony)
 (use-package auto-complete
              :init
+             (setq tab-always-indent 'complete)
              (setq ac-disable-inline t)
              :config
-             (ac-config-default)
-             (define-key ac-mode-map (kbd "TAB") 'auto-complete))
+             (ac-config-default))
 (use-package auto-complete-auctex)
 (use-package company
-             :init
+             :init 
+             (setq company-tooltip-align-annotations t)
              (setq company-dabbrev-downcase 0)
              (setq company-idle-delay 0.5)
              (setq company-async-timeout 5)
              :config
-             ;(global-company-mode 1)
              (setq company-backends (delete 'company-semantic company-backends))
              (add-hook 'python-mode-hook 'company-mode)
              (add-hook 'c-mode-common-hook 'company-mode)
@@ -107,9 +107,6 @@
 (use-package company-c-headers
              :config
              (add-to-list 'company-backends 'company-c-headers))
-;(use-package company-racer
-;             :config
-;             (add-to-list 'company-backends 'company-racer))
 (use-package flycheck)
 (use-package flycheck-irony
              :config
@@ -169,15 +166,14 @@
 
 (use-package rust-mode
              :config
-             (add-to-list 'ac-modes 'racer-mode)
              (add-hook 'rust-mode-hook 'my/rust-setup)
-             (add-hook 'rust-mode-hook 'auto-complete-mode)
              (add-hook 'rust-mode-hook 'racer-mode)
-             (add-hook 'rust-mode-hook 'ac-racer-setup)
+             (add-hook 'racer-mode-hook 'eldoc-mode)
+             (add-hook 'rust-mode-hook 'company-mode)
              (add-hook 'rust-mode-hook 'flycheck-mode)
              (define-key rust-mode-map [(f1)] 'racer-describe)
              (define-key rust-mode-map [(f5)] 'rust-compile)
-             (define-key rust-mode-map [(tab)] 'auto-complete))
+             (define-key rust-mode-map [(tab)] 'company-indent-or-complete-common))
 (use-package org)
 (use-package ein)
 (use-package ess
