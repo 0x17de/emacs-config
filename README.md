@@ -13,3 +13,8 @@ After that the following should be your .emacs file:
 ```
 
 Dependencies will be installed automatically on the first run.
+
+Things to run once the setup is finished:
+```
+M-x irony-install-server
+```

@@ -1,0 +1,8 @@
+#!/bin/sh
+ 
+old="$1"
+new="$2"
+  
+[ -z "${old}" -o -z "${new}" ] && { echo "usage: emacs-diff old new"; exit 1; }
+   
+emacs -eval "(ediff-files \"${old}\" \"${new}\")"

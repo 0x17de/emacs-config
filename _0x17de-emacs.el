@@ -9,43 +9,25 @@
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
 (package-initialize)
-(when (not package-archive-contents)
-  (package-refresh-contents))
-(unless (package-installed-p 'use-package)
-  (package-install 'use-package))
 
 ;;initial setup of recommended packages i use
 (defvar dotemacs-packages
-                                        ; doremi doremi-cmd doremi-frm
-  '(multiple-cursors cmake-mode color-theme-sanityinc-tomorrow
-                     multi-term sudo-edit buffer-move refine
-                     treemacs x509-mode
-                     flycheck flycheck-irony
-                     cmake-mode cpputils-cmake yaml-mode jedi
-                     demangle-mode elf-mode
-                     dockerfile-mode docker-compose-mode
-                     dot-mode json-mode yaml-mode
-                     systemd
-                     easy-hugo gh-md
-                     magit magit-gh-pulls magithub
-                     company company-lsp company-jedi company-c-headers
-                     company-irony company-irony-c-headers cmake-ide
-                     helm-swoop helm-gtags counsel projectile ede
-                     function-args org ein ess
-                     auctex
-                     rust-mode racer ac-racer flycheck-rust)
+  '(use-package
+     ac-racer auctex auto-complete-auctex buffer-move cmake-ide
+     cmake-mode cmake-mode color-theme-sanityinc-tomorrow company
+     company-c-headers company-irony company-irony-c-headers
+     company-jedi company-lsp counsel cpputils-cmake demangle-mode
+     docker-compose-mode dockerfile-mode dot-mode easy-hugo ede ein
+     elf-mode ess flycheck flycheck-irony flycheck-rust function-args
+     gh-md helm-gtags helm-swoop jedi json-mode magit magit-gh-pulls
+     magithub multi-term multiple-cursors org projectile racer refine
+     rust-mode sudo-edit systemd x509-mode yaml-mode yaml-mode)
   "All packages i require")
 (defvar
   dotemacs-needs-install nil)
 (dolist (p dotemacs-packages)
   (message "Checking if %s is installed: %s" p (package-installed-p p))
   (when (not (package-installed-p p))
-    (setq dotemacs-needs-install t)))
-(when dotemacs-needs-install
-  (message "Installing missing packages...")
-  (package-refresh-contents)
-  ;; install missing packages
-  (dolist (p dotemacs-packages)
     (when (not (package-installed-p p))
       (message "Installing: %s" p)
       (package-install p))))

@@ -1,0 +1,9 @@
+#!/bin/sh
+ 
+old="$1"
+new="$2"
+result="$3"
+ 
+[ -z "${old}" -o -z "${new}" -o -z "${result}" ] && { echo "usage: emacs-merge old new result"; exit 1; }
+ 
+emacs -eval "(emerge-files t \"${old}\" \"${new}\" \"${result}\")" 
