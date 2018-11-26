@@ -1,4 +1,4 @@
-;; To enable put the following as your .emacs file assuming
+; To enable put the following as your .emacs file assuming
 ;; all contents were installed into ~/.emacs/_0x17de/
 ;
 ; (add-to-list 'load-path "~/.emacs.d/_0x17de/")
@@ -66,8 +66,31 @@
 (use-package helm-swoop)
 (use-package helm-gtags)
 (use-package counsel)
+
+; see https://github.com/company-mode/company-mode/issues/525#issuecomment-348635719
+(defun inside-string-q ()
+  "Returns non-nil if inside string, else nil.
+Result depends on syntax table's string quote character."
+  (interactive)
+  (let ((result (nth 3 (syntax-ppss))))
+    (message "%s" result)
+    result))
+(defun inside-comment-q ()
+  "Returns non-nil if inside comment, else nil.
+Result depends on syntax table's comment character."
+  (interactive)
+  (let ((result (nth 4 (syntax-ppss))))
+    (message "%s" result)
+    result))
+(defun semantic-completion-advice (adviced-f &rest r)
+  "Check if POINT it's inside a string or comment before calling semantic-*"
+  (unless (or (inside-string-q) (inside-comment-q))
+    (apply adviced-f r)))
+
 (use-package semantic
              :config
+             (advice-add 'semantic-analyze-completion-at-point-function
+                         :around #'semantic-completion-advice)
              (global-semanticdb-minor-mode 1)
              (global-semantic-idle-scheduler-mode 1)
              (global-semantic-stickyfunc-mode 1)
@@ -88,34 +111,14 @@
              (setq company-idle-delay 0.5)
              (setq company-async-timeout 5)
              :config
-             (setq company-backends (delete 'company-semantic company-backends))
-             (add-hook 'python-mode-hook 'company-mode)
-             (add-hook 'c-mode-common-hook 'company-mode)
-             (add-hook 'c-mode-common-hook 'irony-mode)
-             (add-hook 'emacs-lisp-mode-hook 'company-mode)
-             (add-hook 'lisp-mode-hook 'company-mode))
-(use-package company-lsp
-             :config
-             (add-to-list 'company-backends 'company-lsp))
-(use-package company-jedi
-             :config
-             (add-to-list 'company-backends 'company-jedi))
-(use-package company-irony
-             :config
-             (add-to-list 'company-backends 'company-irony-c-headers)
-             (add-to-list 'company-backends 'company-irony)
-             (add-hook 'irony-mode-hook 'company-irony-setup-begin-commands)
-             (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options))
-(use-package company-c-headers
-             :config
-             (add-to-list 'company-backends 'company-c-headers))
+             (setq company-backends (delete 'company-semantic company-backends)))
+(use-package company-lsp)
+(use-package company-jedi)
+(use-package company-irony)
+(use-package company-c-headers)
 (use-package flycheck)
-(use-package flycheck-irony
-             :config
-             (add-hook 'flycheck-mode-hook 'flycheck-irony-setup))
-(use-package flycheck-rust
-             :config
-             (add-hook 'flycheck-mode-hook 'flycheck-rust-setup))
+(use-package flycheck-irony)
+(use-package flycheck-rust)
 (use-package irony
              :config
              (add-hook 'irony-mode-hook 'company-irony-setup-begin-commands)
@@ -125,6 +128,8 @@
              (add-to-list 'auto-mode-alist '("CMakeInstallTargets\\.txt\\'" . cmake-mode)))
 (use-package cmake-ide
              :config
+             ; override provided function to rather use the "build"
+             ; directory in the projects root than a temp directory
              (defun cide--build-dir-var ()
                "Use cmake-ide-build-dir, cmake-ide-dir or the build directory inside the project root"
                (or cmake-ide-build-dir
@@ -136,26 +141,58 @@
              (add-hook 'cmake-mode-hook 'company-mode)
              (define-key cmake-mode-map [(tab)] 'company-indent-or-complete-common))
 
+(use-package lisp-mode
+             :config
+             (add-hook 'lisp-mode-hook
+                       (lambda ()
+                         (make-local-variable 'company-backends)
+                         (add-to-list 'company-backends 'company-lsp)
+                         (company-mode t)))
+             (define-key lisp-mode-map [(tab)] 'company-indent-or-complete-common))
+(use-package elisp-mode
+             :config
+             (add-hook 'emacs-lisp-mode-hook
+                       (lambda ()
+                         (make-local-variable 'company-backends)
+                         (add-to-list 'company-backends 'company-lsp)
+                         (company-mode t)))
+             (define-key emacs-lisp-mode-map [(tab)] 'company-indent-or-complete-common))
+
 (use-package cc-mode
              :config
-             (add-hook 'c-mode-common-hook 'hs-minor-mode)
-             (add-hook 'c-mode-common-hook 'company-mode)
-             (add-hook 'c-mode-common-hook 'irony-mode)
-             (add-hook 'c-mode-common-hook 'flycheck-mode)
              (load "ext/google-styleguide/google-c-style")
-             (add-hook 'c-mode-common-hook 'google-set-c-style)
+             (add-hook 'c-mode-common-hook
+                       (lambda ()
+                         (make-local-variable 'company-backends)
+                         (add-to-list 'company-backends 'company-irony-c-headers)
+                         (add-to-list 'company-backends 'company-c-headers)
+                         (add-to-list 'company-backends 'company-irony)
+                         (company-mode t)
+                         (irony-mode t)
+                         (hs-minor-mode t)
+                         (flycheck-mode t)
+                         (flycheck-irony-setup)
+                         (google-set-c-style)))
              (define-key c-mode-map [(f5)] 'recompile)
              (define-key c++-mode-map [(f5)] 'recompile)
              (define-key c-mode-map [(tab)] 'company-indent-or-complete-common)
              (define-key c++-mode-map [(tab)] 'company-indent-or-complete-common)
-             :bind (("C-c C-j" . moo-jump-local)
-                    ("C-c M-j" . semantic-ia-fast-jump)))
+             (define-key c-mode-map (kbd "C-C C-j") 'moo-jump-local)
+             (define-key c++-mode-map (kbd "C-C C-j") 'moo-jump-local)
+             (define-key c-mode-map (kbd "C-C M-j") 'semantic-ia-fast-jump)
+             (define-key c++-mode-map (kbd "C-C M-j") 'semantic-ia-fast-jump))
 (use-package python
              :config
-             (add-hook 'python-mode-hook 'hs-minor-mode)
-             (add-hook 'python-mode-hook 'auto-complete-mode)
-             (add-hook 'python-mode-hook 'jedi:ac-setup)
-             (define-key python-mode-map [(tab)] 'jedi:complete))
+             (add-hook 'python-mode-hook
+                       (lambda ()
+                         (auto-complete-mode 0)
+                         (make-local-variable 'company-backends)
+                         (add-to-list 'company-backends 'company-jedi)
+                         (company-mode t)
+                         (flycheck-mode t)
+                         (hs-minor-mode t)))
+             (define-key python-mode-map [(tab)] 'company-indent-or-complete-common)
+             (define-key python-mode-map [(f1)] 'jedi:show-doc))
 
 (defun my/rust-setup ()
   "Setup the rust variables; Environment variables overwrite internal variables"
@@ -168,11 +205,16 @@
 
 (use-package rust-mode
              :config
-             (add-hook 'rust-mode-hook 'my/rust-setup)
-             (add-hook 'rust-mode-hook 'racer-mode)
-             (add-hook 'racer-mode-hook 'eldoc-mode)
-             (add-hook 'rust-mode-hook 'company-mode)
-             (add-hook 'rust-mode-hook 'flycheck-mode)
+             (add-hook 'rust-mode-hook
+                       (lambda ()
+                         (make-local-variable 'company-backends)
+                         (add-to-list 'company-backends 'company-racer)
+                         (my/rust-setup)
+                         (racer-mode t)
+                         (eldoc-mode t)
+                         (company-mode t)
+                         (flycheck-mode t)
+                         (flycheck-rust-setup)))
              (define-key rust-mode-map [(f1)] 'racer-describe)
              (define-key rust-mode-map [(f5)] 'rust-compile)
              (define-key rust-mode-map [(tab)] 'company-indent-or-complete-common))
@@ -180,13 +222,15 @@
 (use-package ein)
 (use-package ess
              :config
-             (add-hook 'ess-mode-hook 'company-mode)
+             (add-hook 'ess-mode-hook
+                       (lambda ()
+                         ('company-mode t)))
              (define-key ess-mode-map [(tab)] 'company-indent-or-complete-common)
              (define-key ess-mode-map [(f1)] 'company-show-doc-buffer))
 
 (use-package projectile
              :config
-             (projectile-global-mode)
+             ;(projectile-global-mode)
              (setq projectile-enable-caching t))
 
 (defun my/latex-setup ()
@@ -223,17 +267,13 @@
 (use-package yasnippet
              :config
              (add-to-list 'yas-snippet-dirs (concat (file-name-directory load-file-name) "snippets"))
-             (yas-global-mode 1))
-
-
-(define-key lisp-mode-map [(tab)] 'company-indent-or-complete-common)
-(define-key emacs-lisp-mode-map [(tab)] 'company-indent-or-complete-common)
+             (yas-global-mode 1)
+             :bind (("C-M-S-y" . 'yas-describe-tables)))
 
 ;(global-set-key (kbd "C-c w") 'whitespace-mode)
 ;(windmove-default-keybindings)
 
 ; notes: speedbar, sr-speedbar
-
 
 (load "magit.el")
 (load "multi-term-settings.el")
@@ -276,7 +316,6 @@
                                   (if (equal 1 (length (window-list)))
                                       (delete-frame)
                                     (delete-window))))
-(global-set-key (kbd "C-M-S-y") 'yas-describe-tables)
 (global-set-key (kbd "C-x k") 'kill-this-buffer)
 (global-set-key (kbd "C-M-<up>") 'text-scale-increase)
 (global-set-key (kbd "C-M-<down>") 'text-scale-decrease)
