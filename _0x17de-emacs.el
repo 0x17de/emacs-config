@@ -21,7 +21,7 @@
      elf-mode ess flycheck flycheck-irony flycheck-rust function-args
      gh-md helm-gtags helm-swoop jedi json-mode magit magit-gh-pulls
      magithub multi-term multiple-cursors org projectile racer refine
-     rust-mode sudo-edit systemd x509-mode yaml-mode yaml-mode)
+     rust-mode sudo-edit systemd x509-mode yaml-mode yaml-mode meghanada)
   "All packages i require")
 (defvar
   dotemacs-needs-install nil)
@@ -256,6 +256,16 @@ Result depends on syntax table's comment character."
              (define-key TeX-mode-map [(tab)] 'ac-complete)
              (define-key TeX-mode-map [(f1)] 'ac-help))
 
+(use-package meghanada
+             :config
+             (add-hook 'java-mode-hook
+                       (lambda ()
+                         (make-local-variable 'company-backends)
+                         (add-to-list 'company-backends 'company-meghanada)
+                         (meghanada-mode t)
+                         (company-mode t)))
+             (define-key java-mode-map [(tab)] 'company-indent-or-complete-common))
+
 ;(use-package zygospore
 ;             :bind (("C-x 1" . zygospore-toggle-delete-other-windows)
 ;                    ("RET" . newline-and-indent)))
@@ -317,8 +327,12 @@ Result depends on syntax table's comment character."
                                       (delete-frame)
                                     (delete-window))))
 (global-set-key (kbd "C-x k") 'kill-this-buffer)
-(global-set-key (kbd "C-M-<up>") 'text-scale-increase)
-(global-set-key (kbd "C-M-<down>") 'text-scale-decrease)
+(global-set-key (kbd "C-M-<up>") (lambda () (interactive)
+                                   (set-face-attribute 'default nil :height (+ (face-attribute 'default :height) 5))))
+(global-set-key (kbd "C-M-<down>") (lambda () (interactive)
+                                     (set-face-attribute 'default nil :height (- (face-attribute 'default :height) 5))))
+;(global-set-key (kbd "C-M-<up>") 'text-scale-increase)
+;(global-set-key (kbd "C-M-<down>") 'text-scale-decrease)
 (global-set-key (kbd "C-M-z C-e") 'eval-region)
 (global-set-key (kbd "C-M-z C-M-e") 'eval-buffer)
 (global-set-key (kbd "C-M-S-c") 'find-emacs-config)
