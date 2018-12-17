@@ -13,7 +13,7 @@
 ;;initial setup of recommended packages i use
 (defvar dotemacs-packages
   '(use-package
-     auctex auto-complete-auctex buffer-move cmake-ide
+     auctex auctex-latexmk auto-complete-auctex buffer-move cmake-ide
      cmake-mode cmake-mode color-theme-sanityinc-tomorrow company
      company-c-headers company-irony company-irony-c-headers
      company-jedi company-lsp counsel cpputils-cmake demangle-mode
@@ -21,7 +21,8 @@
      elf-mode ess flycheck flycheck-irony flycheck-rust function-args
      gh-md helm-gtags helm-swoop jedi json-mode magit magit-gh-pulls
      magithub multi-term multiple-cursors org projectile racer refine
-     rust-mode sudo-edit systemd x509-mode yaml-mode yaml-mode meghanada)
+     rust-mode sudo-edit systemd x509-mode yaml-mode yaml-mode meghanada
+     rainbow-delimiters)
   "All packages i require")
 (defvar
   dotemacs-needs-install nil)
@@ -101,8 +102,7 @@ Result depends on syntax table's comment character."
              (setq tab-always-indent 'complete)
              (setq ac-disable-inline t)
              :config
-             (setq ac-sources (delete 'ac-sources '(ac-source-semantic ac-source-semantic-raw)))
-             (ac-config-default))
+             (setq ac-sources (delete 'ac-sources '(ac-source-semantic ac-source-semantic-raw))))
 (use-package auto-complete-auctex)
 (use-package company
              :init 
@@ -173,6 +173,8 @@ Result depends on syntax table's comment character."
                          (flycheck-mode t)
                          (flycheck-irony-setup)
                          (google-set-c-style)))
+             (define-key c-mode-map [(f1)] 'semantic-ia-show-doc)
+             (define-key c++-mode-map [(f1)] 'semantic-ia-show-doc)
              (define-key c-mode-map [(f5)] 'recompile)
              (define-key c++-mode-map [(f5)] 'recompile)
              (define-key c-mode-map [(tab)] 'company-indent-or-complete-common)
@@ -185,7 +187,6 @@ Result depends on syntax table's comment character."
              :config
              (add-hook 'python-mode-hook
                        (lambda ()
-                         (auto-complete-mode 0)
                          (make-local-variable 'company-backends)
                          (add-to-list 'company-backends 'company-jedi)
                          (company-mode t)
@@ -236,11 +237,25 @@ Result depends on syntax table's comment character."
 (defun my/latex-setup ()
   "Setup the latex environment"
   (reftex-mode t)
+  (auctex-latexmk-setup)
   (TeX-engine-set "luatex")
   (setq font-latex-fontify-script 'multi-level)
   (setq TeX-PDF-mode t)
   (setq TeX-source-correlate-mode t)
-  (TeX-fold-mode 1))
+  (TeX-fold-mode 1)
+  (rainbow-delimiters-mode t))
+(defun my/latexmk-run ()
+  "Run latexmk on the master file"
+  (interactive)
+  (let ((TeX-save-query nil)
+        (TeX-process-asynchronous nil)
+        (master-file (TeX-master-file)))
+    (TeX-save-document "")
+    (TeX-run-TeX "latexmk" "latexmk" master-file)
+    (if (plist-get TeX-error-report-switches (intern master-file))
+        (TeX-next-error)
+      (minibuffer-message "latexmk-done"))))
+(use-package auctex-latexmk)
 (use-package latex
              :init
              (setq ac-math-unicode-in-math-p t)
@@ -251,7 +266,7 @@ Result depends on syntax table's comment character."
              (add-to-list 'ac-sources 'ac-source-math-latex)
              (add-to-list 'ac-sources 'ac-source-latex-commands)
              (add-hook 'TeX-mode-hook 'auto-complete-mode)
-             (define-key TeX-mode-map [(f5)] 'TeX-command-run-all)
+             (define-key TeX-mode-map [(f5)] 'my/latexmk-run)
              (define-key TeX-mode-map [(f6)] 'TeX-command-run-all-region)
              (define-key TeX-mode-map [(tab)] 'ac-complete)
              (define-key TeX-mode-map [(f1)] 'ac-help))

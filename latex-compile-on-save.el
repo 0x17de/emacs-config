@@ -8,7 +8,7 @@
 
 (defun latex-compile-on-save--compile ()
   "Calls the compile function"
-  (TeX-command-run-all nil))
+  (my/latexmk-run))
 
 ;;;###autoload
 (define-minor-mode latex-compile-on-save-mode
