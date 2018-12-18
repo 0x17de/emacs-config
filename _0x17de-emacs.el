@@ -13,7 +13,7 @@
 ;;initial setup of recommended packages i use
 (defvar dotemacs-packages
   '(use-package
-     auctex auctex-latexmk auto-complete-auctex buffer-move cmake-ide
+     auctex company-auctex auctex-latexmk auto-complete-auctex buffer-move cmake-ide
      cmake-mode cmake-mode color-theme-sanityinc-tomorrow company
      company-c-headers company-irony company-irony-c-headers
      company-jedi company-lsp counsel cpputils-cmake demangle-mode
@@ -243,7 +243,11 @@ Result depends on syntax table's comment character."
   (setq TeX-PDF-mode t)
   (setq TeX-source-correlate-mode t)
   (TeX-fold-mode 1)
-  (rainbow-delimiters-mode t))
+  (rainbow-delimiters-mode t)
+  (make-local-variable 'company-backends)
+  (add-to-list 'company-backends 'company-auctex)
+  (company-auctex-init)
+  (company-mode t))
 (defun my/latexmk-run ()
   "Run latexmk on the master file"
   (interactive)
@@ -256,20 +260,13 @@ Result depends on syntax table's comment character."
         (TeX-next-error)
       (minibuffer-message "latexmk-done"))))
 (use-package auctex-latexmk)
+(use-package company-auctex)
 (use-package latex
-             :init
-             (setq ac-math-unicode-in-math-p t)
              :config
-             (add-hook 'Tex-mode-hook 'my/latex-setup)
-             (add-to-list 'ac-modes 'latex-mode)
-             (add-to-list 'ac-sources 'ac-source-math-unicode)
-             (add-to-list 'ac-sources 'ac-source-math-latex)
-             (add-to-list 'ac-sources 'ac-source-latex-commands)
-             (add-hook 'TeX-mode-hook 'auto-complete-mode)
+             (add-hook 'TeX-mode-hook 'my/latex-setup)
              (define-key TeX-mode-map [(f5)] 'my/latexmk-run)
-             (define-key TeX-mode-map [(f6)] 'TeX-command-run-all-region)
-             (define-key TeX-mode-map [(tab)] 'ac-complete)
-             (define-key TeX-mode-map [(f1)] 'ac-help))
+             (define-key TeX-mode-map [(tab)] 'company-indent-or-complete-common)
+             (define-key TeX-mode-map [(f1)] 'company-show-doc-buffer))
 
 (use-package meghanada
              :config
