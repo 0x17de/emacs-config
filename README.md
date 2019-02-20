@@ -29,12 +29,21 @@ After that the following should be your .emacs file:
 ```
 (package-initialize)
 
+; optional org mode encryption settings
+(require 'org-crypt)
+(org-crypt-use-before-save-magic)
+(setq org-tags-exclude-from-inheritance (quote ("crypt")))
+(setq org-crypt-key "123...GPGID...DEF")
+
 ; optional for rust configuration
 (setenv "PATH" (concat (getenv "PATH") ":/home/USER/.cargo/bin"))
 (add-to-list 'exec-path "/home/USER/.cargo/bin")
 
 (add-to-list 'load-path "~/.emacs.d/_0x17de/")
 (load "_0x17de-emacs")
+
+; optional for hugo blogging
+(setq easy-hugo-basedir "~/hugo/0x17blog")
 ```
 
 Dependencies will be installed automatically on the first run.
