@@ -111,7 +111,8 @@ Result depends on syntax table's comment character."
              (setq company-idle-delay 0.5)
              (setq company-async-timeout 5)
              :config
-             (setq company-backends (delete 'company-semantic company-backends)))
+             (setq company-backends (delete 'company-semantic company-backends))
+             (setq company-backends (delete 'company-capf company-backends)))
 (use-package company-lsp)
 (use-package company-jedi)
 (use-package company-irony)
@@ -121,11 +122,9 @@ Result depends on syntax table's comment character."
 (use-package flycheck-rust)
 (use-package irony
              :config
-             (add-hook 'irony-mode-hook 'company-irony-setup-begin-commands)
-             (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options))
-(use-package cmake-mode
-             :config
-             (add-to-list 'auto-mode-alist '("CMakeInstallTargets\\.txt\\'" . cmake-mode)))
+             ;(add-hook 'irony-mode-hook 'company-irony-setup-begin-commands)
+             ;(add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+             )
 (use-package cmake-ide
              :config
              ; override provided function to rather use the "build"
@@ -136,6 +135,9 @@ Result depends on syntax table's comment character."
                    cmake-ide-dir
                    (concat (cide--locate-project-dir) "build")))
              (cmake-ide-setup))
+(use-package cmake-mode
+             :config
+             (add-to-list 'auto-mode-alist '("CMakeInstallTargets\\.txt\\'" . cmake-mode)))
 (use-package cpputils-cmake
              :config
              (add-hook 'cmake-mode-hook 'company-mode)
@@ -157,7 +159,6 @@ Result depends on syntax table's comment character."
                          (add-to-list 'company-backends 'company-lsp)
                          (company-mode t)))
              (define-key emacs-lisp-mode-map [(tab)] 'company-indent-or-complete-common))
-
 (use-package cc-mode
              :config
              (load "ext/google-styleguide/google-c-style")
@@ -169,9 +170,10 @@ Result depends on syntax table's comment character."
                          (add-to-list 'company-backends 'company-irony)
                          (company-mode t)
                          (irony-mode t)
+                         (cmake-ide-maybe-run-cmake)
                          (hs-minor-mode t)
                          (flycheck-mode t)
-                         (flycheck-irony-setup)
+                         ;(flycheck-irony-setup)
                          (google-set-c-style)))
              (define-key c-mode-map [(f1)] 'semantic-ia-show-doc)
              (define-key c++-mode-map [(f1)] 'semantic-ia-show-doc)
@@ -219,7 +221,12 @@ Result depends on syntax table's comment character."
              (define-key rust-mode-map [(f1)] 'racer-describe)
              (define-key rust-mode-map [(f5)] 'rust-compile)
              (define-key rust-mode-map [(tab)] 'company-indent-or-complete-common))
-(use-package org)
+(use-package org
+  :config
+  (add-hook 'org-mode-hook
+            (lambda ()
+              (define-key org-mode-map (kbd "C-c .") 'org-time-stamp))))
+(load "ext/ox-confluence/ox-confluence")
 (use-package ein)
 (use-package ess
              :config
