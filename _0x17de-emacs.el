@@ -18,10 +18,10 @@
      company-c-headers company-irony company-irony-c-headers
      company-jedi company-lsp counsel cpputils-cmake demangle-mode
      docker-compose-mode dockerfile-mode dot-mode easy-hugo ede ein
-     elf-mode ess flycheck flycheck-irony flycheck-rust function-args
+     elf-mode emr ess flycheck flycheck-irony flycheck-rust function-args
      gh-md helm-gtags helm-swoop jedi json-mode magit magit-gh-pulls
-     magithub multi-term multiple-cursors org projectile racer refine
-     rust-mode sudo-edit systemd x509-mode yaml-mode yaml-mode meghanada
+     magithub multi-term multiple-cursors org projectile racer realgud refine
+     rust-mode smex srefactor sudo-edit systemd x509-mode yaml-mode yaml-mode meghanada
      rainbow-delimiters)
   "All packages i require")
 (defvar
@@ -35,7 +35,27 @@
 
 (global-unset-key (kbd "C-z")) ; stop me from freezing emacs
 
+;;Tab fix
+(global-set-key (kbd "<backtab>") 'insert-tab-char)
+(defun insert-tab-char ()
+  "insert a tab char. (ASCII 9, \t)"
+  (interactive)
+  (insert "\t"))
+;;Tab width
+(setq-default indent-tabs-mode nil)
+(setq tab-width 4)
+(setq default-tab-width 4)
+(defvaralias 'c-basic-offset 'tab-width)
+(defvaralias 'cperl-indent-level 'tab-width)
 
+;;Auto indentation
+(add-to-list 'load-path "guess-style")
+(autoload 'guess-style-set-variable "guess-style" nil t)
+(autoload 'guess-style-guess-variable "guess-style")
+(autoload 'guess-style-guess-all "guess-style" nil t)
+
+
+(ido-mode t)
 (use-package color-theme-sanityinc-tomorrow)
 (use-package multi-term)
 (use-package multiple-cursors
@@ -96,6 +116,14 @@ Result depends on syntax table's comment character."
              (global-semantic-idle-scheduler-mode 1)
              (global-semantic-stickyfunc-mode 1)
              (semantic-mode 1))
+(use-package emr)
+(use-package smex
+             :init
+             (smex-initialize)
+             (global-set-key (kbd "M-x") 'smex)
+             (global-set-key (kbd "M-X") 'smex-major-mode-commands)
+             (global-set-key (kbd "C-M-x") 'execute-extended-command))
+(use-package srefactor)
 (use-package irony)
 (use-package auto-complete
              :init
@@ -173,7 +201,7 @@ Result depends on syntax table's comment character."
                          (cmake-ide-maybe-run-cmake)
                          (hs-minor-mode t)
                          (flycheck-mode t)
-                         ;(flycheck-irony-setup)
+                         (rainbow-delimiters-mode t)
                          (google-set-c-style)))
              (define-key c-mode-map [(f1)] 'semantic-ia-show-doc)
              (define-key c++-mode-map [(f1)] 'semantic-ia-show-doc)
@@ -429,27 +457,6 @@ Result depends on syntax table's comment character."
   (exwm-systemtray-enable))
 
 (global-set-key [mode-line mouse-2] 'exwm-layout-toggle-fullscreen)
-
-
-
-;;Tab fix
-(global-set-key (kbd "<backtab>") 'insert-tab-char)
-(defun insert-tab-char ()
-  "insert a tab char. (ASCII 9, \t)"
-  (interactive)
-  (insert "\t"))
-;;Tab width
-(setq-default indent-tabs-mode nil)
-(setq tab-width 4)
-(setq default-tab-width 4)
-(defvaralias 'c-basic-offset 'tab-width)
-(defvaralias 'cperl-indent-level 'tab-width)
-
-;;Auto indentation
-(add-to-list 'load-path "guess-style")
-(autoload 'guess-style-set-variable "guess-style" nil t)
-(autoload 'guess-style-guess-variable "guess-style")
-(autoload 'guess-style-guess-all "guess-style" nil t)
 
 
 
