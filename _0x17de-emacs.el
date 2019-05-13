@@ -340,10 +340,6 @@ Result depends on syntax table's comment character."
 ;             :bind (("C-x 1" . zygospore-toggle-delete-other-windows)
 ;                    ("RET" . newline-and-indent)))
 
-(use-package ede
-             :config
-             (global-ede-mode))
-
 (use-package yasnippet
              :config
              (add-to-list 'yas-snippet-dirs (concat (file-name-directory load-file-name) "snippets"))
