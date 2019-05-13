@@ -14,15 +14,16 @@
 (defvar dotemacs-packages '(use-package auctex company-auctex
   auctex-latexmk auto-complete-auctex buffer-move cmake-ide
   cmake-mode cmake-mode color-theme-sanityinc-tomorrow company
-  company-c-headers company-irony company-irony-c-headers
-  company-jedi company-lsp counsel cpputils-cmake demangle-mode
-  docker-compose-mode dockerfile-mode dot-mode easy-hugo ede ein
-  elf-mode emr ess flycheck flycheck-irony flycheck-rust
-  function-args gh-md helm-gtags helm-swoop jedi json-mode magit
-  multi-term multiple-cursors org projectile racer realgud refine
-  rust-mode smex srefactor sudo-edit systemd x509-mode yaml-mode
-  yaml-mode meghanada company-go flycheck-golangci-lint go-guru
-  godoctor go-playground go-scratch rainbow-delimiters)
+  company-quickhelp company-c-headers company-irony
+  company-irony-c-headers company-jedi company-lsp counsel
+  cpputils-cmake demangle-mode docker-compose-mode
+  dockerfile-mode dot-mode easy-hugo ede ein elf-mode emr ess
+  flycheck flycheck-irony flycheck-rust function-args gh-md
+  helm-gtags helm-swoop jedi json-mode magit multi-term
+  multiple-cursors org projectile racer realgud refine rust-mode
+  smex srefactor sudo-edit systemd x509-mode yaml-mode yaml-mode
+  meghanada company-go flycheck-golangci-lint go-guru godoctor
+  go-playground go-scratch rainbow-delimiters)
   "All packages i require")
 (defvar
   dotemacs-needs-install nil)
@@ -132,6 +133,10 @@ Result depends on syntax table's comment character."
              :config
              (setq ac-sources (delete 'ac-sources '(ac-source-semantic ac-source-semantic-raw))))
 (use-package auto-complete-auctex)
+(defun company-init-quickhelp (b-enable)
+  "Initialize company-quickhelp only if company is running"
+  (company-quickhelp-mode t)
+  (remove-hook 'company-completion-started-hook 'company-init-quickhelp t))
 (use-package company
              :init 
              (setq company-tooltip-align-annotations t)
@@ -139,6 +144,7 @@ Result depends on syntax table's comment character."
              (setq company-idle-delay 0.5)
              (setq company-async-timeout 5)
              :config
+             (add-hook 'company-completion-started-hook 'company-init-quickhelp)
              (setq company-backends (delete 'company-semantic company-backends))
              (setq company-backends (delete 'company-capf company-backends)))
 (use-package company-lsp)
@@ -195,6 +201,7 @@ Result depends on syntax table's comment character."
 ; go get -u github.com/golangci/golangci-lint/cmd/golangci-lint
 ; go get github.com/rogpeppe/godef
 ; go get golang.org/x/tools/cmd/godoc
+; go get github.com/zmb3/gogetdoc
 (use-package go-guru)
 (use-package go-mode
              :config
@@ -209,6 +216,10 @@ Result depends on syntax table's comment character."
                          (flycheck-golangci-lint-setup)
                          (flycheck-mode t)
                          (company-mode t)))
+             (setq go-godoc-reuse-buffer t)
+             (setq godoc-at-point-function 'godoc-gogetdoc)
+             (setq godoc-command "godoc")
+             (setq godoc-use-completing-read t)
              (define-key go-mode-map [(tab)] 'company-indent-or-complete-common))
 (use-package cc-mode
              :config
