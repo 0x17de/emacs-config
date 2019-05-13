@@ -22,6 +22,7 @@
      gh-md helm-gtags helm-swoop jedi json-mode magit magit-gh-pulls
      magithub multi-term multiple-cursors org projectile racer realgud refine
      rust-mode smex srefactor sudo-edit systemd x509-mode yaml-mode yaml-mode meghanada
+     company-go flycheck-golangci-lint go-guru godoctor go-playground go-scratch
      rainbow-delimiters)
   "All packages i require")
 (defvar
@@ -187,6 +188,29 @@ Result depends on syntax table's comment character."
                          (add-to-list 'company-backends 'company-lsp)
                          (company-mode t)))
              (define-key emacs-lisp-mode-map [(tab)] 'company-indent-or-complete-common))
+;; go-lang support
+; go get golang.org/x/tools/cmd/goimports
+; go get github.com/godoctor/godoctor
+; go get -u github.com/nsf/gocode
+; go get golang.org/x/tools/cmd/guru
+; go get -u github.com/golangci/golangci-lint/cmd/golangci-lint
+; go get github.com/rogpeppe/godef
+; go get golang.org/x/tools/cmd/godoc
+(use-package go-guru)
+(use-package go-mode
+             :config
+             (add-hook 'go-mode-hook
+                       (lambda ()
+                         (setq tab-width 2)
+                         (make-local-variable 'company-backends)
+                         (add-to-list 'company-backends 'company-go)
+                         (setq gofmt-command "goimports")
+                         (add-hook 'before-save-hook 'gofmt-before-save)
+                         (go-guru-hl-identifier-mode)
+                         (flycheck-golangci-lint-setup)
+                         (flycheck-mode t)
+                         (company-mode t)))
+             (define-key go-mode-map [(tab)] 'company-indent-or-complete-common))
 (use-package cc-mode
              :config
              (load "ext/google-styleguide/google-c-style")
