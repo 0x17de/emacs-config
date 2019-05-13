@@ -11,19 +11,18 @@
 (package-initialize)
 
 ;;initial setup of recommended packages i use
-(defvar dotemacs-packages
-  '(use-package
-     auctex company-auctex auctex-latexmk auto-complete-auctex buffer-move cmake-ide
-     cmake-mode cmake-mode color-theme-sanityinc-tomorrow company
-     company-c-headers company-irony company-irony-c-headers
-     company-jedi company-lsp counsel cpputils-cmake demangle-mode
-     docker-compose-mode dockerfile-mode dot-mode easy-hugo ede ein
-     elf-mode emr ess flycheck flycheck-irony flycheck-rust function-args
-     gh-md helm-gtags helm-swoop jedi json-mode magit magit-gh-pulls
-     magithub multi-term multiple-cursors org projectile racer realgud refine
-     rust-mode smex srefactor sudo-edit systemd x509-mode yaml-mode yaml-mode meghanada
-     company-go flycheck-golangci-lint go-guru godoctor go-playground go-scratch
-     rainbow-delimiters)
+(defvar dotemacs-packages '(use-package auctex company-auctex
+  auctex-latexmk auto-complete-auctex buffer-move cmake-ide
+  cmake-mode cmake-mode color-theme-sanityinc-tomorrow company
+  company-c-headers company-irony company-irony-c-headers
+  company-jedi company-lsp counsel cpputils-cmake demangle-mode
+  docker-compose-mode dockerfile-mode dot-mode easy-hugo ede ein
+  elf-mode emr ess flycheck flycheck-irony flycheck-rust
+  function-args gh-md helm-gtags helm-swoop jedi json-mode magit
+  multi-term multiple-cursors org projectile racer realgud refine
+  rust-mode smex srefactor sudo-edit systemd x509-mode yaml-mode
+  yaml-mode meghanada company-go flycheck-golangci-lint go-guru
+  godoctor go-playground go-scratch rainbow-delimiters)
   "All packages i require")
 (defvar
   dotemacs-needs-install nil)
@@ -81,8 +80,8 @@
 (use-package systemd)
 (use-package easy-hugo)
 (use-package magit)
-(use-package magit-gh-pulls)
-(use-package magithub)
+;(use-package magit-gh-pulls)
+;(use-package magithub)
 
 (use-package function-args)
 (use-package helm-swoop)
@@ -280,7 +279,7 @@ Result depends on syntax table's comment character."
               (define-key org-mode-map (kbd "C-c .") 'org-time-stamp))))
 (load "ext/ox-confluence/ox-confluence")
 (use-package ein)
-(use-package ess
+(use-package ess-mode
              :config
              (add-hook 'ess-mode-hook
                        (lambda ()
@@ -449,6 +448,7 @@ Result depends on syntax table's comment character."
   (require 'exwm-systemtray)
   ;(setq exwm-workspace-number 4)
   ;(setq mouse-autoselect-window nil)
+  (global-set-key [mode-line mouse-2] 'exwm-layout-toggle-fullscreen)
   (add-hook 'exwm-update-class-hook
             (lambda ()
               (unless (or (string-prefix-p "sun-awt-X11-" exwm-instance-name)
@@ -479,8 +479,6 @@ Result depends on syntax table's comment character."
   (exwm-enable)
   (exwm-randr-enable)
   (exwm-systemtray-enable))
-
-(global-set-key [mode-line mouse-2] 'exwm-layout-toggle-fullscreen)
 
 
 
@@ -571,6 +569,16 @@ Result depends on syntax table's comment character."
 
 (load "directory-helper-functions")
 
-(setq-default custom-enabled-themes '(sanityinc-tomorrow-bright))
-(setq-default dired-mode-hook 'dired-hide-details-mode)
-(setq-default show-paren-mode t)
+(add-hook 'dired-mode-hook 'dired-hide-details-mode)
+(customize-set-variable 'custom-enabled-themes '(sanityinc-tomorrow-bright))
+(customize-set-variable 'show-paren-mode t)
+
+(customize-set-variable 'ansi-color-faces-vector [default default default italic underline success warning error])
+(customize-set-variable 'ansi-color-names-vector ["#242424" "#e5786d" "#95e454" "#cae682" "#8ac6f2" "#333366" "#ccaa8f" "#f6f3e8"])
+(customize-set-variable 'custom-safe-themes (quote ("cd4d1a0656fee24dc062b997f54d6f9b7da8f6dc8053ac858f15820f9a04a679" "1b8d67b43ff1723960eb5e0cba512a2c7a2ad544ddb2533a90101fd1852b426e" default)))
+(customize-set-variable 'dired-mode-hook (quote (dired-hide-details-mode)))
+(customize-set-variable 'show-paren-mode t)
+;(customize-set-faces '(default ((t (:height 102 :width semi-condensed))))
+; '(col-highlight ((t (:inherit highlight))))
+; '(vline ((t (:background "dim gray")))))
+(put 'downcase-region 'disabled nil)
