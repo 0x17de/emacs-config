@@ -25,14 +25,11 @@
                              yaml-mode yaml-mode meghanada company-go flycheck-golangci-lint
                              go-guru godoctor go-playground go-scratch rainbow-delimiters)
   "All packages i require")
-(defvar
-  dotemacs-needs-install nil)
 (dolist (p dotemacs-packages)
   (message "Checking if %s is installed: %s" p (package-installed-p p))
   (when (not (package-installed-p p))
-    (when (not (package-installed-p p))
-      (message "Installing: %s" p)
-      (package-install p))))
+    (message "Installing: %s" p)
+    (package-install p)))
 
 (global-unset-key (kbd "C-z")) ; stop me from freezing emacs
 
