@@ -1,4 +1,3 @@
-(require 'multi-term)
 (setq multi-term-scroll-to-bottom-on-output nil)
 (setq multi-term-program "/bin/zsh")
 (setq multi-term-switch-after-close nil) ;do not switch to next terminal on when killing term

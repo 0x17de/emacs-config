@@ -10,26 +10,8 @@
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
 (package-initialize)
 
-;;initial setup of recommended packages i use
-(defvar dotemacs-packages '(use-package auctex company-auctex
-                             auctex-latexmk auto-complete-auctex buffer-move cmake-ide
-                             cmake-mode cmake-mode color-theme-sanityinc-tomorrow company
-                             company-quickhelp company-c-headers company-irony
-                             company-irony-c-headers company-jedi company-lsp counsel
-                             cpputils-cmake demangle-mode docker-compose-mode
-                             dockerfile-mode dot-mode easy-hugo ede ein elf-mode emr ess
-                             flycheck flycheck-irony flycheck-rust function-args gh-md
-                             helm-gtags helm-swoop jedi json-mode magit multi-term
-                             auto-virtualenv multiple-cursors org projectile racer realgud
-                             refine rust-mode smex srefactor sudo-edit systemd x509-mode
-                             yaml-mode yaml-mode meghanada company-go flycheck-golangci-lint
-                             go-guru godoctor go-playground go-scratch rainbow-delimiters)
-  "All packages i require")
-(dolist (p dotemacs-packages)
-  (message "Checking if %s is installed: %s" p (package-installed-p p))
-  (when (not (package-installed-p p))
-    (message "Installing: %s" p)
-    (package-install p)))
+(when (not (package-installed-p 'use-package))
+  (package-install 'use-package))
 
 (global-unset-key (kbd "C-z")) ; stop me from freezing emacs
 
@@ -54,9 +36,14 @@
 
 
 (ido-mode t)
-(use-package color-theme-sanityinc-tomorrow)
-(use-package multi-term)
+(use-package color-theme-sanityinc-tomorrow
+  :ensure t)
+(use-package multi-term
+  :ensure t
+  :config
+  (load "multi-term-settings.el"))
 (use-package multiple-cursors
+  :ensure t
   :init
   (global-unset-key (kbd "M-<down-mouse-1>"))
   :bind
@@ -65,24 +52,44 @@
    ("C-M-z <" . mc/mark-previous-like-this)
    ("C-M-z |" . mc/mark-all-like-this)
    ("M-<mouse-1>" . mc/add-cursor-on-click)))
-(use-package sudo-edit)
-(use-package buffer-move)
-(use-package refine)
-(use-package x509-mode)
-(use-package yaml-mode)
-(use-package dot-mode)
-(use-package dockerfile-mode)
-(use-package json-mode)
-(use-package elf-mode)
-(use-package demangle-mode)
-(use-package systemd)
-(use-package easy-hugo)
-(use-package magit)
+;;(use-package sudo-edit)
+(use-package refine
+  :ensure t)
+(use-package x509-mode
+  :ensure t)
+(use-package yaml-mode
+  :ensure t)
+(use-package dot-mode
+  :ensure t)
+(use-package dockerfile-mode
+  :ensure t)
+(use-package docker-compose-mode
+  :ensure t)
+(use-package json-mode
+  :ensure t)
+(use-package elf-mode
+  :ensure t)
+(use-package demangle-mode
+  :ensure t)
+(use-package systemd
+  :ensure t)
+(use-package easy-hugo
+  :ensure t)
+(use-package gh-md
+  :ensure t)
+(use-package magit
+  :ensure t)
+(use-package rainbow-delimiters
+  :ensure t)
 
-(use-package function-args)
-(use-package helm-swoop)
-(use-package helm-gtags)
-(use-package counsel)
+(use-package function-args
+  :ensure t)
+(use-package helm-swoop
+  :ensure t)
+(use-package helm-gtags
+  :ensure t)
+(use-package counsel
+  :ensure t)
 
 ;; see https://github.com/company-mode/company-mode/issues/525#issuecomment-348635719
 (defun inside-string-q ()
@@ -112,27 +119,36 @@ Result depends on syntax table's comment character."
   (global-semantic-idle-scheduler-mode 1)
   (global-semantic-stickyfunc-mode 1)
   (semantic-mode 1))
-(use-package emr)
+(use-package emr
+  :ensure t)
 (use-package smex
+  :ensure t
   :init
   (smex-initialize)
   (global-set-key (kbd "M-x") 'smex)
   (global-set-key (kbd "M-X") 'smex-major-mode-commands)
   (global-set-key (kbd "C-M-x") 'execute-extended-command))
-(use-package srefactor)
-(use-package irony)
-(use-package auto-complete
-  :init
-  (setq tab-always-indent 'complete)
-  (setq ac-disable-inline t)
-  :config
-  (setq ac-sources (delete 'ac-sources '(ac-source-semantic ac-source-semantic-raw))))
-(use-package auto-complete-auctex)
+(use-package srefactor
+  :ensure t)
+(use-package irony
+  :ensure t)
+;(use-package auto-complete
+;  :init
+;  (setq tab-always-indent 'complete)
+;  (setq ac-disable-inline t)
+;  :config
+;  (setq ac-sources (delete 'ac-sources '(ac-source-semantic ac-source-semantic-raw))))
+;(use-package auctex
+;  :ensure t)
+;; (use-package auto-complete-auctex)
+(use-package company-quickhelp
+  :ensure t)
 (defun company-init-quickhelp (b-enable)
   "Initialize company-quickhelp only if company is running"
   (company-quickhelp-mode t)
   (remove-hook 'company-completion-started-hook 'company-init-quickhelp t))
 (use-package company
+  :ensure t
   :init 
   (setq company-tooltip-align-annotations t)
   (setq company-dabbrev-downcase 0)
@@ -142,19 +158,22 @@ Result depends on syntax table's comment character."
   (add-hook 'company-completion-started-hook 'company-init-quickhelp)
   (setq company-backends (delete 'company-semantic company-backends))
   (setq company-backends (delete 'company-capf company-backends)))
-(use-package company-lsp)
-(use-package company-jedi)
-(use-package company-irony)
-(use-package company-c-headers)
-(use-package flycheck)
-(use-package flycheck-irony)
-(use-package flycheck-rust)
-(use-package irony
-  :config
-  ;;(add-hook 'irony-mode-hook 'company-irony-setup-begin-commands)
-  ;;(add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
-  )
+(use-package company-lsp
+  :ensure t)
+(use-package company-jedi
+  :ensure t)
+(use-package company-irony
+  :ensure t)
+(use-package company-c-headers
+  :ensure t)
+(use-package flycheck
+  :ensure t)
+(use-package flycheck-irony
+  :ensure t)
+(use-package flycheck-rust
+  :ensure t)
 (use-package cmake-ide
+  :ensure t
   :config
   ;; override provided function to rather use the "build"
   ;; directory in the projects root than a temp directory
@@ -165,9 +184,11 @@ Result depends on syntax table's comment character."
         (concat (cide--locate-project-dir) "build")))
   (cmake-ide-setup))
 (use-package cmake-mode
+  :ensure t
   :config
   (add-to-list 'auto-mode-alist '("CMakeInstallTargets\\.txt\\'" . cmake-mode)))
 (use-package cpputils-cmake
+  :ensure t
   :config
   (add-hook 'cmake-mode-hook 'company-mode)
   (define-key cmake-mode-map [(tab)] 'company-indent-or-complete-common))
@@ -198,8 +219,20 @@ Result depends on syntax table's comment character."
 ;; go get golang.org/x/tools/cmd/godoc
 ;; go get github.com/zmb3/gogetdoc
 ;; go get -u github.com/golang/dep/cmd/dep
-(use-package go-guru)
+(use-package go-guru
+  :ensure t)
+(use-package godoctor
+  :ensure t)
+(use-package go-scratch
+  :ensure t)
+(use-package go-playground
+  :ensure t)
+(use-package flycheck-golangci-lint
+  :ensure t)
+(use-package company-go
+  :ensure t)
 (use-package go-mode
+  :ensure t
   :config
   (add-hook 'go-mode-hook
             (lambda ()
@@ -243,6 +276,12 @@ Result depends on syntax table's comment character."
   (define-key c++-mode-map (kbd "C-C C-j") 'moo-jump-local)
   (define-key c-mode-map (kbd "C-C M-j") 'semantic-ia-fast-jump)
   (define-key c++-mode-map (kbd "C-C M-j") 'semantic-ia-fast-jump))
+(use-package auto-virtualenv
+  :ensure t)
+(use-package jedi
+  :ensure t)
+(use-package realgud
+  :ensure t)
 (use-package python
   :config
   (add-hook 'python-mode-hook
@@ -265,7 +304,10 @@ Result depends on syntax table's comment character."
   (unless racer-rust-src-path
     (setq racer-rust-src-path (getenv "RUST_SRC_PATH"))))
 
+(use-package racer
+  :ensure t)
 (use-package rust-mode
+  :ensure t
   :config
   (add-hook 'rust-mode-hook
             (lambda ()
@@ -286,8 +328,10 @@ Result depends on syntax table's comment character."
             (lambda ()
               (define-key org-mode-map (kbd "C-c .") 'org-time-stamp))))
 (load "ext/ox-confluence/ox-confluence")
-(use-package ein)
+(use-package ein
+  :ensure t)
 (use-package ess-mode
+  :ensure ess
   :config
   (add-hook 'ess-mode-hook
             (lambda ()
@@ -296,6 +340,7 @@ Result depends on syntax table's comment character."
   (define-key ess-mode-map [(f1)] 'company-show-doc-buffer))
 
 (use-package projectile
+  :ensure t
   :config
   ;; (projectile-global-mode)
   (setq projectile-enable-caching t))
@@ -325,8 +370,10 @@ Result depends on syntax table's comment character."
     (if (plist-get TeX-error-report-switches (intern master-file))
         (TeX-next-error)
       (minibuffer-message "latexmk-done"))))
-(use-package auctex-latexmk)
-(use-package company-auctex)
+(use-package auctex-latexmk
+  :ensure t)
+(use-package company-auctex
+  :ensure t)
 (use-package latex
   :config
   (add-hook 'TeX-mode-hook 'my/latex-setup)
@@ -335,6 +382,7 @@ Result depends on syntax table's comment character."
   (define-key TeX-mode-map [(f1)] 'company-show-doc-buffer))
 
 (use-package meghanada
+  :ensure t
   :config
   (add-hook 'java-mode-hook
             (lambda ()
@@ -359,10 +407,7 @@ Result depends on syntax table's comment character."
 
 ;; notes: speedbar, sr-speedbar
 
-(load "magit.el")
-(load "multi-term-settings.el")
 (load "latex-compile-on-save.el")
-
 (load "ext/misc/dired+")
 
 (load "ext/tex-switch-quotes/tex-switch-quotes")
@@ -377,13 +422,13 @@ Result depends on syntax table's comment character."
  '("\\*compilation\\*" . (display-buffer-reuse-window
                           . ((reusable-frames . t)))))
 
-
-(require 'buffer-move)
-(global-set-key (kbd "<C-M-S-up>")     'buf-move-up)
-(global-set-key (kbd "<C-M-S-down>")   'buf-move-down)
-(global-set-key (kbd "<C-M-S-left>")   'buf-move-left)
-(global-set-key (kbd "<C-M-S-right>")  'buf-move-right)
-
+(use-package buffer-move
+  :ensure t
+  :config
+  (global-set-key (kbd "<C-M-S-up>")     'buf-move-up)
+  (global-set-key (kbd "<C-M-S-down>")   'buf-move-down)
+  (global-set-key (kbd "<C-M-S-left>")   'buf-move-left)
+  (global-set-key (kbd "<C-M-S-right>")  'buf-move-right))
 
 ;; No backup files
 (setq make-backup-files nil)
