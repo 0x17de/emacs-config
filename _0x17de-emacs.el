@@ -20,10 +20,10 @@
   dockerfile-mode dot-mode easy-hugo ede ein elf-mode emr ess
   flycheck flycheck-irony flycheck-rust function-args gh-md
   helm-gtags helm-swoop jedi json-mode magit multi-term
-  multiple-cursors org projectile racer realgud refine rust-mode
-  smex srefactor sudo-edit systemd x509-mode yaml-mode yaml-mode
-  meghanada company-go flycheck-golangci-lint go-guru godoctor
-  go-playground go-scratch rainbow-delimiters)
+  auto-virtualenv multiple-cursors org projectile racer realgud
+  refine rust-mode smex srefactor sudo-edit systemd x509-mode
+  yaml-mode yaml-mode meghanada company-go flycheck-golangci-lint
+  go-guru godoctor go-playground go-scratch rainbow-delimiters)
   "All packages i require")
 (defvar
   dotemacs-needs-install nil)
@@ -202,6 +202,7 @@ Result depends on syntax table's comment character."
 ; go get github.com/rogpeppe/godef
 ; go get golang.org/x/tools/cmd/godoc
 ; go get github.com/zmb3/gogetdoc
+; go get -u github.com/golang/dep/cmd/dep
 (use-package go-guru)
 (use-package go-mode
              :config
@@ -253,6 +254,7 @@ Result depends on syntax table's comment character."
                        (lambda ()
                          (make-local-variable 'company-backends)
                          (add-to-list 'company-backends 'company-jedi)
+                         (auto-virtualenv-set-virtualenv)
                          (company-mode t)
                          (flycheck-mode t)
                          (hs-minor-mode t)))
