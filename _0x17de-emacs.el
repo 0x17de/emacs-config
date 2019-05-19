@@ -12,6 +12,7 @@
 
 (when (not (package-installed-p 'use-package))
   (package-install 'use-package))
+(require 'use-package)
 
 (global-unset-key (kbd "C-z")) ; stop me from freezing emacs
 
@@ -36,8 +37,12 @@
 
 
 (ido-mode t)
-(use-package color-theme-sanityinc-tomorrow
-  :ensure t)
+;(use-package color-theme-sanityinc-tomorrow
+;  :ensure t)
+(use-package smart-mode-line
+  :ensure t
+  :config
+  (sml/setup))
 (use-package multi-term
   :ensure t
   :config
@@ -615,19 +620,12 @@ Result depends on syntax table's comment character."
 	     (add-to-list 'rng-schema-locating-files
 			  "~/.emacs.d/nxml-schemas/schemas.xml")))
 
-
 (load "directory-helper-functions")
 
 (add-hook 'dired-mode-hook 'dired-hide-details-mode)
-(customize-set-variable 'custom-enabled-themes '(sanityinc-tomorrow-bright))
-(customize-set-variable 'show-paren-mode t)
-
-(customize-set-variable 'ansi-color-faces-vector [default default default italic underline success warning error])
-(customize-set-variable 'ansi-color-names-vector ["#242424" "#e5786d" "#95e454" "#cae682" "#8ac6f2" "#333366" "#ccaa8f" "#f6f3e8"])
-(customize-set-variable 'custom-safe-themes (quote ("cd4d1a0656fee24dc062b997f54d6f9b7da8f6dc8053ac858f15820f9a04a679" "1b8d67b43ff1723960eb5e0cba512a2c7a2ad544ddb2533a90101fd1852b426e" default)))
 (customize-set-variable 'dired-mode-hook (quote (dired-hide-details-mode)))
 (customize-set-variable 'show-paren-mode t)
-;;(customize-set-faces '(default ((t (:height 102 :width semi-condensed))))
-;; '(col-highlight ((t (:inherit highlight))))
-;; '(vline ((t (:background "dim gray")))))
+(customize-set-variable 'custom-enabled-themes '(gruvbox))
+(customize-set-variable 'ansi-color-faces-vector [default default default italic underline success warning error])
+(customize-set-variable 'ansi-color-names-vector ["#242424" "#e5786d" "#95e454" "#cae682" "#8ac6f2" "#333366" "#ccaa8f" "#f6f3e8"])
 (put 'downcase-region 'disabled nil)
