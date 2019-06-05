@@ -606,8 +606,7 @@ Result depends on syntax table's comment character."
     (beginning-of-buffer)
     (insert (concat "#ifndef " (upcase guard) "_H\n#define " (upcase guard) "_H\n\n"))
     (end-of-buffer)
-    (insert "\n#endif")
-    (jump-to-register)))
+    (insert "\n#endif")))
 
 
 ;; nXML mode customization
