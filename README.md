@@ -62,6 +62,19 @@ Things to run once the setup is finished to have some C++ completion:
 M-x irony-install-server
 ```
 
+For golang support you might want to install at least some of the following packages into your `$GOPATH`. Also add the `$GOPATH` to your PATH and `'exec-path` like done for rust (cargo) above.
+```
+go get golang.org/x/tools/cmd/goimports
+go get github.com/godoctor/godoctor
+go get -u github.com/nsf/gocode
+go get golang.org/x/tools/cmd/guru
+go get -u github.com/golangci/golangci-lint/cmd/golangci-lint
+go get github.com/rogpeppe/godef
+go get golang.org/x/tools/cmd/godoc
+go get github.com/zmb3/gogetdoc
+go get -u github.com/golang/dep/cmd/dep
+```
+
 ## My favorite hotkeys
 
 | Hotkey      | Description                                                                       |
