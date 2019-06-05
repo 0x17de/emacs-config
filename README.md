@@ -40,8 +40,8 @@ After that the following should be your .emacs file:
 (setq org-crypt-key "123...GPGID...DEF")
 
 ; optional for rust configuration
-(setenv "PATH" (concat (getenv "PATH") ":/home/USER/.cargo/bin"))
-(add-to-list 'exec-path "/home/USER/.cargo/bin")
+(setenv "PATH" (concat (getenv "PATH") ":" (getenv "HOME") "/.cargo/bin"))
+(add-to-list 'exec-path (concat (getenv "HOME") "/.cargo/bin"))
 
 (add-to-list 'load-path "~/.emacs.d/_0x17de/")
 
