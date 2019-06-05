@@ -5,6 +5,7 @@
 ;; (load "_0x17de-emacs")
 
 (setq debug-on-error t)
+(setq initial-scratch-message nil)
 
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
@@ -155,10 +156,13 @@ Result depends on syntax table's comment character."
 (use-package company
   :ensure t
   :init 
-  (setq company-tooltip-align-annotations t)
-  (setq company-dabbrev-downcase 0)
-  (setq company-idle-delay 0.5)
-  (setq company-async-timeout 5)
+  (setq company-async-timeout 5
+        company-dabbrev-downcase 0
+        company-idle-delay 0.5
+        company-irony-ignore-case t
+        company-require-match nil
+        company-selection-wrap-around t
+        company-tooltip-align-annotations t)
   :config
   (add-hook 'company-completion-started-hook 'company-init-quickhelp)
   (setq company-backends (delete 'company-semantic company-backends))
