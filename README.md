@@ -55,7 +55,9 @@ After that the following should be your .emacs file:
 (setq easy-hugo-basedir "~/hugo/0x17blog")
 ```
 
-Dependencies will be installed automatically on the first run.
+For simplified starting there are scripts inside the bin directory. Create a symbolic link inside `/usr/local/bin/` pointing to `~/.emacs.d/_0x17de/bin/ew` - this is how i start a graphical emacs session while using the daemon functionality (to keep emacs running and all buffers loaded even if all windows are closed). See `M-x kill-emacs` and start emacs using `emacs --debug-init` while fiddling with the configuration.
+
+Dependencies will be installed automatically on the first run via `use-package`.
 
 Things to run once the setup is finished to have some C++ completion:
 ```
