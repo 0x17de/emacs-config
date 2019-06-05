@@ -2,7 +2,7 @@
 
 ## Things that work
 
-General:
+### General
 - Easy installation of the configuration (packages are automatically installed via use-package)
 - Autoindentation
 - Git using "magit"
@@ -11,8 +11,11 @@ General:
 - Terminal support using "multi-term"
 - Edit multiple text sections with multiple cursors
 
-Autocompletions and syntax check:
-- C++: using irony & syntax via clang + flycheck; working well together with cmake projects while always tring to use `$PROJECT_ROOT/build` instead of a directory inside /tmp/ for builds (you might want to call `M-x cmake-ide-run-cmake` if something looks messed up)
+### Autocompletions and syntax check
+
+Place a file `.dir-locals.el` into the project's root for some autocompletions like for C++ to correctly detect the project root.
+
+- C++: using irony & syntax via clang + flycheck; working well together with cmake projects while always tring to use `$PROJECT_ROOT/build` instead of a directory inside /tmp/ for builds (you might want to call `M-x cmake-ide-run-cmake` if something looks messed up). The compile command (`<f5>`) also supports ninja based cmake projects.
 - Python: using "jedi" + flycheck
 - Rust: using racer + company-mode + flycheck
 - LaTeX: usinx AUCTeX + compile on save minor mode "latex-compile-on-save-mode"
@@ -69,3 +72,4 @@ M-x irony-install-server
 | `C-M-z <`   | multiple cursors: add a cursor at the previous section matching the selection     |
 | `C-M-S-q`   | close current buffer without asking                                               |
 | `C-M-x`     | The original M-x since `smex` is used to simplify finding commands                |
+| `<f5>`      | Generic compile command like for cmake projects                                   |
