@@ -72,4 +72,6 @@ M-x irony-install-server
 | `C-M-z <`   | multiple cursors: add a cursor at the previous section matching the selection     |
 | `C-M-S-q`   | close current buffer without asking                                               |
 | `C-M-x`     | The original M-x since `smex` is used to simplify finding commands                |
+| `S-<tab>`   | A real tab character since `<tab>` is autoindent                                  |
+| `<f1>`      | For some languages like python or c++ this will search for a documentation entry  |
 | `<f5>`      | Generic compile command like for cmake projects                                   |
