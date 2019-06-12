@@ -265,9 +265,8 @@ Result depends on syntax table's comment character."
   (add-hook 'c-mode-common-hook
             (lambda ()
               (make-local-variable 'company-backends)
-              (add-to-list 'company-backends 'company-irony-c-headers)
-              (add-to-list 'company-backends 'company-c-headers)
               (add-to-list 'company-backends 'company-irony)
+              (add-to-list 'company-backends '(company-irony-c-headers company-c-headers))
               (company-mode t)
               (irony-mode t)
               (cmake-ide-maybe-run-cmake)
