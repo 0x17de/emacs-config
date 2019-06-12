@@ -198,7 +198,11 @@ Result depends on syntax table's comment character."
 (use-package cpputils-cmake
   :ensure t
   :config
-  (add-hook 'cmake-mode-hook 'company-mode)
+  (add-hook 'cmake-mode-hook
+            (lambda ()
+              (make-local-variable 'company-backends)
+              (setq company-backends '(company-cmake))
+              (company-mode t)))
   (define-key cmake-mode-map [(tab)] 'company-indent-or-complete-common))
 
 (use-package lisp-mode
