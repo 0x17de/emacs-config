@@ -165,8 +165,7 @@ Result depends on syntax table's comment character."
         company-tooltip-align-annotations t)
   :config
   (add-hook 'company-completion-started-hook 'company-init-quickhelp)
-  (setq company-backends (delete 'company-semantic company-backends))
-  (setq company-backends (delete 'company-capf company-backends)))
+  (setq company-backends '())) ; we explicitly add all the backends we need
 (use-package company-lsp
   :ensure t)
 (use-package company-jedi
@@ -207,7 +206,9 @@ Result depends on syntax table's comment character."
   (add-hook 'lisp-mode-hook
             (lambda ()
               (make-local-variable 'company-backends)
-              (add-to-list 'company-backends 'company-lsp)
+              (setq company-backends '(company-lsp
+                                       company-files
+                                       company-capf))
               (company-mode t)))
   (define-key lisp-mode-map [(tab)] 'company-indent-or-complete-common))
 (use-package elisp-mode
@@ -215,7 +216,9 @@ Result depends on syntax table's comment character."
   (add-hook 'emacs-lisp-mode-hook
             (lambda ()
               (make-local-variable 'company-backends)
-              (add-to-list 'company-backends 'company-lsp)
+              (setq company-backends '(company-lsp
+                                       company-files
+                                       company-capf))
               (company-mode t)))
   (define-key emacs-lisp-mode-map [(tab)] 'company-indent-or-complete-common))
 ;; go-lang support
@@ -247,7 +250,9 @@ Result depends on syntax table's comment character."
             (lambda ()
               (setq tab-width 2)
               (make-local-variable 'company-backends)
-              (add-to-list 'company-backends 'company-go)
+              (setq company-backends '(company-go
+                                       company-files
+                                       company-capf))
               (setq gofmt-command "goimports")
               (add-hook 'before-save-hook 'gofmt-before-save)
               (go-guru-hl-identifier-mode)
@@ -270,8 +275,10 @@ Result depends on syntax table's comment character."
   (add-hook 'c-mode-common-hook
             (lambda ()
               (make-local-variable 'company-backends)
-              (add-to-list 'company-backends 'company-irony)
-              (add-to-list 'company-backends '(company-irony-c-headers company-c-headers))
+              (setq company-backends '((company-irony-c-headers company-c-headers)
+                                       company-irony
+                                       company-files
+                                       company-capf))
               (company-mode t)
               (irony-mode t)
               (cmake-ide-maybe-run-cmake)
@@ -302,7 +309,9 @@ Result depends on syntax table's comment character."
   (add-hook 'python-mode-hook
             (lambda ()
               (make-local-variable 'company-backends)
-              (add-to-list 'company-backends 'company-jedi)
+              (setq company-backends '(company-jedi
+                                       company-files
+                                       company-capf))
               (auto-virtualenv-set-virtualenv)
               (company-mode t)
               (flycheck-mode t)
@@ -327,7 +336,9 @@ Result depends on syntax table's comment character."
   (add-hook 'rust-mode-hook
             (lambda ()
               (make-local-variable 'company-backends)
-              (add-to-list 'company-backends 'company-racer)
+              (setq company-backends '(company-racer
+                                       company-files
+                                       company-capf))
               (my/rust-setup)
               (racer-mode t)
               (eldoc-mode t)
@@ -371,7 +382,9 @@ Result depends on syntax table's comment character."
   (TeX-fold-mode 1)
   (rainbow-delimiters-mode t)
   (make-local-variable 'company-backends)
-  (add-to-list 'company-backends 'company-auctex)
+  (setq company-backends '(company-auctex
+                           company-files
+                           company-capf))
   (company-auctex-init)
   (company-mode t))
 (defun my/latexmk-run ()
@@ -402,7 +415,9 @@ Result depends on syntax table's comment character."
   (add-hook 'java-mode-hook
             (lambda ()
               (make-local-variable 'company-backends)
-              (add-to-list 'company-backends 'company-meghanada)
+              (setq company-backends '(company-meghanada
+                                       company-files
+                                       company-capf))
               (meghanada-mode t)
               (company-mode t)))
   (define-key java-mode-map [(tab)] 'company-indent-or-complete-common))
