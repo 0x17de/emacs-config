@@ -201,7 +201,9 @@ Result depends on syntax table's comment character."
   (add-hook 'cmake-mode-hook
             (lambda ()
               (make-local-variable 'company-backends)
-              (setq company-backends '(company-cmake))
+              (setq company-backends '(company-cmake
+                                       company-files
+                                       company-capf))
               (company-mode t)))
   (define-key cmake-mode-map [(tab)] 'company-indent-or-complete-common))
 
