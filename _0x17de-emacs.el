@@ -259,6 +259,11 @@ Result depends on syntax table's comment character."
   (setq godoc-command "godoc")
   (setq godoc-use-completing-read t)
   (define-key go-mode-map [(tab)] 'company-indent-or-complete-common))
+(defun cross-recompile ()
+  "Recompile using cross-compile-command"
+  (interactive)
+  (let ((compile-command cross-compile-command))
+    (recompile)))
 (use-package cc-mode
   :config
   (load "ext/google-styleguide/google-c-style")
@@ -277,7 +282,9 @@ Result depends on syntax table's comment character."
   (define-key c-mode-map [(f1)] 'semantic-ia-show-doc)
   (define-key c++-mode-map [(f1)] 'semantic-ia-show-doc)
   (define-key c-mode-map [(f5)] 'recompile)
+  (define-key c-mode-map [(f6)] 'cross-recompile)
   (define-key c++-mode-map [(f5)] 'recompile)
+  (define-key c++-mode-map [(f6)] 'cross-recompile)
   (define-key c-mode-map [(tab)] 'company-indent-or-complete-common)
   (define-key c++-mode-map [(tab)] 'company-indent-or-complete-common)
   (define-key c-mode-map (kbd "C-C C-j") 'moo-jump-local)
@@ -594,6 +601,7 @@ Result depends on syntax table's comment character."
 
 
 (setq compile-command "ewcompile")
+(setq cross-compile-command "ewcompile") ; override via .dir-locals.el
 (defun my-compile ()
   "Compile"
   (interactive)
