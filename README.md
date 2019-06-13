@@ -79,14 +79,18 @@ go get -u github.com/golang/dep/cmd/dep
 
 ## My favorite hotkeys
 
-| Hotkey      | Description                                                                       |
-| ----------- | --------------------------------------------------------------------------------- |
-| `C-M-z \|`  | multiple cursors: select all instances of the selected region                     |
-| `C-M-z C-c` | multiple cursors: with having multiple rows selected, place a cursor in every row |
-| `C-M-z >`   | multiple cursors: add a cursor at the next section matching the selection         |
-| `C-M-z <`   | multiple cursors: add a cursor at the previous section matching the selection     |
-| `C-M-S-q`   | close current buffer without asking                                               |
-| `C-M-x`     | The original M-x since `smex` is used to simplify finding commands                |
-| `S-<tab>`   | A real tab character since `<tab>` is autoindent                                  |
-| `<f1>`      | For some languages like python or c++ this will search for a documentation entry  |
-| `<f5>`      | Generic compile command like for cmake projects                                   |
+| Hotkey       | Description                                                                             |
+| ------------ | --------------------------------------------------------------------------------------- |
+| `C-M-z \|`   | multiple cursors: select all instances of the selected region                           |
+| `C-M-z C-c`  | multiple cursors: with having multiple rows selected, place a cursor in every row       |
+| `C-M-z >`    | multiple cursors: add a cursor at the next section matching the selection               |
+| `C-M-z <`    | multiple cursors: add a cursor at the previous section matching the selection           |
+| `M-<mouse1>` | multiple cursors: add/remove a cursor at the pointer location                           |
+| `C-M-S-y`    | show snippets for current mode                                                          |
+| `C-M-S-q`    | close current buffer without asking                                                     |
+| `C-M-S-w`    | close current buffer and window without asking                                          |
+| `C-M-x`      | The original M-x since `smex` is used to simplify finding commands                      |
+| `S-<tab>`    | A real tab character since `<tab>` is autoindent                                        |
+| `<f1>`       | For some languages like python or c++ this will search for a documentation entry        |
+| `<f5>`       | Generic compile command like for cmake projects                                         |
+| `<f6>`       | Cross compile command for cmake projects overwrite cross-compile-command in .emacs file |
