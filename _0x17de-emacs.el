@@ -315,9 +315,11 @@ Result depends on syntax table's comment character."
   (add-hook 'python-mode-hook
             (lambda ()
               (make-local-variable 'company-backends)
+              (make-local-variable 'yas-indent-line)
               (setq company-backends '(company-jedi
                                        company-files
                                        company-capf))
+              (setq yas-indent-line 'fixed)
               (auto-virtualenv-set-virtualenv)
               (company-mode t)
               (flycheck-mode t)
