@@ -1,0 +1,29 @@
+# -*- mode: snippet -*-
+# name: SimpleHTTPRequestHandler
+# key: simpleserver
+# --
+#!/usr/bin/env python3
+import subprocess
+from http.server import SimpleHTTPRequestHandler
+import socketserver
+from urllib.parse import urlparse, parse_qs
+
+LISTEN="${1:127.0.0.1}"
+PORT=${2:12321}
+
+class MyTCPServer(socketserver.TCPServer):
+    allow_reuse_address = True
+
+class MyHttpHandler(SimpleHTTPRequestHandler):
+    def do_GET(self):
+        url = urlparse(self.path)
+        query = parse_qs(url.query)
+        self.send_response(404, 'Not found')
+        self.send_header('Content-Type', 'text/html')
+        self.end_headers()
+        self.wfile.write(b'<b>404</b> Not found')
+
+if __name__ == '__main__':
+    with MyTCPServer((LISTEN, PORT), MyHttpHandler) as httpd:
+        print("serving on {}:{}".format(LISTEN, PORT))
+        httpd.serve_forever()
