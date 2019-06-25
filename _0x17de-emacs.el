@@ -137,12 +137,13 @@ Result depends on syntax table's comment character."
 (use-package srefactor
   :ensure t)
 (use-package irony
-  :ensure t
+  :ensure t)
+(use-package irony-cdb
+  :after (irony)
   :config
-  (add-hook 'irony-mode-hook (lambda ()
-                               (define-key irony-mode-map [remap completion-at-point] 'irony-completion-at-point-async)
-                               (define-key irony-mode-map [remap completion-symbol] 'irony-completion-at-point-async)
-                               (irony-cdb-autosetup-compile-options))))
+  (customize-set-variable 'irony-cdb-compilation-databases '(irony-cdb-json
+                                                             irony-cdb-clang-complete
+                                                             irony-cdb-libclang)))
 ;(use-package auto-complete
 ;  :init
 ;  (setq tab-always-indent 'complete)
@@ -187,6 +188,7 @@ Result depends on syntax table's comment character."
   :ensure t)
 (use-package cmake-ide
   :ensure t
+  :after (company company-c-headers irony flycheck)
   :config
   ;; override provided function to rather use the "build"
   ;; directory in the projects root than a temp directory
@@ -280,26 +282,25 @@ Result depends on syntax table's comment character."
   (interactive)
   (let ((compile-command cross-compile-command))
     (recompile)))
+(defun c-mode-common-init ()
+  "Callback for initialization of c-like modes"
+  (make-local-variable 'company-backends)
+  (setq company-backends '((company-irony-c-headers company-c-headers)
+                           company-irony
+                           company-files
+                           company-capf))
+  (company-mode t)
+  (irony-mode t)
+  (irony-cdb-autosetup-compile-options)
+  (hs-minor-mode t)
+  (flycheck-mode t)
+  (rainbow-delimiters-mode t)
+  (google-set-c-style))
 (use-package cc-mode
   :config
   (load "ext/google-styleguide/google-c-style")
-  (add-hook 'c-mode-common-hook
-            (lambda ()
-              (make-local-variable 'company-backends)
-              (setq company-backends '((company-irony-c-headers company-c-headers)
-                                       company-irony
-                                       company-files
-                                       company-capf))
-              (company-mode t)
-              (irony-mode t)
-              ;(condition-case
-              ;  ()
-              ;    (cmake-ide-maybe-run-cmake)
-              ;  (irony-server-error (message "No cmake project exists for %s" (buffer-name))))
-              (hs-minor-mode t)
-              (flycheck-mode t)
-              (rainbow-delimiters-mode t)
-              (google-set-c-style)))
+  (add-hook 'c-mode-hook 'c-mode-common-init)
+  (add-hook 'c++-mode-hook 'c-mode-common-init)
   (define-key c-mode-map [(f1)] 'semantic-ia-show-doc)
   (define-key c++-mode-map [(f1)] 'semantic-ia-show-doc)
   (define-key c-mode-map [(f5)] 'recompile)
