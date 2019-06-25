@@ -637,6 +637,7 @@ Result depends on syntax table's comment character."
 (defun my-compile ()
   "Compile"
   (interactive)
+  (setq compilation-search-path (or (cide--build-dir) default-directory))
   (compile compile-command))
 (global-set-key (kbd "C-M-z C-M-a") 'my-compile)
 (global-set-key (kbd "C-M-z C-a") 'my-compile)
