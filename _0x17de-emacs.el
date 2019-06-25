@@ -4,7 +4,7 @@
 ;; (add-to-list 'load-path "~/.emacs.d/_0x17de/")
 ;; (load "_0x17de-emacs")
 
-(setq debug-on-error t)
+;(setq debug-on-error t)
 (setq initial-scratch-message nil)
 
 (require 'package)
@@ -137,7 +137,12 @@ Result depends on syntax table's comment character."
 (use-package srefactor
   :ensure t)
 (use-package irony
-  :ensure t)
+  :ensure t
+  :config
+  (add-hook 'irony-mode-hook (lambda ()
+                               (define-key irony-mode-map [remap completion-at-point] 'irony-completion-at-point-async)
+                               (define-key irony-mode-map [remap completion-symbol] 'irony-completion-at-point-async)
+                               (irony-cdb-autosetup-compile-options))))
 ;(use-package auto-complete
 ;  :init
 ;  (setq tab-always-indent 'complete)
@@ -287,7 +292,10 @@ Result depends on syntax table's comment character."
                                        company-capf))
               (company-mode t)
               (irony-mode t)
-              (cmake-ide-maybe-run-cmake)
+              ;(condition-case
+              ;  ()
+              ;    (cmake-ide-maybe-run-cmake)
+              ;  (irony-server-error (message "No cmake project exists for %s" (buffer-name))))
               (hs-minor-mode t)
               (flycheck-mode t)
               (rainbow-delimiters-mode t)
