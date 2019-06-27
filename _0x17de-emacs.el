@@ -36,6 +36,24 @@
 (autoload 'guess-style-guess-variable "guess-style")
 (autoload 'guess-style-guess-all "guess-style" nil t)
 
+(defun replace-with-shell (posBegin posEnd command)
+  "Pipe region through shell command and replace"
+  (interactive (let (command)
+		 (unless (mark)
+		   (user-error "The mark is not set now, so there is no region"))
+                 (setq command (read-shell-command "Shell command on region: "))
+                 (list (region-beginning) (region-end) command)))
+  (let ((string (buffer-substring-no-properties posBegin posEnd))
+        (buffer (current-buffer)))
+    (with-temp-buffer
+      (insert string)
+      (shell-command-on-region (point-min) (point-max) command (current-buffer))
+      (setq string (buffer-substring-no-properties (point-min) (point-max))))
+    (delete-region posBegin posEnd)
+    (insert string)))
+
+(global-set-key (kbd "C-M-|") 'replace-with-shell)
+
 
 (ido-mode t)
 ;(use-package color-theme-sanityinc-tomorrow
