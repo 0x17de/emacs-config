@@ -227,8 +227,7 @@ Result depends on syntax table's comment character."
             (lambda ()
               (make-local-variable 'company-backends)
               (setq company-backends '(company-cmake
-                                       company-files
-                                       company-capf))
+                                       company-files))
               (company-mode t)))
   (define-key cmake-mode-map [(tab)] 'company-indent-or-complete-common))
 
@@ -238,8 +237,7 @@ Result depends on syntax table's comment character."
             (lambda ()
               (make-local-variable 'company-backends)
               (setq company-backends '(company-lsp
-                                       company-files
-                                       company-capf))
+                                       company-files))
               (company-mode t)))
   (define-key lisp-mode-map [(tab)] 'company-indent-or-complete-common))
 (use-package elisp-mode
@@ -248,8 +246,7 @@ Result depends on syntax table's comment character."
             (lambda ()
               (make-local-variable 'company-backends)
               (setq company-backends '(company-lsp
-                                       company-files
-                                       company-capf))
+                                       company-files))
               (company-mode t)))
   (define-key emacs-lisp-mode-map [(tab)] 'company-indent-or-complete-common))
 ;; go-lang support
@@ -282,8 +279,7 @@ Result depends on syntax table's comment character."
               (setq tab-width 2)
               (make-local-variable 'company-backends)
               (setq company-backends '(company-go
-                                       company-files
-                                       company-capf))
+                                       company-files))
               (setq gofmt-command "goimports")
               (add-hook 'before-save-hook 'gofmt-before-save)
               (go-guru-hl-identifier-mode)
@@ -305,8 +301,7 @@ Result depends on syntax table's comment character."
   (make-local-variable 'company-backends)
   (setq company-backends '((company-irony-c-headers company-c-headers)
                            company-irony
-                           company-files
-                           company-capf))
+                           company-files))
   (company-mode t)
   (irony-mode t)
   (irony-cdb-autosetup-compile-options)
@@ -344,8 +339,7 @@ Result depends on syntax table's comment character."
               (make-local-variable 'company-backends)
               (make-local-variable 'yas-indent-line)
               (setq company-backends '(company-jedi
-                                       company-files
-                                       company-capf))
+                                       company-files))
               (setq yas-indent-line 'fixed)
               (auto-virtualenv-set-virtualenv)
               (company-mode t)
@@ -372,8 +366,7 @@ Result depends on syntax table's comment character."
             (lambda ()
               (make-local-variable 'company-backends)
               (setq company-backends '(company-racer
-                                       company-files
-                                       company-capf))
+                                       company-files))
               (my/rust-setup)
               (racer-mode t)
               (eldoc-mode t)
@@ -418,8 +411,7 @@ Result depends on syntax table's comment character."
   (rainbow-delimiters-mode t)
   (make-local-variable 'company-backends)
   (setq company-backends '(company-auctex
-                           company-files
-                           company-capf))
+                           company-files))
   (company-auctex-init)
   (company-mode t))
 (defun my/latexmk-run ()
@@ -451,8 +443,7 @@ Result depends on syntax table's comment character."
             (lambda ()
               (make-local-variable 'company-backends)
               (setq company-backends '(company-meghanada
-                                       company-files
-                                       company-capf))
+                                       company-files))
               (meghanada-mode t)
               (company-mode t)))
   (define-key java-mode-map [(tab)] 'company-indent-or-complete-common))
