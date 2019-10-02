@@ -135,6 +135,10 @@ Result depends on syntax table's comment character."
   (unless (or (inside-string-q) (inside-comment-q))
     (apply adviced-f r)))
 
+(use-package dumb-jump
+  :ensure t
+  :init
+  (global-set-key (kbd "C-S-j") 'dumb-jump-go))
 (use-package semantic
   :config
   (advice-add 'semantic-analyze-completion-at-point-function
@@ -142,6 +146,7 @@ Result depends on syntax table's comment character."
   (global-semanticdb-minor-mode 1)
   (global-semantic-idle-scheduler-mode 1)
   (global-semantic-stickyfunc-mode 1)
+  (global-semantic-idle-completions-mode -1)
   (semantic-mode 1))
 (use-package emr
   :ensure t)
@@ -229,6 +234,7 @@ Result depends on syntax table's comment character."
               (setq company-backends '(company-cmake
                                        company-files))
               (company-mode t)))
+  (define-key cmake-mode-map [(f5)] 'recompile)
   (define-key cmake-mode-map [(tab)] 'company-indent-or-complete-common))
 
 (use-package lisp-mode
