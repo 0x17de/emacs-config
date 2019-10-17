@@ -552,7 +552,6 @@ Result depends on syntax table's comment character."
 
 (use-package buffer-move
   :ensure t
-  :defer t
   :config
   (global-set-key (kbd "<C-M-S-up>")     'buf-move-up)
   (global-set-key (kbd "<C-M-S-down>")   'buf-move-down)
