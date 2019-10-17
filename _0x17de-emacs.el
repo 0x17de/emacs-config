@@ -234,6 +234,7 @@ Result depends on syntax table's comment character."
               (setq company-backends '(company-cmake
                                        company-files))
               (company-mode t)))
+  (define-key cmake-mode-map [(f1)] 'cmake-help)
   (define-key cmake-mode-map [(f5)] 'recompile)
   (define-key cmake-mode-map [(tab)] 'company-indent-or-complete-common))
 
