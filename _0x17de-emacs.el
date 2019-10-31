@@ -65,7 +65,6 @@
   (sml/setup))
 (use-package multi-term
   :ensure t
-  :defer t
   :config
   (load "multi-term-settings.el"))
 (use-package multiple-cursors
@@ -80,63 +79,42 @@
    ("M-<mouse-1>" . mc/add-cursor-on-click)))
 ;;(use-package sudo-edit)
 (use-package refine
-  :ensure t
-  :defer t)
+  :ensure t)
 (use-package x509-mode
-  :ensure t
-  :defer t)
+  :ensure t)
 (use-package yaml-mode
-  :ensure t
-  :defer t)
+  :ensure t)
 (use-package dot-mode
-  :ensure t
-  :defer t)
+  :ensure t)
 (use-package dockerfile-mode
-  :ensure t
-  :defer t)
+  :ensure t)
 (use-package docker-compose-mode
-  :ensure t
-  :defer t)
+  :ensure t)
 (use-package json-mode
-  :ensure t
-  :defer t)
+  :ensure t)
 (use-package elf-mode
-  :ensure t
-  :defer t)
+  :ensure t)
 (use-package demangle-mode
-  :ensure t
-  :defer t)
+  :ensure t)
 (use-package systemd
-  :ensure t
-  :defer t)
+  :ensure t)
 (use-package easy-hugo
-  :ensure t
-  :defer t)
+  :ensure t)
 (use-package gh-md
-  :ensure t
-  :defer t)
+  :ensure t)
 (use-package magit
-  :ensure t
-  :defer t)
+  :ensure t)
 (use-package rainbow-delimiters
-  :ensure t
-  :defer t)
+  :ensure t)
 
 (use-package function-args
-  :ensure t
-  :defer t)
+  :ensure t)
 (use-package helm-swoop
-  :ensure t
-  :defer t
-  :defer t)
+  :ensure t)
 (use-package helm-gtags
-  :ensure t
-  :defer t
-  :defer t)
+  :ensure t)
 (use-package counsel
-  :ensure t
-  :defer t
-  :defer t)
+  :ensure t)
 
 ;; see https://github.com/company-mode/company-mode/issues/525#issuecomment-348635719
 (defun inside-string-q ()
@@ -160,7 +138,6 @@ Result depends on syntax table's comment character."
 
 (use-package dumb-jump
   :ensure t
-  :defer t
   :init
   (global-set-key (kbd "C-S-j") 'dumb-jump-go))
 (use-package semantic
@@ -173,8 +150,7 @@ Result depends on syntax table's comment character."
   (global-semantic-idle-completions-mode -1)
   (semantic-mode 1))
 (use-package emr
-  :ensure t
-  :defer t)
+  :ensure t)
 (use-package smex
   :ensure t
   :init
@@ -183,14 +159,11 @@ Result depends on syntax table's comment character."
   (global-set-key (kbd "M-X") 'smex-major-mode-commands)
   (global-set-key (kbd "C-M-x") 'execute-extended-command))
 (use-package srefactor
-  :ensure t
-  :defer t)
+  :ensure t)
 (use-package irony
-  :ensure t
-  :defer t)
+  :ensure t)
 (use-package irony-cdb
   :after (irony)
-  :defer t
   :config
   (customize-set-variable 'irony-cdb-compilation-databases '(irony-cdb-json
                                                              irony-cdb-clang-complete
@@ -205,8 +178,7 @@ Result depends on syntax table's comment character."
 ;  :ensure t)
 ;; (use-package auto-complete-auctex)
 (use-package company-quickhelp
-  :ensure t
-  :defer t)
+  :ensure t)
 (defun company-init-quickhelp (b-enable)
   "Initialize company-quickhelp only if company is running"
   (company-quickhelp-mode t)
@@ -225,29 +197,21 @@ Result depends on syntax table's comment character."
   (add-hook 'company-completion-started-hook 'company-init-quickhelp)
   (setq company-backends '())) ; we explicitly add all the backends we need
 (use-package company-lsp
-  :ensure t
-  :defer t)
+  :ensure t)
 (use-package company-jedi
-  :ensure t
-  :defer t)
+  :ensure t)
 (use-package company-irony
-  :ensure t
-  :defer t)
+  :ensure t)
 (use-package company-c-headers
-  :ensure t
-  :defer t)
+  :ensure t)
 (use-package flycheck
-  :ensure t
-  :defer t)
+  :ensure t)
 (use-package flycheck-irony
-  :ensure t
-  :defer t)
+  :ensure t)
 (use-package flycheck-rust
-  :ensure t
-  :defer t)
+  :ensure t)
 (use-package cmake-ide
   :ensure t
-  :defer t
   :after (company company-c-headers irony flycheck)
   :config
   ;; override provided function to rather use the "build"
@@ -260,12 +224,10 @@ Result depends on syntax table's comment character."
   (cmake-ide-setup))
 (use-package cmake-mode
   :ensure t
-  :defer t
   :config
   (add-to-list 'auto-mode-alist '("CMakeInstallTargets\\.txt\\'" . cmake-mode)))
 (use-package cpputils-cmake
   :ensure t
-  :defer t
   :config
   (add-hook 'cmake-mode-hook
             (lambda ()
@@ -278,7 +240,6 @@ Result depends on syntax table's comment character."
   (define-key cmake-mode-map [(tab)] 'company-indent-or-complete-common))
 
 (use-package lisp-mode
-  :defer t
   :config
   (add-hook 'lisp-mode-hook
             (lambda ()
@@ -288,7 +249,6 @@ Result depends on syntax table's comment character."
               (company-mode t)))
   (define-key lisp-mode-map [(tab)] 'company-indent-or-complete-common))
 (use-package elisp-mode
-  :defer t
   :config
   (add-hook 'emacs-lisp-mode-hook
             (lambda ()
@@ -308,26 +268,19 @@ Result depends on syntax table's comment character."
 ;; go get github.com/zmb3/gogetdoc
 ;; go get -u github.com/golang/dep/cmd/dep
 (use-package go-guru
-  :ensure t
-  :defer t)
+  :ensure t)
 (use-package godoctor
-  :ensure t
-  :defer t)
+  :ensure t)
 (use-package go-scratch
-  :ensure t
-  :defer t)
+  :ensure t)
 (use-package go-playground
-  :ensure t
-  :defer t)
+  :ensure t)
 (use-package flycheck-golangci-lint
-  :ensure t
-  :defer t)
+  :ensure t)
 (use-package company-go
-  :ensure t
-  :defer t)
+  :ensure t)
 (use-package go-mode
   :ensure t
-  :defer t
   :config
   (add-hook 'go-mode-hook
             (lambda ()
@@ -366,7 +319,6 @@ Result depends on syntax table's comment character."
   (google-set-c-style)
   (cmake-ide-maybe-run-cmake))
 (use-package cc-mode
-  :defer t
   :config
   (load "ext/google-styleguide/google-c-style")
   (add-hook 'c-mode-hook 'c-mode-common-init)
@@ -384,16 +336,12 @@ Result depends on syntax table's comment character."
   (define-key c-mode-map (kbd "C-C M-j") 'semantic-ia-fast-jump)
   (define-key c++-mode-map (kbd "C-C M-j") 'semantic-ia-fast-jump))
 (use-package auto-virtualenv
-  :ensure t
-  :defer t)
+  :ensure t)
 (use-package jedi
-  :ensure t
-  :defer t)
+  :ensure t)
 (use-package realgud
-  :ensure t
-  :defer t)
+  :ensure t)
 (use-package python
-  :defer t
   :config
   (add-hook 'python-mode-hook
             (lambda ()
@@ -419,11 +367,9 @@ Result depends on syntax table's comment character."
     (setq racer-rust-src-path (getenv "RUST_SRC_PATH"))))
 
 (use-package racer
-  :ensure t
-  :defer t)
+  :ensure t)
 (use-package rust-mode
   :ensure t
-  :defer t
   :config
   (add-hook 'rust-mode-hook
             (lambda ()
@@ -440,18 +386,15 @@ Result depends on syntax table's comment character."
   (define-key rust-mode-map [(f5)] 'rust-compile)
   (define-key rust-mode-map [(tab)] 'company-indent-or-complete-common))
 (use-package org
-  :defer t
   :config
   (add-hook 'org-mode-hook
             (lambda ()
               (define-key org-mode-map (kbd "C-c .") 'org-time-stamp))))
 (load "ext/ox-confluence/ox-confluence")
 (use-package ein
-  :ensure t
-  :defer t)
+  :ensure t)
 (use-package ess-mode
   :ensure ess
-  :defer t
   :config
   (add-hook 'ess-mode-hook
             (lambda ()
@@ -461,7 +404,6 @@ Result depends on syntax table's comment character."
 
 (use-package projectile
   :ensure t
-  :defer t
   :config
   ;; (projectile-global-mode)
   (setq projectile-enable-caching t))
@@ -493,13 +435,10 @@ Result depends on syntax table's comment character."
         (TeX-next-error)
       (minibuffer-message "latexmk-done"))))
 (use-package auctex-latexmk
-  :defer t
   :ensure t)
 (use-package company-auctex
-  :defer t
   :ensure t)
 (use-package latex
-  :defer t
   :config
   (add-hook 'TeX-mode-hook 'my/latex-setup)
   (define-key TeX-mode-map [(f5)] 'my/latexmk-run)
@@ -508,7 +447,6 @@ Result depends on syntax table's comment character."
 
 (use-package meghanada
   :ensure t
-  :defer t
   :config
   (add-hook 'java-mode-hook
             (lambda ()
@@ -524,7 +462,6 @@ Result depends on syntax table's comment character."
 ;;                    ("RET" . newline-and-indent)))
 
 (use-package yasnippet
-  :defer t
   :config
   (add-to-list 'yas-snippet-dirs (concat (file-name-directory load-file-name) "snippets"))
   (yas-global-mode 1)
