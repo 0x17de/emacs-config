@@ -343,8 +343,8 @@ Result depends on syntax table's comment character."
   (define-key c++-mode-map (kbd "C-C M-j") 'semantic-ia-fast-jump))
 (use-package auto-virtualenv
   :ensure t)
-(use-package jedi
-  :ensure t)
+;(use-package jedi
+;  :ensure t)
 (use-package realgud
   :ensure t)
 (use-package python
