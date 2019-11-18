@@ -16,6 +16,10 @@
 (require 'use-package)
 
 (global-unset-key (kbd "C-z")) ; stop me from freezing emacs
+;; Always group items in buffer menu
+(setq mouse-buffer-menu-mode-mult 0)
+;; Use ibuffer instead of temporary buffer popup
+(global-set-key (kbd "C-x C-b") 'ibuffer)
 
 ;; Tab fix
 (global-set-key (kbd "<backtab>") 'insert-tab-char)
@@ -149,6 +153,8 @@ Result depends on syntax table's comment character."
   (global-semantic-stickyfunc-mode 1)
   (global-semantic-idle-completions-mode -1)
   (semantic-mode 1))
+(use-package stickyfunc-enhance
+  :ensure t)
 (use-package emr
   :ensure t)
 (use-package smex
