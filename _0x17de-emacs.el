@@ -448,7 +448,8 @@ Result depends on syntax table's comment character."
 
 (use-package yasnippet
   :config
-  (add-to-list 'yas-snippet-dirs (expand-file-name "snippets" (file-name-directory load-file-name)))
+  (add-to-list 'yas-snippet-dirs (expand-file-name "snippets" user-emacs-directory))
+  (add-to-list 'yas-snippet-dirs (expand-file-name "snippets" (expand-file-name "_0x17de" user-emacs-directory)))
   (yas-global-mode t)
   :bind (("C-M-S-y" . 'yas-describe-tables)))
 
