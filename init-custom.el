@@ -1,0 +1,5 @@
+(let ((customization-file (expand-file-name "custom.el" (expand-file-name "_0x17de" user-emacs-directory))))
+  (when (file-exists-p customization-file)
+    (message "Using custom file: %s" customization-file)
+    (setq custom-file customization-file)
+    (load custom-file 'noerror)))

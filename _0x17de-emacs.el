@@ -7,19 +7,20 @@
 ;(setq debug-on-error t)
 (setq initial-scratch-message nil)
 
-(require 'package)
-(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
-(package-initialize)
-
-(when (not (package-installed-p 'use-package))
-  (package-install 'use-package))
-(require 'use-package)
+(load "init-custom.el")
+(load "init-speedup.el")
+(load "init-package.el")
+(load "init-encoding.el")
+(load "init-gui.el")
 
 (global-unset-key (kbd "C-z")) ; stop me from freezing emacs
 ;; Always group items in buffer menu
 (setq mouse-buffer-menu-mode-mult 0)
 ;; Use ibuffer instead of temporary buffer popup
 (global-set-key (kbd "C-x C-b") 'ibuffer)
+(global-set-key (kbd "<M-up>") 'move-text-up)
+(global-set-key (kbd "<M-down>") 'move-text-down)
+;(global-set-key (kbd "<home>") 'smart-beginning-of-line)
 
 ;; Tab fix
 (global-set-key (kbd "<backtab>") 'insert-tab-char)
@@ -64,15 +65,12 @@
 ;(use-package color-theme-sanityinc-tomorrow
 ;  :ensure t)
 (use-package smart-mode-line
-  :ensure t
   :config
   (sml/setup))
 (use-package multi-term
-  :ensure t
   :config
   (load "multi-term-settings.el"))
 (use-package multiple-cursors
-  :ensure t
   :init
   (global-unset-key (kbd "M-<down-mouse-1>"))
   :bind
@@ -82,43 +80,31 @@
    ("C-M-z |" . mc/mark-all-like-this)
    ("M-<mouse-1>" . mc/add-cursor-on-click)))
 ;;(use-package sudo-edit)
-(use-package refine
-  :ensure t)
-(use-package x509-mode
-  :ensure t)
-(use-package yaml-mode
-  :ensure t)
-(use-package dot-mode
-  :ensure t)
-(use-package dockerfile-mode
-  :ensure t)
-(use-package docker-compose-mode
-  :ensure t)
-(use-package json-mode
-  :ensure t)
-(use-package elf-mode
-  :ensure t)
-(use-package demangle-mode
-  :ensure t)
-(use-package systemd
-  :ensure t)
-(use-package easy-hugo
-  :ensure t)
-(use-package gh-md
-  :ensure t)
-(use-package magit
-  :ensure t)
+(use-package refine)
+(use-package x509-mode)
+(use-package yaml-mode)
+(use-package dot-mode)
+(use-package dockerfile-mode)
+(use-package docker-compose-mode)
+(use-package json-mode)
+(use-package elf-mode)
+(use-package demangle-mode)
+(use-package systemd)
+(use-package easy-hugo)
+(use-package gh-md)
+(use-package magit)
 (use-package rainbow-delimiters
-  :ensure t)
+  :config
+  (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
+(use-package rainbow-mode
+  :config
+  (setq rainbow-x-colors nil)
+  (add-hook 'prog-mode-hook 'rainbow-mode))
 
-(use-package function-args
-  :ensure t)
-(use-package helm-swoop
-  :ensure t)
-(use-package helm-gtags
-  :ensure t)
-(use-package counsel
-  :ensure t)
+(use-package function-args)
+(use-package helm-swoop)
+(use-package helm-gtags)
+(use-package counsel)
 
 ;; see https://github.com/company-mode/company-mode/issues/525#issuecomment-348635719
 (defun inside-string-q ()
@@ -141,7 +127,6 @@ Result depends on syntax table's comment character."
     (apply adviced-f r)))
 
 (use-package dumb-jump
-  :ensure t
   :init
   (global-set-key (kbd "C-S-j") 'dumb-jump-go))
 (use-package semantic
@@ -153,24 +138,18 @@ Result depends on syntax table's comment character."
   (global-semantic-stickyfunc-mode 1)
   (global-semantic-idle-completions-mode -1)
   (semantic-mode 1))
-(use-package stickyfunc-enhance
-  :ensure t)
-(use-package emr
-  :ensure t)
+(use-package stickyfunc-enhance)
+(use-package emr)
 (use-package smex
-  :ensure t
   :init
   (smex-initialize)
   (global-set-key (kbd "M-x") 'smex)
   (global-set-key (kbd "M-X") 'smex-major-mode-commands)
   (global-set-key (kbd "C-M-x") 'execute-extended-command))
-(use-package srefactor
-  :ensure t)
+(use-package srefactor)
 (use-package irony
-  :ensure t)
-(use-package irony-cdb
-  :after (irony)
   :config
+  (require 'irony-cdb)
   (customize-set-variable 'irony-cdb-compilation-databases '(irony-cdb-json
                                                              irony-cdb-clang-complete
                                                              irony-cdb-libclang)))
@@ -183,14 +162,12 @@ Result depends on syntax table's comment character."
 ;(use-package auctex
 ;  :ensure t)
 ;; (use-package auto-complete-auctex)
-(use-package company-quickhelp
-  :ensure t)
+(use-package company-quickhelp)
 (defun company-init-quickhelp (b-enable)
   "Initialize company-quickhelp only if company is running"
   (company-quickhelp-mode t)
   (remove-hook 'company-completion-started-hook 'company-init-quickhelp t))
 (use-package company
-  :ensure t
   :init 
   (setq company-async-timeout 5
         company-dabbrev-downcase 0
@@ -202,38 +179,28 @@ Result depends on syntax table's comment character."
   :config
   (add-hook 'company-completion-started-hook 'company-init-quickhelp)
   (setq company-backends '())) ; we explicitly add all the backends we need
-(use-package company-lsp
-  :ensure t)
-(use-package company-jedi
-  :ensure t)
-(use-package company-irony
-  :ensure t)
-(use-package company-c-headers
-  :ensure t)
-(use-package flycheck
-  :ensure t)
-(use-package flycheck-irony
-  :ensure t)
-(use-package flycheck-rust
-  :ensure t)
-(use-package cmake-ide
-  :ensure t
-  :after (company company-c-headers irony flycheck)
-  :config
-  ;; override provided function to rather use the "build"
-  ;; directory in the projects root than a temp directory
-  (defun cide--build-dir-var ()
-    "Use cmake-ide-build-dir, cmake-ide-dir or the build directory inside the project root"
-    (or cmake-ide-build-dir
-        cmake-ide-dir
-        (concat (cide--locate-project-dir) "build")))
-  (cmake-ide-setup))
+(use-package company-lsp)
+(use-package company-jedi)
+(use-package company-irony)
+(use-package company-c-headers)
+(use-package flycheck)
+(use-package flycheck-irony)
+(use-package flycheck-rust)
+;(use-package cmake-ide
+;  :after (company company-c-headers irony flycheck)
+;  :config
+;  ;; override provided function to rather use the "build"
+;  ;; directory in the projects root than a temp directory
+;  (defun cide--build-dir-var ()
+;    "Use cmake-ide-build-dir, cmake-ide-dir or the build directory inside the project root"
+;    (or cmake-ide-build-dir
+;        cmake-ide-dir
+;        (concat (cide--locate-project-dir) "build")))
+                                        ;  (cmake-ide-setup))
 (use-package cmake-mode
-  :ensure t
   :config
   (add-to-list 'auto-mode-alist '("CMakeInstallTargets\\.txt\\'" . cmake-mode)))
 (use-package cpputils-cmake
-  :ensure t
   :config
   (add-hook 'cmake-mode-hook
             (lambda ()
@@ -245,48 +212,45 @@ Result depends on syntax table's comment character."
   (define-key cmake-mode-map [(f5)] 'recompile)
   (define-key cmake-mode-map [(tab)] 'company-indent-or-complete-common))
 
-(use-package lisp-mode
-  :config
-  (add-hook 'lisp-mode-hook
-            (lambda ()
-              (make-local-variable 'company-backends)
-              (setq company-backends '(company-lsp
-                                       company-files))
-              (company-mode t)))
-  (define-key lisp-mode-map [(tab)] 'company-indent-or-complete-common))
-(use-package elisp-mode
-  :config
-  (add-hook 'emacs-lisp-mode-hook
-            (lambda ()
-              (make-local-variable 'company-backends)
-              (setq company-backends '(company-lsp
-                                       company-files))
-              (company-mode t)))
-  (define-key emacs-lisp-mode-map [(tab)] 'company-indent-or-complete-common))
-;; go-lang support
-;; go get golang.org/x/tools/cmd/goimports
-;; go get github.com/godoctor/godoctor
-;; go get -u github.com/nsf/gocode
-;; go get golang.org/x/tools/cmd/guru
-;; go get -u github.com/golangci/golangci-lint/cmd/golangci-lint
-;; go get github.com/rogpeppe/godef
-;; go get golang.org/x/tools/cmd/godoc
-;; go get github.com/zmb3/gogetdoc
-;; go get -u github.com/golang/dep/cmd/dep
-(use-package go-guru
-  :ensure t)
-(use-package godoctor
-  :ensure t)
-(use-package go-scratch
-  :ensure t)
-(use-package go-playground
-  :ensure t)
-(use-package flycheck-golangci-lint
-  :ensure t)
-(use-package company-go
-  :ensure t)
+;(use-package lsp-ui)
+
+(require 'lisp-mode)
+(add-hook 'lisp-mode-hook
+          (lambda ()
+            (make-local-variable 'company-backends)
+            (setq company-backends '(company-lsp
+                                     company-files))
+            (company-mode t)))
+(define-key lisp-mode-map [(tab)] 'company-indent-or-complete-common)
+
+(require 'elisp-mode)
+(add-hook 'emacs-lisp-mode-hook
+          (lambda ()
+            (make-local-variable 'company-backends)
+            (setq company-backends '(company-elisp
+                                     company-lsp
+                                     company-files))
+            (company-mode t)))
+(define-key emacs-lisp-mode-map [(tab)] 'company-indent-or-complete-common)
+
+(use-package go-guru)
+(use-package go-eldoc)
+(use-package godoctor)
+(use-package go-scratch)
+(use-package go-playground)
+(use-package flycheck-golangci-lint)
+(use-package company-go)
 (use-package go-mode
-  :ensure t
+  :ensure-system-package
+  ((goimports     . "go get -u golang.org/x/tools/cmd/goimports")
+   (godoc         . "go get -u github.com/godoctor/godoctor")
+   (gocode        . "go get -u github.com/nsf/gocode")
+   (guru          . "go get -u golang.org/x/tools/cmd/guru")
+   (golangci-lint . "go get -u github.com/golangci/golangci-lint/cmd/golangci-lint")
+   (godef         . "go get -u github.com/rogpeppe/godef")
+   (godoc         . "go get -u golang.org/x/tools/cmd/godoc")
+   (gogetdoc      . "go get -u github.com/zmb3/gogetdoc")
+   (dep           . "go get -u github.com/golang/dep/cmd/dep"))
   :config
   (add-hook 'go-mode-hook
             (lambda ()
@@ -295,6 +259,7 @@ Result depends on syntax table's comment character."
               (setq company-backends '(company-go
                                        company-files))
               (setq gofmt-command "goimports")
+              (add-hook 'go-mode-hook 'go-eldoc-setup)
               (add-hook 'before-save-hook 'gofmt-before-save)
               (go-guru-hl-identifier-mode)
               (flycheck-golangci-lint-setup)
@@ -318,12 +283,15 @@ Result depends on syntax table's comment character."
                            company-files))
   (company-mode t)
   (irony-mode t)
+  (irony-eldoc t)
   (irony-cdb-autosetup-compile-options)
   (hs-minor-mode t)
   (flycheck-mode t)
+  (flycheck-irony-setup)
   (rainbow-delimiters-mode t)
   (google-set-c-style)
-  (cmake-ide-maybe-run-cmake))
+  (setq c-basic-offset 4)
+  )
 (use-package cc-mode
   :config
   (load "ext/google-styleguide/google-c-style")
@@ -333,20 +301,24 @@ Result depends on syntax table's comment character."
   (define-key c++-mode-map [(f1)] 'semantic-ia-show-doc)
   (define-key c-mode-map [(f5)] 'recompile)
   (define-key c-mode-map [(f6)] 'cross-recompile)
+  (define-key c-mode-map [(f7)] 'srefactor-refactor-at-point)
+  (define-key c-mode-map [(f8)] 'oxci--run-cmake)
   (define-key c++-mode-map [(f5)] 'recompile)
   (define-key c++-mode-map [(f6)] 'cross-recompile)
+  (define-key c++-mode-map [(f7)] 'srefactor-refactor-at-point)
+  (define-key c++-mode-map [(f8)] 'oxci--run-cmake)
   (define-key c-mode-map [(tab)] 'company-indent-or-complete-common)
   (define-key c++-mode-map [(tab)] 'company-indent-or-complete-common)
   (define-key c-mode-map (kbd "C-C C-j") 'moo-jump-local)
   (define-key c++-mode-map (kbd "C-C C-j") 'moo-jump-local)
   (define-key c-mode-map (kbd "C-C M-j") 'semantic-ia-fast-jump)
-  (define-key c++-mode-map (kbd "C-C M-j") 'semantic-ia-fast-jump))
-(use-package auto-virtualenv
-  :ensure t)
+  (define-key c++-mode-map (kbd "C-C M-j") 'semantic-ia-fast-jump)
+  (load "ox-cmake-ide.el")
+  (ox-cmake-ide))
+(use-package auto-virtualenv)
 ;(use-package jedi
 ;  :ensure t)
-(use-package realgud
-  :ensure t)
+(use-package realgud)
 (use-package python
   :config
   (add-hook 'python-mode-hook
@@ -359,9 +331,20 @@ Result depends on syntax table's comment character."
               (auto-virtualenv-set-virtualenv)
               (company-mode t)
               (flycheck-mode t)
-              (hs-minor-mode t)))
+              (hs-minor-mode t)
+	      (highlight-indent-guides-mode t)
+	      (rainbow-delimiters-mode t)))
   (define-key python-mode-map [(tab)] 'company-indent-or-complete-common)
   (define-key python-mode-map [(f1)] 'jedi:show-doc))
+(use-package pyimport)
+(use-package pyimpsort)
+(use-package highlight-indent-guides
+  :config
+  (setq highlight-indent-guides-auto-enabled nil)
+  (setq highlight-indent-guides-method 'fill)
+  (set-face-background 'highlight-indent-guides-odd-face "gray18")
+  (set-face-background 'highlight-indent-guides-even-face "gray20")
+  (set-face-foreground 'highlight-indent-guides-character-face "gray18"))
 
 (defun my/rust-setup ()
   "Setup the rust variables; Environment variables overwrite internal variables"
@@ -372,10 +355,8 @@ Result depends on syntax table's comment character."
   (unless racer-rust-src-path
     (setq racer-rust-src-path (getenv "RUST_SRC_PATH"))))
 
-(use-package racer
-  :ensure t)
+(use-package racer)
 (use-package rust-mode
-  :ensure t
   :config
   (add-hook 'rust-mode-hook
             (lambda ()
@@ -397,8 +378,7 @@ Result depends on syntax table's comment character."
             (lambda ()
               (define-key org-mode-map (kbd "C-c .") 'org-time-stamp))))
 (load "ext/ox-confluence/ox-confluence")
-(use-package ein
-  :ensure t)
+(use-package ein)
 (use-package ess-mode
   :ensure ess
   :config
@@ -409,10 +389,10 @@ Result depends on syntax table's comment character."
   (define-key ess-mode-map [(f1)] 'company-show-doc-buffer))
 
 (use-package projectile
-  :ensure t
   :config
-  ;; (projectile-global-mode)
-  (setq projectile-enable-caching t))
+  (projectile-global-mode)
+  (setq projectile-enable-caching t)
+  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
 
 (defun my/latex-setup ()
   "Setup the latex environment"
@@ -440,26 +420,25 @@ Result depends on syntax table's comment character."
     (if (plist-get TeX-error-report-switches (intern master-file))
         (TeX-next-error)
       (minibuffer-message "latexmk-done"))))
-(use-package auctex-latexmk
-  :ensure t)
-(use-package company-auctex
-  :ensure t)
-(use-package latex
-  :config
-  (add-hook 'TeX-mode-hook 'my/latex-setup)
-  (define-key TeX-mode-map [(f5)] 'my/latexmk-run)
-  (define-key TeX-mode-map [(tab)] 'company-indent-or-complete-common)
-  (define-key TeX-mode-map [(f1)] 'company-show-doc-buffer))
+(use-package auctex-latexmk)
+(use-package company-auctex)
+
+(require 'latex)
+(add-hook 'TeX-mode-hook 'my/latex-setup)
+(define-key TeX-mode-map [(f5)] 'my/latexmk-run)
+(define-key TeX-mode-map [(tab)] 'company-indent-or-complete-common)
+(define-key TeX-mode-map [(f1)] 'company-show-doc-buffer)
 
 (use-package meghanada
-  :ensure t
   :config
   (add-hook 'java-mode-hook
             (lambda ()
               (make-local-variable 'company-backends)
               (setq company-backends '(company-meghanada
                                        company-files))
+              (setq c-basic-offset 4)
               (meghanada-mode t)
+              (flycheck-mode t)
               (company-mode t)))
   (define-key java-mode-map [(tab)] 'company-indent-or-complete-common))
 
@@ -494,7 +473,6 @@ Result depends on syntax table's comment character."
                           . ((reusable-frames . t)))))
 
 (use-package buffer-move
-  :ensure t
   :config
   (global-set-key (kbd "<C-M-S-up>")     'buf-move-up)
   (global-set-key (kbd "<C-M-S-down>")   'buf-move-down)
@@ -550,77 +528,7 @@ Result depends on syntax table's comment character."
       focus-follows-mouse t)
 ;;(setq interprogram-paste-function 'x-cut-buffer-or-selection-value)
 
-;; See https://github.com/ch11ng/exwm/wiki
-;; https://github.com/ch11ng/exwm/wiki/Configuration-Example
-(when (boundp 'use-exwm)
-  (setq mouse-autoselect-window nil
-        focus-follows-mouse nil)
-  ;;(ido-mode 1)
-  (require 'exwm)
-  (require 'exwm-config)
-  ;;(exwm-config-ido)
-  ;;(exwm-config-default)
-  (require 'exwm-randr)
-  ;;(add-hook 'exwm-randr-screen-change-hook
-  ;;        (lambda ()
-  ;;          (start-process-shell-command
-  ;;           "xrandr" nil "xrandr --output VGA1 --left-of LVDS1 --auto")))
-  (require 'exwm-systemtray)
-  ;;(setq exwm-workspace-number 4)
-  ;;(setq mouse-autoselect-window nil)
-  (global-set-key [mode-line mouse-2] 'exwm-layout-toggle-fullscreen)
-  (add-hook 'exwm-update-class-hook
-            (lambda ()
-              (unless (or (string-prefix-p "sun-awt-X11-" exwm-instance-name)
-                          (string= "gimp" exwm-instance-name))
-                (exwm-workspace-rename-buffer exwm-class-name))))
-  (add-hook 'exwm-update-title-hook
-            (lambda ()
-              (when (or (not exwm-instance-name)
-                        (string-prefix-p "sun-awt-X11-" exwm-instance-name)
-                        (string= "gimp" exwm-instance-name))
-                (exwm-workspace-rename-buffer exwm-title))))
-  (setq exwm-input-global-keys
-        `(([?\s-r] . exwm-reset)
-          ([?\s-w] . exwm-workspace-switch)
-          ,@(mapcar (lambda (i)
-                      `(,(kbd (format "s-%d" i)) .
-                        (lambda ()
-                          (interactive)
-                          (exwm-workspace-switch-create ,i))))
-                    (number-sequence 0 9))
-          ([?\s-&] . (lambda (command)
-                       (interactive (list (read-shell-command "$ ")))
-                       (start-process-shell-command command nil command)))
-          [s-o] . (lambda ()
-		    (interactive)
-		    (start-process "" nil "/usr/bin/slock"))))
-  (define-key exwm-mode-map [?\C-q] #'exwm-input-send-next-key)
-  (exwm-enable)
-  (exwm-randr-enable)
-  (exwm-systemtray-enable))
-
-
-
-;;No splash screen
-(setq inhibit-startup-message t)
-
-;;Disable bars
-(add-hook 'after-make-frame-functions 'simplify-ui)
-(defun simplify-ui (frame)
-  (interactive)
-  "Remove unwanted menubar/scrollbar/etc"
-  (modify-frame-parameters frame
-                           '((menu-bar-lines . 0)
-                             (tool-bar-lines . 0)
-                             (vertical-scroll-bars . nil)
-                             (horizontal-scroll-bars . nil))))
-(when (display-graphic-p)
-  (scroll-bar-mode -1)
-  (tool-bar-mode -1)
-  (menu-bar-mode -1)
-  (fringe-mode 1)
-  (display-time-mode t))
+(load "init-exwm.el")
 
 ;;Diff adjustements
 (setq ediff-split-window-function 'split-window-horizontally)
@@ -629,10 +537,19 @@ Result depends on syntax table's comment character."
 ;;using_editor=1
 ;;merge_command="emacs-merge %orig %new %merged"
 
+(global-font-lock-mode t)
+(delete-selection-mode t)
+(auto-compression-mode t)
+(line-number-mode t)
+(column-number-mode t)
 ;;Show matching parentheses
-(show-paren-mode 1)
+(show-paren-mode t)
 (setq show-paren-delay 0)
-
+(transient-mark-mode t)
+(global-hl-line-mode t)
+;(setq cursor-type 'bar)
+(setq redisplay-dont-pause t)
+;(setq ring-bell-function 'ignore)
 
 (require 'recentf)
 (setq recentf-auto-cleanup 'never)
@@ -690,9 +607,9 @@ Result depends on syntax table's comment character."
 (load "directory-helper-functions")
 
 (add-hook 'dired-mode-hook 'dired-hide-details-mode)
-(customize-set-variable 'dired-mode-hook (quote (dired-hide-details-mode)))
-(customize-set-variable 'show-paren-mode t)
-(customize-set-variable 'custom-enabled-themes '(gruvbox))
-(customize-set-variable 'ansi-color-faces-vector [default default default italic underline success warning error])
-(customize-set-variable 'ansi-color-names-vector ["#242424" "#e5786d" "#95e454" "#cae682" "#8ac6f2" "#333366" "#ccaa8f" "#f6f3e8"])
+;(customize-set-variable 'dired-mode-hook (quote (dired-hide-details-mode)))
+;(customize-set-variable 'show-paren-mode t)
+;(customize-set-variable 'custom-enabled-themes '(gruvbox))
+;(customize-set-variable 'ansi-color-faces-vector [default default default italic underline success warning error])
+;(customize-set-variable 'ansi-color-names-vector ["#242424" "#e5786d" "#95e454" "#cae682" "#8ac6f2" "#333366" "#ccaa8f" "#f6f3e8"])
 (put 'downcase-region 'disabled nil)

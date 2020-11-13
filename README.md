@@ -45,9 +45,7 @@ After that the following should be your .emacs file:
 
 (add-to-list 'load-path "~/.emacs.d/_0x17de/")
 
-; INFO: Be sure to put your custom-set-variables section
-;       here - before the next load command - to allow
-;       custom-safe-themes to take effect!
+; INFO: Your custom config can be either here or inside ~/.emacs.d/_0x17de/custom.el
 
 (load "_0x17de-emacs")
 
