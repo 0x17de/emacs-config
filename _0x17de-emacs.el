@@ -448,8 +448,8 @@ Result depends on syntax table's comment character."
 
 (use-package yasnippet
   :config
-  (add-to-list 'yas-snippet-dirs (concat (file-name-directory load-file-name) "snippets"))
-  (yas-global-mode 1)
+  (add-to-list 'yas-snippet-dirs (expand-file-name "snippets" (file-name-directory load-file-name)))
+  (yas-global-mode t)
   :bind (("C-M-S-y" . 'yas-describe-tables)))
 
 ;;(global-set-key (kbd "C-c w") 'whitespace-mode)
