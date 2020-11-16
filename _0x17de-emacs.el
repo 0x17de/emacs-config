@@ -179,6 +179,12 @@ Result depends on syntax table's comment character."
   :config
   (add-hook 'company-completion-started-hook 'company-init-quickhelp)
   (setq company-backends '())) ; we explicitly add all the backends we need
+(use-package lsp-mode
+  :commands (lsp lsp-deferred)
+  :hook (go-mode . lsp-deferred))
+(use-package lsp-ui-mode
+  :commands lsp-ui-mode
+  :init)
 (use-package company-lsp)
 (use-package company-jedi)
 (use-package company-irony)
@@ -239,18 +245,20 @@ Result depends on syntax table's comment character."
 (use-package go-scratch)
 (use-package go-playground)
 (use-package flycheck-golangci-lint)
-(use-package company-go)
+;;(use-package company-go)
+(use-package go-complete)
 (use-package go-mode
   :ensure-system-package
   ((goimports     . "go get -u golang.org/x/tools/cmd/goimports")
    (godoc         . "go get -u github.com/godoctor/godoctor")
-   (gocode        . "go get -u github.com/nsf/gocode")
+   ;;(gocode        . "go get -u github.com/mdempsky/gocode")
    (guru          . "go get -u golang.org/x/tools/cmd/guru")
-   (golangci-lint . "go get -u github.com/golangci/golangci-lint/cmd/golangci-lint")
+   ;;broken: (golangci-lint . "go get -u github.com/golangci/golangci-lint/cmd/golangci-lint")
    (godef         . "go get -u github.com/rogpeppe/godef")
    (godoc         . "go get -u golang.org/x/tools/cmd/godoc")
    (gogetdoc      . "go get -u github.com/zmb3/gogetdoc")
-   (dep           . "go get -u github.com/golang/dep/cmd/dep"))
+   (dep           . "go get -u github.com/golang/dep/cmd/dep")
+   (gopls         . "go get -u golang.org/x/tools/gopls"))
   :config
   (add-hook 'go-mode-hook
             (lambda ()
@@ -264,6 +272,14 @@ Result depends on syntax table's comment character."
               (go-guru-hl-identifier-mode)
               (flycheck-golangci-lint-setup)
               (flycheck-mode t)
+              (setq lsp-gopls-staticcheck t)
+              (setq lsp-eldoc-render-all t)
+              (setq lsp-gopls-complete-unimported t)
+              (setq lsp-ui-doc-enable nil)
+              (setq lsp-ui-peek-enable t)
+              (setq lsp-ui-imenu-enable t)
+              (setq lsp-ui-flycheck-enable t)
+              ;(add-hook 'complete-at-point-functions 'go-complete-at-point)
               (company-mode t)))
   (setq go-godoc-reuse-buffer t)
   (setq godoc-at-point-function 'godoc-gogetdoc)
