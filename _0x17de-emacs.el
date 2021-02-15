@@ -182,9 +182,6 @@ Result depends on syntax table's comment character."
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
   :hook (go-mode . lsp-deferred))
-(use-package lsp-ui-mode
-  :commands lsp-ui-mode
-  :init)
 (use-package company-lsp)
 (use-package company-jedi)
 (use-package company-irony)
