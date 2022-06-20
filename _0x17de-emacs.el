@@ -22,6 +22,9 @@
 (global-set-key (kbd "<M-down>") 'move-text-down)
 ;(global-set-key (kbd "<home>") 'smart-beginning-of-line)
 
+;; avoid help-for-help via f1
+(global-unset-key [(f1)])
+
 ;; Tab fix
 (global-set-key (kbd "<backtab>") 'insert-tab-char)
 (global-set-key (kbd "<C-tab>") 'company-complete)
@@ -182,7 +185,6 @@ Result depends on syntax table's comment character."
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
   :hook (go-mode . lsp-deferred))
-(use-package company-lsp)
 (use-package company-jedi)
 (use-package company-irony)
 (use-package company-c-headers)
@@ -221,7 +223,7 @@ Result depends on syntax table's comment character."
 (add-hook 'lisp-mode-hook
           (lambda ()
             (make-local-variable 'company-backends)
-            (setq company-backends '(company-lsp
+            (setq company-backends '(company-capf
                                      company-files))
             (company-mode t)))
 (define-key lisp-mode-map [(tab)] 'company-indent-or-complete-common)
@@ -231,7 +233,7 @@ Result depends on syntax table's comment character."
           (lambda ()
             (make-local-variable 'company-backends)
             (setq company-backends '(company-elisp
-                                     company-lsp
+                                     company-capf
                                      company-files))
             (company-mode t)))
 (define-key emacs-lisp-mode-map [(tab)] 'company-indent-or-complete-common)

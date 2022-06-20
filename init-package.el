@@ -1,7 +1,7 @@
 (require 'package)
-(setq-default load-prefer-newer t)
+;(setq-default load-prefer-newer t)
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
-(setq-default package-enable-at-startup nil)
+;(setq-default package-enable-at-startup nil)
 (package-initialize)
 
 (when (not (package-installed-p 'use-package))
