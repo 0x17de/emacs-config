@@ -65,8 +65,8 @@
 
 
 (ido-mode t)
-;(use-package color-theme-sanityinc-tomorrow
-;  :ensure t)
+(use-package color-theme-sanityinc-tomorrow
+  :ensure t)
 (use-package smart-mode-line
   :config
   (sml/setup))
@@ -474,7 +474,6 @@ Result depends on syntax table's comment character."
 ;; notes: speedbar, sr-speedbar
 
 (load "latex-compile-on-save.el")
-(load "ext/misc/dired+")
 
 (load "ext/tex-switch-quotes/tex-switch-quotes")
 (load "ext/misc/hl-line+")
