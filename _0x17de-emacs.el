@@ -246,6 +246,22 @@ Result depends on syntax table's comment character."
 (use-package flycheck-golangci-lint)
 ;;(use-package company-go)
 (use-package go-complete)
+
+(defun ox-install-go-dependencies ()
+  "Install go-mode dependencies"
+  (interactive)
+  (let ((commands '("go install golang.org/x/tools/cmd/goimports@latest"
+                    "go install github.com/godoctor/godoctor@latest"
+                    "go install golang.org/x/tools/cmd/guru@latest"
+                    "go install github.com/rogpeppe/godef@latest"
+                    "go install golang.org/x/tools/cmd/godoc@latest"
+                    "go install github.com/zmb3/gogetdoc@latest"
+                    "go install golang.org/x/tools/gopls@latest")))
+    (dolist (cmd commands)
+      (message "Running: %s" cmd)
+      (shell-command cmd)
+      (message "Completed: %s" cmd))
+    (message "All Go dependencies installed!")))
 (use-package go-mode
   :ensure-system-package
   ((goimports     . "go install golang.org/x/tools/cmd/goimports@latest")

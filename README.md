@@ -16,10 +16,10 @@
 Place a file `.dir-locals.el` into the project's root for some autocompletions like for C++ to correctly detect the project root.
 
 - C++: using irony & syntax via clang + flycheck; working well together with cmake projects while always tring to use `$PROJECT_ROOT/build` instead of a directory inside /tmp/ for builds (you might want to call `M-x cmake-ide-run-cmake` if something looks messed up). The compile command (`<f5>`) also supports ninja based cmake projects.
-- Python: using "jedi" + flycheck
+- Python: using "jedi" + flycheck; run `M-x jedi:install-server`
 - Rust: using racer + company-mode + flycheck
 - LaTeX: usinx AUCTeX + compile on save minor mode "latex-compile-on-save-mode"
-- golang: calls gofmt/goimports on save
+- golang: calls gofmt/goimports on save; run `M-x ox-install-go-dependencies`
 
 ## Setup
 
