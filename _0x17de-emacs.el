@@ -53,17 +53,19 @@
                  (setq command (read-shell-command "Shell command on region: "))
                  (list (region-beginning) (region-end) command)))
   (let ((string (buffer-substring-no-properties posBegin posEnd))
-        (buffer (current-buffer)))
+        (buffer (current-buffer))
+        (shell-output-exists (get-buffer "*Shell Command Output*")))
     (with-temp-buffer
       (insert string)
       (shell-command-on-region (point-min) (point-max) command (current-buffer))
       (setq string (buffer-substring-no-properties (point-min) (point-max))))
     (delete-region posBegin posEnd)
     (insert string)
-    ;; Close *Shell Command Output* buffer if it exists
-    (let ((output-buffer (get-buffer "*Shell Command Output*")))
-      (when output-buffer
-        (kill-buffer output-buffer)))))
+    ;; If *Shell Command Output* wasn't opened before, kill it
+    (unless shell-output-exists
+      (let ((output-buffer (get-buffer "*Shell Command Output*")))
+        (when output-buffer
+          (kill-buffer output-buffer))))))
 
 (global-set-key (kbd "C-M-|") 'replace-with-shell)
 
