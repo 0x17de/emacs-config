@@ -71,8 +71,20 @@
 
 
 (ido-mode t)
+(defun add-theme-to-safe-list (theme)
+  "Compute the SHA-256 hash of the THEME and add it to `custom-safe-themes'."
+  (let* ((theme-file (locate-file (concat (symbol-name theme) "-theme.el")
+                                 custom-theme-load-path))
+         (hash (when theme-file
+                 (with-temp-buffer
+                   (insert-file-contents-literally theme-file)
+                   (secure-hash 'sha256 (current-buffer))))))
+    (when (and hash (not (member hash custom-safe-themes)))
+      (customize-save-variable 'custom-safe-themes (cons hash custom-safe-themes)))))
 (use-package color-theme-sanityinc-tomorrow
-  :ensure t)
+  :ensure t
+  :init
+  (add-theme-to-safe-list 'sanityinc-tomorrow-eighties))
 (use-package smart-mode-line
   :config
   (sml/setup))
