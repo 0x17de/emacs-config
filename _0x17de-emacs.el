@@ -59,7 +59,11 @@
       (shell-command-on-region (point-min) (point-max) command (current-buffer))
       (setq string (buffer-substring-no-properties (point-min) (point-max))))
     (delete-region posBegin posEnd)
-    (insert string)))
+    (insert string)
+    ;; Close *Shell Command Output* buffer if it exists
+    (let ((output-buffer (get-buffer "*Shell Command Output*")))
+      (when output-buffer
+        (kill-buffer output-buffer)))))
 
 (global-set-key (kbd "C-M-|") 'replace-with-shell)
 
