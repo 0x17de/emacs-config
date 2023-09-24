@@ -12,6 +12,7 @@
 (load "init-package.el")
 (load "init-encoding.el")
 (load "init-gui.el")
+(load "init-zoom-frm.el")
 
 (global-unset-key (kbd "C-z")) ; stop me from freezing emacs
 ;; Always group items in buffer menu
