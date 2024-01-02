@@ -396,32 +396,21 @@ Result depends on syntax table's comment character."
   (set-face-background 'highlight-indent-guides-even-face "gray20")
   (set-face-foreground 'highlight-indent-guides-character-face "gray18"))
 
-(defun my/rust-setup ()
-  "Setup the rust variables; Environment variables overwrite internal variables"
-  (unless (getenv "RUST_SRC_PATH")
-    (let ((rust-source-dir (expand-file-name "~/src/rust/src")))
-      (setenv "RUST_SRC_PATH" rust-source-dir)
-      (setq racer-rust-src-path rust-source-dir)))
-  (unless racer-rust-src-path
-    (setq racer-rust-src-path (getenv "RUST_SRC_PATH"))))
-
-(use-package racer)
+;(use-package racer)
 (use-package rust-mode
   :config
   (add-hook 'rust-mode-hook
             (lambda ()
-              (make-local-variable 'company-backends)
-              (setq company-backends '(company-racer
-                                       company-files))
-              (my/rust-setup)
-              (racer-mode t)
+              ;(racer-mode t)
               (eldoc-mode t)
               (company-mode t)
               (flycheck-mode t)
-              (flycheck-rust-setup)))
-  (define-key rust-mode-map [(f1)] 'racer-describe)
+              (flycheck-rust-setup)
+              (lsp)))
   (define-key rust-mode-map [(f5)] 'rust-compile)
   (define-key rust-mode-map [(tab)] 'company-indent-or-complete-common))
+(setq lsp-rust-analyzer-server-command '("rust-analyzer"))
+
 (use-package org
   :config
   (add-hook 'org-mode-hook
