@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: ansible community.general
+# key: cg.
+# condition: (bound-and-true-p ansible)
+# --
+community.general.

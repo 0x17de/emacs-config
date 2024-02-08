@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: ansible builtin
+# key: ab.
+# condition: (bound-and-true-p ansible)
+# --
+ansible.builtin.
