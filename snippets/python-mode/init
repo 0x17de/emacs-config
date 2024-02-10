@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: python init
+# key: init
+# --
+#!/usr/bin/python
+
+def main():
+    ${0:pass}
+
+if __name__ == '__main__':
+    main()

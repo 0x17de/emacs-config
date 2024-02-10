@@ -1,0 +1,24 @@
+# -*- mode: snippet -*-
+# name: ansiblemodule
+# key: ansiblemodule
+# --
+#!/usr/bin/python
+
+from ansible.module_utils.basic import AnsibleModule
+import json
+import subprocess
+import shutil
+
+def main():
+    module = AnsibleModule(
+        argument_spec=dict(
+            $0
+        ),
+        supports_check_mode=False,
+    )
+
+    data = {}
+    module.exit_json(changed=True, msg="Executed successfully", json=data)
+
+if __name__ == '__main__':
+    main()
