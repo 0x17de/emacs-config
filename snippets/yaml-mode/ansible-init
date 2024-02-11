@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: ansible init
+# key: init
+# condition: (bound-and-true-p ansible)
+# --
+- hosts: '{{targets|default([])}}'
+  gather_facts: false
+  tasks:
+    - 
