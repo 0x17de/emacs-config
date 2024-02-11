@@ -486,10 +486,12 @@ Result depends on syntax table's comment character."
 ;;                    ("RET" . newline-and-indent)))
 
 (use-package yasnippet
+  :ensure t
+  :demand
   :config
   (add-to-list 'yas-snippet-dirs (expand-file-name "snippets" user-emacs-directory))
   (add-to-list 'yas-snippet-dirs (expand-file-name "snippets" (expand-file-name "_0x17de" user-emacs-directory)))
-  (yas-global-mode t)
+  (yas-global-mode 1)
   :bind (("C-M-S-y" . 'yas-describe-tables)))
 
 ;;(global-set-key (kbd "C-c w") 'whitespace-mode)
