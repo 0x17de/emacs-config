@@ -1,7 +1,7 @@
 (require 'package)
 ;(setq-default load-prefer-newer t)
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
-(add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/"))
+;(add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/"))
 ;(setq-default package-enable-at-startup nil)
 (package-initialize)
 
