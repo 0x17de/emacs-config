@@ -81,7 +81,8 @@
                    (insert-file-contents-literally theme-file)
                    (secure-hash 'sha256 (current-buffer))))))
     (when (and hash (not (member hash custom-safe-themes)))
-      (customize-save-variable 'custom-safe-themes (cons hash custom-safe-themes)))))
+      (add-to-list 'custom-safe-themes hash)
+      (customize-save-variable 'custom-safe-themes custom-safe-themes))))
 (use-package color-theme-sanityinc-tomorrow
   :ensure t
   :init
