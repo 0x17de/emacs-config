@@ -5,8 +5,10 @@
 ;(setq-default package-enable-at-startup nil)
 (package-initialize)
 
-(when (not (package-installed-p 'use-package))
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
   (package-install 'use-package t))
+
 (require 'use-package)
 (setq-default
  use-package-always-defer t
