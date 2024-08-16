@@ -255,7 +255,28 @@ Result depends on syntax table's comment character."
   (define-key cmake-mode-map [(f5)] 'recompile)
   (define-key cmake-mode-map [(tab)] 'company-indent-or-complete-common))
 
-;(use-package lsp-ui)
+(use-package lsp-ui
+  :ensure t
+  :after lsp-mode
+  :config
+  (setq lsp-ui-doc-enable t)
+  (setq lsp-ui-doc-show-with-cursor t)
+  (setq lsp-ui-doc-show-with-mouse nil)
+  (setq lsp-ui-doc-position 'at-point)
+  (setq lsp-ui-doc-delay 0.5)
+  (setq lsp-ui-doc-use-childframe t)
+  (setq lsp-ui-doc-use-webkit nil)
+  (setq lsp-ui-doc-include-signature t)
+  (setq lsp-ui-doc-max-width 150)
+  (setq lsp-ui-doc-max-height 30)
+  (setq lsp-ui-doc-header t)
+  (setq lsp-ui-doc-border "white")
+
+  ;; Use mouse events to trigger and navigate doc
+  (define-key lsp-ui-doc-frame-mode-map [mouse-1] #'ignore)
+  (define-key lsp-ui-doc-frame-mode-map [mouse-3] #'lsp-ui-doc-hide)
+  (define-key lsp-ui-doc-frame-mode-map [mouse-wheel-up] #'lsp-ui-doc-scroll-up)
+  (define-key lsp-ui-doc-frame-mode-map [mouse-wheel-down] #'lsp-ui-doc-scroll-down))
 
 (require 'lisp-mode)
 (add-hook 'lisp-mode-hook
