@@ -8,7 +8,7 @@
   (make-hash-table :test #'equal))
 
 
-(defstruct oxci--project
+(cl-defstruct oxci--project
   initial
   projectroot
   commandfile
