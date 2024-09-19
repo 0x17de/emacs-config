@@ -222,8 +222,8 @@ Result depends on syntax table's comment character."
   (setq company-backends '())) ; we explicitly add all the backends we need
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
-  :hook (go-mode . lsp-deferred))
-(use-package company-jedi)
+  :hook (go-mode . lsp-deferred)
+  :config (setq lsp-prefer-flymake nil))
 (use-package company-irony)
 (use-package company-c-headers)
 (use-package flycheck)
@@ -407,8 +407,6 @@ Result depends on syntax table's comment character."
   (load "ox-cmake-ide.el")
   (ox-cmake-ide))
 (use-package auto-virtualenv)
-;(use-package jedi
-;  :ensure t)
 (use-package realgud)
 (use-package python
   :config
@@ -423,10 +421,11 @@ Result depends on syntax table's comment character."
               (company-mode t)
               (flycheck-mode t)
               (hs-minor-mode t)
-	      (highlight-indent-guides-mode t)
-	      (rainbow-delimiters-mode t)))
+              (highlight-indent-guides-mode t)
+              (rainbow-delimiters-mode t)
+              (lsp-deferred)))
   (define-key python-mode-map [(tab)] 'company-indent-or-complete-common)
-  (define-key python-mode-map [(f1)] 'jedi:show-doc))
+  (define-key python-mode-map [(f1)] 'lsp-describe-thing-at-point))
 (use-package pyimport)
 (use-package pyimpsort)
 (use-package highlight-indent-guides
@@ -436,6 +435,12 @@ Result depends on syntax table's comment character."
   (set-face-background 'highlight-indent-guides-odd-face "gray18")
   (set-face-background 'highlight-indent-guides-even-face "gray20")
   (set-face-foreground 'highlight-indent-guides-character-face "gray18"))
+(use-package lsp-pyright
+  :ensure t
+  :after lsp-mode
+  :config
+  (setq lsp-pyright-auto-import-completions t
+        lsp-pyright-use-library-code-for-types t))
 
 ;(use-package racer)
 (use-package rust-mode
