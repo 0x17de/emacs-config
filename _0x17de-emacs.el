@@ -306,7 +306,8 @@ Result depends on syntax table's comment character."
               (setq c-basic-offset 4)
               (company-mode t)
               (flycheck-mode t)
-              (setq company-backends '(company-capf company-files))))
+              (setq company-backends '(company-capf company-files))
+              (lsp-deferred)))
   (define-key java-mode-map [(tab)] 'company-indent-or-complete-common))
 
 (use-package go-guru)
