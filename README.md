@@ -20,6 +20,7 @@ Place a file `.dir-locals.el` into the project's root for some autocompletions l
 - Rust: using racer + company-mode + flycheck
 - LaTeX: usinx AUCTeX + compile on save minor mode "latex-compile-on-save-mode"
 - golang: calls gofmt/goimports on save; run `M-x ox-install-go-dependencies`
+- Java: using lsp-java. run `M-x lsp-install-server RET jdtls RET` to install the language server
 
 ## Setup
 

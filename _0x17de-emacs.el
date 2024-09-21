@@ -222,7 +222,8 @@ Result depends on syntax table's comment character."
   (setq company-backends '())) ; we explicitly add all the backends we need
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
-  :hook (go-mode . lsp-deferred)
+  :hook ((go-mode . lsp-deferred)
+         (java-mode . lsp-deferred))
   :config (setq lsp-prefer-flymake nil))
 (use-package company-irony)
 (use-package company-c-headers)
@@ -296,6 +297,17 @@ Result depends on syntax table's comment character."
                                      company-files))
             (company-mode t)))
 (define-key emacs-lisp-mode-map [(tab)] 'company-indent-or-complete-common)
+
+(use-package lsp-java
+  :ensure t
+  :config
+  (add-hook 'java-mode-hook
+            (lambda ()
+              (setq c-basic-offset 4)
+              (company-mode t)
+              (flycheck-mode t)
+              (setq company-backends '(company-capf company-files))))
+  (define-key java-mode-map [(tab)] 'company-indent-or-complete-common))
 
 (use-package go-guru)
 (use-package go-eldoc)
@@ -513,19 +525,6 @@ Result depends on syntax table's comment character."
 (define-key TeX-mode-map [(f5)] 'my/latexmk-run)
 (define-key TeX-mode-map [(tab)] 'company-indent-or-complete-common)
 (define-key TeX-mode-map [(f1)] 'company-show-doc-buffer)
-
-(use-package meghanada
-  :config
-  (add-hook 'java-mode-hook
-            (lambda ()
-              (make-local-variable 'company-backends)
-              (setq company-backends '(company-meghanada
-                                       company-files))
-              (setq c-basic-offset 4)
-              (meghanada-mode t)
-              (flycheck-mode t)
-              (company-mode t)))
-  (define-key java-mode-map [(tab)] 'company-indent-or-complete-common))
 
 ;;(use-package zygospore
 ;;             :bind (("C-x 1" . zygospore-toggle-delete-other-windows)
