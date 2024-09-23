@@ -14,6 +14,10 @@
 (load "init-gui.el")
 (load "init-zoom-frm.el")
 
+(use-package exec-path-from-shell
+  :ensure t
+  :init (exec-path-from-shell-initialize))
+
 (global-unset-key (kbd "C-z")) ; stop me from freezing emacs
 ;; Always group items in buffer menu
 (setq mouse-buffer-menu-mode-mult 0)
