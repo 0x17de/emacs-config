@@ -223,12 +223,14 @@ Result depends on syntax table's comment character."
         company-tooltip-align-annotations t)
   :config
   (add-hook 'company-completion-started-hook 'company-init-quickhelp)
+  (company-tng-mode t)
   (setq company-backends '())) ; we explicitly add all the backends we need
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
   :hook ((go-mode . lsp-deferred)
          (java-mode . lsp-deferred))
-  :config (setq lsp-prefer-flymake nil))
+  :config (setq lsp-prefer-flymake nil
+                lsp-file-watch-threshold 4000))
 (use-package company-irony)
 (use-package company-c-headers)
 (use-package flycheck)
@@ -304,15 +306,22 @@ Result depends on syntax table's comment character."
 
 (use-package lsp-java
   :ensure t
+  :after lsp-mode
   :config
   (add-hook 'java-mode-hook
             (lambda ()
               (setq c-basic-offset 4)
+              (setq lsp-java-completion-enabled t)
+              (setq lsp-java-completion-overwrite nil)
+              (setq lsp-java-completion-guess-method-arguments t)
+              (setq lsp-prefer-flymake nil)
+              (setq lsp-enable-completion-at-point t)
+              (setq lsp-completion-provider :capf)
               (company-mode t)
               (flycheck-mode t)
               (setq company-backends '(company-capf company-files))
               (lsp-deferred)))
-  (define-key java-mode-map [(tab)] 'company-indent-or-complete-common))
+  (define-key java-mode-map (kbd "TAB") 'company-indent-or-complete-common))
 
 (use-package go-guru)
 (use-package go-eldoc)
