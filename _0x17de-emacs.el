@@ -582,6 +582,7 @@ Result depends on syntax table's comment character."
 ;; No backup files
 (setq make-backup-files nil)
 (setq auto-save-default nil)
+(setq create-lockfiles nil)
 
 ;; Yes or no short
 (defalias 'yes-or-no-p 'y-or-n-p)
