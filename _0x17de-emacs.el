@@ -488,6 +488,8 @@ Result depends on syntax table's comment character."
   (add-hook 'org-mode-hook
             (lambda ()
               (define-key org-mode-map (kbd "C-c .") 'org-time-stamp))))
+(use-package ox-search
+  :hook (org-mode . ox-search-mode))
 (load "ext/ox-confluence/ox-confluence")
 (use-package ein)
 (use-package ess-mode
