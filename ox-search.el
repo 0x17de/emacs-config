@@ -1,4 +1,5 @@
 ;;+begin-search: :match "begin-search"
+(require 'button)  ; Add this to ensure button library is loaded
 
 (defun ox-parse-search-line ()
   "Parse #+begin-search: or ;;+begin-search: or //+begin-search: line as a plist."
@@ -11,7 +12,7 @@
                 ((string-match "^;;\\+begin-search:\\(.*\\)" line)
                  (match-string 1 line))
                 ((string-match "^//\\+begin-search:\\(.*\\)" line)
-                 (match-string 1 lin)e))))
+                 (match-string 1 line)))))
     (when args
       (condition-case nil
           (let ((match (plist-get (car (read-from-string (concat "(" args ")"))) :match)))
@@ -22,7 +23,35 @@
   "Execute save/restore if in appropriate mode."
   `(if (derived-mode-p 'org-mode)
        (org-fold-core-save-visibility ,@body)
-    (progn ,@body)))
+     (progn ,@body)))
+
+(defun ox-goto-line (line-num)
+  "Jump to the specified line number while preserving search results view."
+  (interactive "nGoto line: ")
+  (let ((target-line (save-excursion
+                       (save-restriction
+                         (widen)
+                         (goto-char (point-min))
+                         (forward-line (1- line-num))
+                         (point)))))
+    (push-mark)
+    (goto-char target-line)
+    (pulse-momentary-highlight-one-line (point))))
+
+(define-button-type 'ox-line-button
+  'action (lambda (button)
+            (ox-goto-line (button-get button 'target-line)))
+  'follow-link t
+  'help-echo "Click to jump to this line")
+
+(defun ox-make-line-button (line-num)
+  "Create a button for jumping to LINE-NUM."
+  (with-temp-buffer
+    (insert (format "(line %s)" line-num))
+    (make-text-button (point-min) (point-max)
+                      'type 'ox-line-button
+                      'target-line line-num)
+    (buffer-string)))
 
 (defun ox-update-search-at-point ()
   "Update the search results at point."
@@ -48,9 +77,9 @@
                  ;; Only add if we haven't seen this line number before
                  (unless (gethash line-num matches)
                    (puthash line-num t matches)
-                   (push (format "- %s (line %d)"
+                   (push (format "- %s %s"
                                  line-content
-                                 line-num)
+                                 (ox-make-line-button line-num))
                          results)))))))
         (overlay-put ov 'after-string
                      (concat " [Update]\n"
