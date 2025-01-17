@@ -18,6 +18,12 @@
             match)
         (error nil)))))
 
+(defmacro ox--with-mode-save (&rest body)
+  "Execute save/restore if in appropriate mode."
+  `(if (derived-mode-p 'org-mode)
+       (org-fold-core-save-visibility ,@body)
+    (progn ,@body)))
+
 (defun ox-update-search-at-point ()
   "Update the search results at point."
   (interactive)
@@ -29,22 +35,23 @@
             (matches (make-hash-table :test 'equal))  ; Use hash table to track unique lines
             (results '()))
         (save-excursion
-          (goto-char (point-min))
-          (while (re-search-forward pattern nil t)
-            (unless (and (>= (point) search-line-start)
-                         (<= (point) search-line-end))
-              (let* ((line-num (line-number-at-pos))
-                     (line-content (string-trim-left
-                                    (buffer-substring-no-properties
-                                     (line-beginning-position)
-                                     (line-end-position)))))
-                ;; Only add if we haven't seen this line number before
-                (unless (gethash line-num matches)
-                  (puthash line-num t matches)
-                  (push (format "- %s (line %d)"
-                                line-content
-                                line-num)
-                        results))))))
+          (ox--with-mode-save
+           (goto-char (point-min))
+           (while (re-search-forward pattern nil t)
+             (unless (and (>= (point) search-line-start)
+                          (<= (point) search-line-end))
+               (let* ((line-num (line-number-at-pos))
+                      (line-content (string-trim-left
+                                     (buffer-substring-no-properties
+                                      (line-beginning-position)
+                                      (line-end-position)))))
+                 ;; Only add if we haven't seen this line number before
+                 (unless (gethash line-num matches)
+                   (puthash line-num t matches)
+                   (push (format "- %s (line %d)"
+                                 line-content
+                                 line-num)
+                         results)))))))
         (overlay-put ov 'after-string
                      (concat " [Update]\n"
                              (mapconcat 'identity (nreverse results) "\n")
