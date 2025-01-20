@@ -3,7 +3,6 @@
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
 ;(add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/"))
 ;(setq-default package-enable-at-startup nil)
-(package-initialize)
 
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
