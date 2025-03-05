@@ -1,7 +1,8 @@
 (use-package emr)
 (use-package rainbow-delimiters
   :config
-  (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
+  (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
+  (add-hook 'salt-mode-hook 'rainbow-delimiters-mode))
 (use-package rainbow-mode
   :config
   (setq rainbow-x-colors nil)

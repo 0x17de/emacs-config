@@ -1,5 +1,6 @@
 (use-package lsp-java
   :ensure t
+  :defer t
   :after lsp-mode
   :config
   (add-hook 'java-mode-hook
@@ -8,7 +9,6 @@
               (setq lsp-java-completion-enabled t)
               (setq lsp-java-completion-overwrite nil)
               (setq lsp-java-completion-guess-method-arguments t)
-              (setq lsp-prefer-flymake nil)
               (setq lsp-enable-completion-at-point t)
               (setq lsp-completion-provider :capf)
               (company-mode t)

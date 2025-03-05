@@ -1,6 +1,7 @@
 (use-package auto-virtualenv)
 (use-package realgud)
 (use-package python
+  :defer t
   :config
   (add-hook 'python-mode-hook
             (lambda ()

@@ -62,8 +62,6 @@ Result depends on syntax table's comment character."
 
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
-  :hook ((go-mode . lsp-deferred)
-         (java-mode . lsp-deferred))
   :config (setq lsp-prefer-flymake nil
                 lsp-file-watch-threshold 4000))
 (use-package flycheck)
