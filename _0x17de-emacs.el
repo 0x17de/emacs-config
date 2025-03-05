@@ -24,11 +24,17 @@
 (load "utils/misc")
 
 (use-package smart-mode-line
+  :ensure t
   :config
   (sml/setup))
 (use-package multi-term
+  :ensure t
   :config
   (load "multi-term-settings.el"))
+(use-package doom-modeline
+  :ensure t
+  :init
+  (doom-modeline-mode t))
 
 (load "utils/multiple-cursors")
 ;;(use-package sudo-edit)
@@ -40,6 +46,7 @@
 
 (use-package stickyfunc-enhance)
 (use-package smex
+  :ensure t
   :init
   (smex-initialize)
   (global-set-key (kbd "M-x") 'smex)
