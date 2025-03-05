@@ -21,7 +21,7 @@
 (defalias 'yes-or-no-p 'y-or-n-p)
 
 ;;Just kill buffer without asking
-(global-set-key (kbd "C-M-S-q") 'kill-this-buffer)
+(global-set-key (kbd "C-M-S-q") (lambda () (interactive) (kill-this-buffer)))
 (global-set-key (kbd "C-M-S-x") 'multi-term)
 (global-set-key (kbd "C-M-S-w") (lambda () (interactive)
                                   (kill-this-buffer)
