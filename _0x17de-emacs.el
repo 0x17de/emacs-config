@@ -27,10 +27,9 @@
   :ensure t
   :config
   (sml/setup))
-(use-package multi-term
+(use-package vterm
   :ensure t
-  :config
-  (load "multi-term-settings.el"))
+  :bind (("C-M-S-x" . 'vterm)))
 (use-package doom-modeline
   :ensure t
   :init

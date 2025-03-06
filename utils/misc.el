@@ -22,7 +22,6 @@
 
 ;;Just kill buffer without asking
 (global-set-key (kbd "C-M-S-q") (lambda () (interactive) (kill-this-buffer)))
-(global-set-key (kbd "C-M-S-x") 'multi-term)
 (global-set-key (kbd "C-M-S-w") (lambda () (interactive)
                                   (kill-this-buffer)
                                   (if (equal 1 (length (window-list)))
