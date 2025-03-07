@@ -1,4 +1,5 @@
 (use-package org
+  :ensure nil
   :defer t
   :config
   (add-hook 'org-mode-hook

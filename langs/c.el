@@ -47,6 +47,7 @@
   (setq c-basic-offset 4)
   )
 (use-package cc-mode
+  :ensure nil
   :config
   (load "ext/google-styleguide/google-c-style")
   (add-hook 'c-mode-hook 'c-mode-common-init)

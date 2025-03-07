@@ -22,6 +22,7 @@ Result depends on syntax table's comment character."
   :init
   (global-set-key (kbd "C-S-j") 'dumb-jump-go))
 (use-package semantic
+  :ensure nil
   :config
   (advice-add 'semantic-analyze-completion-at-point-function
               :around #'semantic-completion-advice)
