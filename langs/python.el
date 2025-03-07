@@ -2,7 +2,6 @@
 (use-package realgud)
 (use-package python
   :ensure nil
-  :defer t
   :config
   (add-hook 'python-mode-hook
             (lambda ()
@@ -30,7 +29,6 @@
   (set-face-background 'highlight-indent-guides-even-face "gray20")
   (set-face-foreground 'highlight-indent-guides-character-face "gray18"))
 (use-package lsp-pyright
-  :ensure t
   :after lsp-mode
   :config
   (setq lsp-pyright-auto-import-completions t

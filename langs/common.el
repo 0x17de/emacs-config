@@ -68,7 +68,6 @@ Result depends on syntax table's comment character."
 (use-package flycheck)
 
 (use-package lsp-ui
-  :ensure t
   :after lsp-mode
   :config
   (setq lsp-ui-doc-enable t)
