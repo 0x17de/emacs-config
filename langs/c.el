@@ -10,19 +10,18 @@
 (use-package flycheck-irony)
 
 (use-package cmake-mode
+  :mode (("CMakeInstallTargets\\.txt\\'" . cmake-mode))
+  :bind (:map cmake-mode-map
+         ([f1] . cmake-help)
+         ([f5] . recompile)
+         ([tab] . company-indent-or-complete-common))
   :config
-  (add-to-list 'auto-mode-alist '("CMakeInstallTargets\\.txt\\'" . cmake-mode)))
-(use-package cpputils-cmake
-  :config
-  (add-hook 'cmake-mode-hook
-            (lambda ()
-              (make-local-variable 'company-backends)
-              (setq company-backends '(company-cmake
-                                       company-files))
-              (company-mode t)))
-  (define-key cmake-mode-map [(f1)] 'cmake-help)
-  (define-key cmake-mode-map [(f5)] 'recompile)
-  (define-key cmake-mode-map [(tab)] 'company-indent-or-complete-common))
+  (lambda ()
+    (company-mode t)
+    (setq company-backends '(company-cmake
+                             company-files))))
+
+(use-package cpputils-cmake)
 
 (defun cross-recompile ()
   "Recompile using cross-compile-command"
