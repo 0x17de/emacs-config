@@ -1,12 +1,11 @@
 (use-package emr)
 (use-package rainbow-delimiters
-  :config
-  (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
-  (add-hook 'salt-mode-hook 'rainbow-delimiters-mode))
+  :hook ((prog-mode . rainbow-delimiters-mode)
+         (salt-mode . rainbow-delimiters-mode)))
 (use-package rainbow-mode
   :config
-  (setq rainbow-x-colors nil)
-  (add-hook 'prog-mode-hook 'rainbow-mode))
+  (progn (setq rainbow-x-colors nil)
+         (add-hook 'prog-mode-hook 'rainbow-mode)))
 
 (use-package projectile
   :config
@@ -15,12 +14,12 @@
   (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
 
 (use-package yasnippet
-  :ensure t
   :demand
   :config
-  (add-to-list 'yas-snippet-dirs (expand-file-name "snippets" user-emacs-directory))
-  (add-to-list 'yas-snippet-dirs (expand-file-name "snippets" (expand-file-name "_0x17de" user-emacs-directory)))
-  (yas-global-mode 1)
+  (progn
+    (add-to-list 'yas-snippet-dirs (expand-file-name "snippets" user-emacs-directory))
+    (add-to-list 'yas-snippet-dirs (expand-file-name "snippets" (expand-file-name "_0x17de" user-emacs-directory)))
+    (yas-global-mode 1))
   :bind (("C-M-S-y" . 'yas-describe-tables)))
 
 (use-package x509-mode)
