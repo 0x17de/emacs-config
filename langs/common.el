@@ -67,6 +67,8 @@ Result depends on syntax table's comment character."
                 lsp-file-watch-threshold 4000))
 (use-package flycheck)
 
+(use-package mmm-mode)
+
 (use-package lsp-ui
   :after lsp-mode
   :config
