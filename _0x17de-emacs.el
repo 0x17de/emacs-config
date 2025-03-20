@@ -48,11 +48,12 @@
 (use-package stickyfunc-enhance)
 (use-package smex
   :ensure t
+  :bind
+  (("M-x" . 'smex)
+   ("M-X" . 'smex-major-mode-commands)
+   ("C-M-x" . 'execute-extended-command))
   :init
-  (smex-initialize)
-  (global-set-key (kbd "M-x") 'smex)
-  (global-set-key (kbd "M-X") 'smex-major-mode-commands)
-  (global-set-key (kbd "C-M-x") 'execute-extended-command))
+  (smex-initialize))
 
 (load "langs/common")
 
