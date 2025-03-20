@@ -29,7 +29,9 @@
   (sml/setup))
 (use-package vterm
   :ensure t
-  :bind (("C-M-S-x" . 'vterm)))
+  :bind (("C-M-S-x" . 'vterm)
+         :map vterm-mode-map
+         ("C-c C-x" . 'vterm--self-insert)))
 (use-package doom-modeline
   :ensure t
   :init
