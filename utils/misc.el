@@ -34,6 +34,7 @@
                                      (set-face-attribute 'default nil :height (- (face-attribute 'default :height) 5))))
 ;;(global-set-key (kbd "C-M-<up>") 'text-scale-increase)
 ;;(global-set-key (kbd "C-M-<down>") 'text-scale-decrease)
+(global-set-key (kbd "C-M-S-u") 'rename-uniquely)
 (global-set-key (kbd "C-M-z C-e") 'eval-region)
 (global-set-key (kbd "C-M-z C-M-e") 'eval-buffer)
 (global-set-key (kbd "C-M-S-c") 'find-emacs-config)
