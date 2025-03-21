@@ -117,5 +117,6 @@
   (global-set-key (kbd "<C-M-S-right>")  'buf-move-right))
 
 (use-package git-gutter
+  :hook (prog-mode . git-gutter-mode)
   :config
-  (global-git-gutter-mode t))
+  (setq git-gutter:update-interval 0.2))
