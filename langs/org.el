@@ -1,9 +1,15 @@
 (use-package org
   :ensure nil
+  :bind
+  (:map org-mode-map
+        ("C-c ." . 'org-time-stamp))
   :config
-  (add-hook 'org-mode-hook
-            (lambda ()
-              (define-key org-mode-map (kbd "C-c .") 'org-time-stamp))))
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((shell . t)))
+  (setq org-confirm-babel-evaluate nil
+        org-todo-keywords '((sequence "TODO" "WAITING" "DOING" "|" "DONE" "CANCELLED"))))
+
 (use-package org-journal
   :bind
   (("C-M-S-j" . 'org-journal-new-entry))
