@@ -1,18 +1,22 @@
-(require 'lisp-mode)
-(add-hook 'lisp-mode-hook
-          (lambda ()
-            (make-local-variable 'company-backends)
-            (setq company-backends '(company-capf
-                                     company-files))
-            (company-mode t)))
-(define-key lisp-mode-map [(tab)] 'company-indent-or-complete-common)
+(use-package lisp-mode
+  :ensure nil
+  :bind
+  (:map lisp-mode-map
+        ([tab] . company-indent-or-complete-common))
+  :hook
+  (lisp-mode . (lambda ()
+                 (setq company-backends '(company-capf
+                                          company-files))
+                 (company-mode t))))
 
-(require 'elisp-mode)
-(add-hook 'emacs-lisp-mode-hook
-          (lambda ()
-            (make-local-variable 'company-backends)
-            (setq company-backends '(company-elisp
-                                     company-capf
-                                     company-files))
-            (company-mode t)))
-(define-key emacs-lisp-mode-map [(tab)] 'company-indent-or-complete-common)
+(use-package elisp-mode
+  :ensure nil
+  :bind
+  (:map emacs-lisp-mode-map
+        ([tab] . company-indent-or-complete-common))
+  :hook
+  (emacs-lisp-mode . (lambda ()
+                       (setq company-backends '(company-elisp
+                                                company-capf
+                                                company-files))
+                       (company-mode t))))
