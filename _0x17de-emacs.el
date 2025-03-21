@@ -57,6 +57,7 @@
 
 (load "langs/common")
 
+(load "langs/ansible")
 (load "langs/lisp")
 (load "langs/java")
 (load "langs/go")
