@@ -6,7 +6,12 @@
               (define-key org-mode-map (kbd "C-c .") 'org-time-stamp))))
 (use-package org-journal
   :bind
-  (("C-M-S-j" . 'org-journal-new-entry)))
+  (("C-M-S-j" . 'org-journal-new-entry))
+  :init
+  (setq org-journal-dir "~/org/journal"
+        org-journal-date-format "%Y-%m-%d"
+        org-journal-enable-agenda-integration t))
+
 ;;(use-package ox-search
 ;;  :ensure nil
 ;;  :hook (org-mode . ox-search-mode))
