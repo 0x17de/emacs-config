@@ -14,3 +14,6 @@
 (use-package org-node
   :after org
   :config (org-node-cache-mode))
+
+(use-package org-modern
+  :hook ((org-mode . org-modern-mode)))
