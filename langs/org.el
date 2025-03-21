@@ -10,3 +10,7 @@
 ;;(use-package ox-search
 ;;  :ensure nil
 ;;  :hook (org-mode . ox-search-mode))
+
+(use-package org-node
+  :after org
+  :config (org-node-cache-mode))
