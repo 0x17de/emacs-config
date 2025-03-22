@@ -29,12 +29,21 @@
 (use-package org-modern
   :hook ((org-mode . org-modern-mode)))
 
+(defun org-babel-nushell-var-to-nushell (params)
+  (format "let $%s = %s" (car params) (json-encode (cdr params))))
+
 (defun org-babel-execute:nushell (body params)
   "Execute a block of nushell code"
   (let* ((cmd (or (cdr (assoc :cmd params)) "nu"))
          (args (or (cdr (assoc :args params)) "-c"))
-         (code (shell-quote-argument (org-babel-chomp body)))
-         (command (format "%s %s %s" cmd args code)))
+         (vars (mapcar
+                'org-babel-nushell-var-to-nushell
+                (org-babel--get-vars params)))
+         (code (org-babel-chomp body))
+         (full-code (if vars
+                        (concat (string-join vars "\n") "\n" code)
+                      code))
+         (command (format "%s %s %s" cmd args (shell-quote-argument full-code))))
     (org-babel-eval command "")))
 
 (defun org-babel-execute:jinja (body params)
