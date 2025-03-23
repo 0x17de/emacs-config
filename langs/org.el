@@ -34,7 +34,8 @@
 
 (defun org-babel-execute:nushell (body params)
   "Execute a block of nushell code"
-  (let* ((cmd (or (cdr (assoc :cmd params)) "nu"))
+  (let* ((shell-file-name "/bin/sh")
+         (cmd (or (cdr (assoc :cmd params)) "nu"))
          (args (or (cdr (assoc :args params)) "-c"))
          (vars (mapcar
                 'org-babel-nushell-var-to-nushell
