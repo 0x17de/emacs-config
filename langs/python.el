@@ -10,7 +10,6 @@
               (setq company-backends '(company-jedi
                                        company-files))
               (setq yas-indent-line 'fixed)
-              (auto-virtualenv-set-virtualenv)
               (company-mode t)
               (flycheck-mode t)
               (hs-minor-mode t)
