@@ -2,6 +2,6 @@
 # name: src
 # key: src
 # --
-#+BEGIN_SRC bash
+#+BEGIN_SRC ${1:bash}
 $0
 #+END_SRC
