@@ -1,26 +1,40 @@
-# My emacs configuration
+# My Emacs Configuration
 
-## Things that work
+## Overview
+
+A modular Emacs configuration with comprehensive language support, development tools, and UI enhancements. Designed for easy extension and maintenance, with particular focus on developer experience.
+
+## Features
 
 ### General
 - Easy installation of the configuration (packages are automatically installed via use-package)
-- Autoindentation
-- Git using "magit"
-- Various modes to enhance the experience
-- Snippets (yasnippet; userdefined ones can be put into ~/.emacs.d/snippets)
-- Terminal support using "multi-term"
-- Edit multiple text sections with multiple cursors
+- Performance optimizations for faster startup and responsiveness
+- Frame and window management utilities (resize, zoom, tiling, etc.)
+- Multiple cursor editing
+- Snippets (yasnippet; user-defined ones can be put into ~/.emacs.d/snippets)
+- Smart completion via company-mode and LSP
+- Documentation lookup integration
+- Many quality-of-life improvements for editing
 
-### Autocompletions and syntax check
+### Development Tools
+- Version control using Magit
+- Language Server Protocol (LSP) support
+- Syntax checking via Flycheck
+- Code formatting and refactoring tools
+- Comprehensive support for project management
 
-Place a file `.dir-locals.el` into the project's root for some autocompletions like for C++ to correctly detect the project root.
+### Language Support
 
-- C++: using irony & syntax via clang + flycheck; working well together with cmake projects while always tring to use `$PROJECT_ROOT/build` instead of a directory inside /tmp/ for builds (you might want to call `M-x cmake-ide-run-cmake` if something looks messed up). The compile command (`<f5>`) also supports ninja based cmake projects.
-- Python: using "pyright" + flycheck; Requires `pyright` (I recommend to install with `pipx`)
-- Rust: using racer + company-mode + flycheck
-- LaTeX: usinx AUCTeX + compile on save minor mode "latex-compile-on-save-mode"
-- golang: calls gofmt/goimports on save; run `M-x ox-install-go-dependencies`
-- Java: using lsp-java. run `M-x lsp-install-server RET jdtls RET` to install the language server
+Language support is primarily based on LSP and/or specialized modes:
+
+- **C/C++**: irony-mode + company-irony + flycheck + CMake integration
+- **Python**: lsp-pyright + company + flycheck
+- **Go**: LSP (gopls) + comprehensive Go tooling
+- **Rust**: LSP-based tools
+- **LaTeX**: AUCTeX with compile-on-save functionality
+- **Web**: HTML, CSS, JavaScript support
+- **Org-mode**: Enhanced with org-modern, org-journal, and custom babel support
+- **Misc**: Support for YAML, JSON, Docker, Ansible, and many others
 
 ## Setup
 
@@ -29,9 +43,9 @@ Clone the repository into `~/.emacs.d/_0x17de/` and install the submodules:
 git clone --recursive https://github.com/0x17de/emacs-config/ ~/.emacs.d/_0x17de/
 ```
 
-After that the following should be your .emacs file:
+After that, create a `.emacs` file with the following content:
 
-```
+```elisp
 (package-initialize)
 
 ; optional org mode encryption settings
@@ -40,7 +54,7 @@ After that the following should be your .emacs file:
 (setq org-tags-exclude-from-inheritance (quote ("crypt")))
 (setq org-crypt-key "123...GPGID...DEF")
 
-; optional for rust configuration
+; optional for rust configuration (if you need Rust)
 (setenv "PATH" (concat (getenv "PATH") ":" (getenv "HOME") "/.cargo/bin"))
 (add-to-list 'exec-path (concat (getenv "HOME") "/.cargo/bin"))
 
@@ -51,46 +65,74 @@ After that the following should be your .emacs file:
 (load "_0x17de-emacs")
 
 ; optional for hugo blogging
-(setq easy-hugo-basedir "~/hugo/0x17blog")
+; (setq easy-hugo-basedir "~/hugo/0x17blog")
 ```
 
-For simplified starting there are scripts inside the bin directory. Create a symbolic link inside `/usr/local/bin/` pointing to `~/.emacs.d/_0x17de/bin/ew` - this is how i start a graphical emacs session while using the daemon functionality (to keep emacs running and all buffers loaded even if all windows are closed). See `M-x kill-emacs` and start emacs using `emacs --debug-init` while fiddling with the configuration.
+## First-Time Setup
 
-Dependencies will be installed automatically on the first run via `use-package`.
+LSP and language features will need additional setup:
 
-Things to run once the setup is finished to have some C++ completion:
+### For C/C++ development
 ```
 M-x irony-install-server
 ```
 
-For golang support you might want to install at least some of the following packages into your `$GOPATH`. Also add the `$GOPATH` to your PATH and `'exec-path` like done for rust (cargo) above.
+### For Go development
+Run once to install Go language tools:
 ```
-go get golang.org/x/tools/cmd/goimports
-go get github.com/godoctor/godoctor
-go get -u github.com/nsf/gocode
-go get golang.org/x/tools/cmd/guru
-go get -u github.com/golangci/golangci-lint/cmd/golangci-lint
-go get github.com/rogpeppe/godef
-go get golang.org/x/tools/cmd/godoc
-go get github.com/zmb3/gogetdoc
-go get -u github.com/golang/dep/cmd/dep
+M-x ox-install-go-dependencies
 ```
 
-## My favorite hotkeys
+### For Java development
+Install the Java language server:
+```
+M-x lsp-install-server RET jdtls RET
+```
 
-| Hotkey       | Description                                                                             |
-| ------------ | --------------------------------------------------------------------------------------- |
-| `C-M-z \|`   | multiple cursors: select all instances of the selected region                           |
-| `C-M-z C-c`  | multiple cursors: with having multiple rows selected, place a cursor in every row       |
-| `C-M-z >`    | multiple cursors: add a cursor at the next section matching the selection               |
-| `C-M-z <`    | multiple cursors: add a cursor at the previous section matching the selection           |
-| `M-<mouse1>` | multiple cursors: add/remove a cursor at the pointer location                           |
-| `C-M-S-y`    | show snippets for current mode                                                          |
-| `C-M-S-q`    | close current buffer without asking                                                     |
-| `C-M-S-w`    | close current buffer and window without asking                                          |
-| `C-M-x`      | The original M-x since `smex` is used to simplify finding commands                      |
-| `C-M-\|`     | Pipe region through shell command and replace with result                               |
-| `S-<tab>`    | A real tab character since `<tab>` is autoindent                                        |
-| `<f1>`       | For some languages like python or c++ this will search for a documentation entry        |
-| `<f5>`       | Generic compile command like for cmake projects                                         |
-| `<f6>`       | Cross compile command for cmake projects overwrite cross-compile-command in .emacs file |
+## Customization
+
+You can put your own customizations in either your `.emacs` file or in `~/.emacs.d/_0x17de/custom.el`, which will be automatically loaded if it exists.
+
+## Hotkeys
+
+| Hotkey          | Description                                                           |
+|-----------------|-----------------------------------------------------------------------|
+| `C-M-z \|`      | Multiple cursors: select all instances of the selected region         |
+| `C-M-z C-c`     | Multiple cursors: place cursor in every line of selected region       |
+| `C-M-z C-M-c`   | Multiple cursors: place cursor on non-empty lines of selected region  |
+| `C-M-z >`       | Multiple cursors: add a cursor at the next matching region            |
+| `C-M-z <`       | Multiple cursors: add a cursor at the previous matching region        |
+| `M-<mouse1>`    | Multiple cursors: add/remove a cursor at the pointer location         |
+| `C-M-S-y`       | Show snippets for current mode                                        |
+| `C-M-S-q`       | Close current buffer without asking                                   |
+| `C-M-S-w`       | Close current buffer and window without asking                        |
+| `C-M-x`         | The original M-x since `smex` is used for command selection           |
+| `C-M-\|`        | Pipe region through shell command and replace with result             |
+| `S-<tab>`       | Insert a real tab character instead of spaces                         |
+| `<f1>`          | Show documentation for item at point (context-dependent)              |
+| `<f5>`          | Generic compile command (project-specific actions in some modes)      |
+| `<tab>`         | Auto-indentation and completion (intelligent context handling)        |
+| `C-x o`         | Smart navigation between windows/frames                               |
+| `M-<arrows>`    | Move between frames                                                   |
+| `C-M-<up/down>` | Resize frames                                                       |
+
+## Language-Specific Features
+
+### C/C++ Projects
+Place a `.dir-locals.el` in the project root for project-specific configuration. For CMake projects, the system will try to use `$PROJECT_ROOT/build` for builds.
+
+### Python Projects
+Requires `pyright` to be installed (recommended via `pipx install pyright`).
+
+### Go Projects
+Automatically formats code with gofmt/goimports on save.
+
+### LaTeX Projects
+Use the minor mode `latex-compile-on-save-mode` to automatically compile on saving.
+
+## Troubleshooting
+
+If you encounter issues with the configuration:
+1. Start Emacs with `emacs --debug-init` to see initialization errors
+2. Check the `*Messages*` buffer for warnings
+3. Review package-specific logs (e.g., `*lsp-log*` for LSP issues)
