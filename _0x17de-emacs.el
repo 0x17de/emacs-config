@@ -20,7 +20,6 @@
 
 (load "utils/indention")
 (load "utils/replace-with-shell")
-(load "utils/themes")
 (load "utils/misc")
 
 (use-package smart-mode-line
