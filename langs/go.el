@@ -22,17 +22,6 @@
       (message "Completed: %s" cmd))
     (message "All Go dependencies installed!")))
 (use-package go-mode
-  :ensure-system-package
-  ((goimports     . "go install golang.org/x/tools/cmd/goimports@latest")
-   (godoc         . "go install github.com/godoctor/godoctor@latest")
-   ;;(gocode        . "go install github.com/mdempsky/gocode@latest")
-   (guru          . "go install golang.org/x/tools/cmd/guru@latest")
-   ;;broken: (golangci-lint . "go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest")
-   (godef         . "go install github.com/rogpeppe/godef@latest")
-   (godoc         . "go install golang.org/x/tools/cmd/godoc@latest")
-   (gogetdoc      . "go install github.com/zmb3/gogetdoc@latest")
-   ;(dep           . "go install github.com/golang/dep/cmd/dep@latest")
-   (gopls         . "go install golang.org/x/tools/gopls@latest"))
   :bind
   (:map go-mode-map
         ([tab] . 'company-indent-or-complete-common))
