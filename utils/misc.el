@@ -114,11 +114,11 @@
   (("C-x o" . ace-window)))
 
 (use-package buffer-move
-  :config
-  (global-set-key (kbd "<C-M-S-up>")     'buf-move-up)
-  (global-set-key (kbd "<C-M-S-down>")   'buf-move-down)
-  (global-set-key (kbd "<C-M-S-left>")   'buf-move-left)
-  (global-set-key (kbd "<C-M-S-right>")  'buf-move-right))
+  :bind
+  (("C-M-S-up"    . buf-move-up)
+   ("C-M-S-down"  . buf-move-down)
+   ("C-M-S-left"  . buf-move-left)
+   ("C-M-S-right" . buf-move-right))
 
 (use-package git-gutter
   :hook (prog-mode . git-gutter-mode)
