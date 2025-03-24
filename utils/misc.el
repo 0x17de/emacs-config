@@ -104,6 +104,14 @@
 (add-hook 'dired-mode-hook 'dired-hide-details-mode)
 (put 'downcase-region 'disabled nil)
 
+(use-package which-key
+  :init
+  (setq which-key-idle-delay 0.3)
+  (setq which-key-sort-order 'which-key-key-order-alpha)
+  (setq which-key-max-description-length 40)
+  :config
+  (which-key-mode 1))
+
 (use-package ace-window
   :bind
   (("C-x o" . ace-window)))
