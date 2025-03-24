@@ -102,11 +102,6 @@
 (load "directory-helper-functions")
 
 (add-hook 'dired-mode-hook 'dired-hide-details-mode)
-;(customize-set-variable 'dired-mode-hook (quote (dired-hide-details-mode)))
-;(customize-set-variable 'show-paren-mode t)
-;(customize-set-variable 'custom-enabled-themes '(gruvbox))
-;(customize-set-variable 'ansi-color-faces-vector [default default default italic underline success warning error])
-;(customize-set-variable 'ansi-color-names-vector ["#242424" "#e5786d" "#95e454" "#cae682" "#8ac6f2" "#333366" "#ccaa8f" "#f6f3e8"])
 (put 'downcase-region 'disabled nil)
 
 (use-package ace-window
