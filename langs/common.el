@@ -64,6 +64,9 @@ Result depends on syntax table's comment character."
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
   :config (setq lsp-prefer-flymake nil
+                lsp-enable-file-watchers nil
+                lsp-enable-symbol-highlighting nil
+                lsp-headerline-breadcrumb-enable nil
                 lsp-file-watch-threshold 4000))
 (use-package flycheck)
 
