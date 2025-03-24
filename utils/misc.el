@@ -109,6 +109,10 @@
 ;(customize-set-variable 'ansi-color-names-vector ["#242424" "#e5786d" "#95e454" "#cae682" "#8ac6f2" "#333366" "#ccaa8f" "#f6f3e8"])
 (put 'downcase-region 'disabled nil)
 
+(use-package ace-window
+  :bind
+  (("C-x o" . ace-window)))
+
 (use-package buffer-move
   :config
   (global-set-key (kbd "<C-M-S-up>")     'buf-move-up)
