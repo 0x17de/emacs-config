@@ -48,6 +48,7 @@
 (use-package stickyfunc-enhance)
 (use-package smex
   :ensure t
+  :defer nil
   :bind
   (("M-x" . 'smex)
    ("M-X" . 'smex-major-mode-commands)
