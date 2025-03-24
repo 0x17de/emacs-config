@@ -27,7 +27,7 @@
                                   (if (equal 1 (length (window-list)))
                                       (delete-frame)
                                     (delete-window))))
-(global-set-key (kbd "C-x k") 'kill-this-buffer)
+(global-set-key (kbd "C-x k") (lambda () (interactive) (kill-this-buffer)))
 (global-set-key (kbd "C-M-<up>") (lambda () (interactive)
                                    (set-face-attribute 'default nil :height (+ (face-attribute 'default :height) 5))))
 (global-set-key (kbd "C-M-<down>") (lambda () (interactive)
