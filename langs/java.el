@@ -1,4 +1,5 @@
 (use-package lsp-java
+  :defer t
   :after lsp-mode
   :config
   (add-hook 'java-mode-hook

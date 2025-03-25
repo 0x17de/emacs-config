@@ -1,6 +1,8 @@
-(use-package flycheck-rust)
+(use-package flycheck-rust
+  :defer t)
 ;(use-package racer)
 (use-package rust-mode
+  :defer t
   :config
   (add-hook 'rust-mode-hook
             (lambda ()

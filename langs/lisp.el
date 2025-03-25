@@ -1,5 +1,6 @@
 (use-package lisp-mode
   :ensure nil
+  :defer t
   :bind
   (:map lisp-mode-map
         ([tab] . company-indent-or-complete-common))
@@ -11,6 +12,7 @@
 
 (use-package elisp-mode
   :ensure nil
+  :defer t
   :bind
   (:map emacs-lisp-mode-map
         ([tab] . company-indent-or-complete-common))

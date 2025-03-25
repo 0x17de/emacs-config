@@ -15,7 +15,6 @@
           (goto-char (min (1+ line-end) end))))
       (mc/maybe-multiple-cursors-mode))))
 (use-package multiple-cursors
-  :defer nil
   :init
   (global-unset-key (kbd "M-<down-mouse-1>"))
   :bind

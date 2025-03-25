@@ -1,1 +1,2 @@
-(use-package salt-mode)
+(use-package salt-mode
+  :defer t)

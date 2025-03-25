@@ -10,8 +10,8 @@
 
 (require 'use-package)
 (setq-default
- use-package-always-defer t
  use-package-always-ensure t
  use-package-compute-statistics t
  use-package-verbose t)
-(use-package use-package-ensure-system-package)
+(use-package use-package-ensure-system-package
+  :defer t)

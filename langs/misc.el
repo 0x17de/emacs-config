@@ -1,4 +1,5 @@
-(use-package emr)
+(use-package emr
+  :defer t)
 (use-package rainbow-delimiters
   :hook ((prog-mode . rainbow-delimiters-mode)
          (salt-mode . rainbow-delimiters-mode)))
@@ -8,13 +9,14 @@
          (add-hook 'prog-mode-hook 'rainbow-mode)))
 
 (use-package projectile
+  :demand t
   :config
   (projectile-global-mode)
   (setq projectile-enable-caching t)
   (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
 
 (use-package yasnippet
-  :demand
+  :demand t
   :config
   (progn
     (add-to-list 'yas-snippet-dirs (expand-file-name "snippets" user-emacs-directory))
@@ -22,31 +24,43 @@
     (yas-global-mode 1))
   :bind (("C-M-S-y" . 'yas-describe-tables)))
 
-(use-package x509-mode)
-(use-package yaml-mode)
-(use-package dot-mode)
-(use-package dockerfile-mode)
-(use-package docker-compose-mode)
-(use-package json-mode)
-(use-package elf-mode)
-(use-package demangle-mode)
-(use-package systemd)
-(use-package easy-hugo)
-(use-package gh-md)
-(use-package magit)
+(use-package x509-mode
+  :defer t)
+(use-package yaml-mode
+  :defer t)
+(use-package dot-mode
+  :defer t)
+(use-package dockerfile-mode
+  :defer t)
+(use-package docker-compose-mode
+  :defer t)
+(use-package json-mode
+  :defer t)
+(use-package elf-mode
+  :defer t)
+(use-package demangle-mode
+  :defer t)
+(use-package systemd
+  :defer t)
+(use-package easy-hugo
+  :defer t)
+(use-package gh-md
+  :defer t)
+(use-package magit
+  :defer t)
 
-(use-package ein)
+(use-package ein
+  :defer t)
 (use-package ess-mode
   :ensure ess
+  :defer t
+  :hook (ess-mode . (lambda ()
+                      ('company-mode t)))
+  :bind (:map ess-mode-map
+              ([tab] . company-indent-or-complete-common)
+              ([f1] . company-show-doc-buffer))
   :config
-  (add-hook 'ess-mode-hook
-            (lambda ()
-              ('company-mode t)))
-  (define-key ess-mode-map [(tab)] 'company-indent-or-complete-common)
-  (define-key ess-mode-map [(f1)] 'company-show-doc-buffer))
-
-;; reuse compilation buffer from other frames
-(add-to-list
- 'display-buffer-alist
- '("\\*compilation\\*" . (display-buffer-reuse-window
-                          . ((reusable-frames . t)))))
+  (add-to-list
+   'display-buffer-alist
+   '("\\*compilation\\*" . (display-buffer-reuse-window
+                            . ((reusable-frames . t))))))

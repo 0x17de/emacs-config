@@ -15,6 +15,7 @@
 (load "init-zoom-frm.el")
 
 (use-package exec-path-from-shell
+  :demand t
   :ensure t
   :init (exec-path-from-shell-initialize))
 
@@ -28,7 +29,6 @@
   (sml/setup))
 (use-package vterm
   :ensure t
-  :defer nil
   :bind (("C-M-S-x" . 'vterm)
          :map vterm-mode-map
          ("C-c C-x" . 'vterm--self-insert)))
@@ -48,7 +48,6 @@
 (use-package stickyfunc-enhance)
 (use-package smex
   :ensure t
-  :defer nil
   :bind
   (("M-x" . 'smex)
    ("M-X" . 'smex-major-mode-commands)

@@ -24,13 +24,18 @@
     (if (plist-get TeX-error-report-switches (intern master-file))
         (TeX-next-error)
       (minibuffer-message "latexmk-done"))))
-(use-package auctex-latexmk)
-(use-package company-auctex)
+(use-package auctex-latexmk
+  :defer t)
+(use-package company-auctex
+  :defer t)
 
-(require 'latex)
-(add-hook 'TeX-mode-hook 'my/latex-setup)
-(define-key TeX-mode-map [(f5)] 'my/latexmk-run)
-(define-key TeX-mode-map [(tab)] 'company-indent-or-complete-common)
-(define-key TeX-mode-map [(f1)] 'company-show-doc-buffer)
-
-(load "latex-compile-on-save.el")
+(use-package latex
+  :ensure nil
+  :defer t
+  :hook (TeX-mode . my/latex-setup)
+  :bind (:map TeX-mode-map
+              ([f5] . my/latexmk-run)
+              ([tab] . company-indent-or-complete-common)
+              ([f1] . company-show-doc-buffer))
+  :config
+  (load "latex-compile-on-save.el"))

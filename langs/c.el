@@ -1,15 +1,20 @@
 (use-package irony
+  :defer t
   :config
   (require 'irony-cdb)
   (customize-set-variable 'irony-cdb-compilation-databases '(irony-cdb-json
                                                              irony-cdb-clang-complete
                                                              irony-cdb-libclang)))
 
-(use-package company-irony)
-(use-package company-c-headers)
-(use-package flycheck-irony)
+(use-package company-irony
+  :defer t)
+(use-package company-c-headers
+  :defer t)
+(use-package flycheck-irony
+  :defer t)
 
 (use-package cmake-mode
+  :defer t
   :mode (("CMakeInstallTargets\\.txt\\'" . cmake-mode))
   :bind (:map cmake-mode-map
          ([f1] . cmake-help)
@@ -21,7 +26,8 @@
     (setq company-backends '(company-cmake
                              company-files))))
 
-(use-package cpputils-cmake)
+(use-package cpputils-cmake
+  :defer t)
 
 (defun cross-recompile ()
   "Recompile using cross-compile-command"
@@ -43,10 +49,10 @@
   (flycheck-irony-setup)
   (rainbow-delimiters-mode t)
   (google-set-c-style)
-  (setq c-basic-offset 4)
-  )
+  (setq c-basic-offset 4))
 (use-package cc-mode
   :ensure nil
+  :defer t
   :config
   (load "ext/google-styleguide/google-c-style")
   (add-hook 'c-mode-hook 'c-mode-common-init)

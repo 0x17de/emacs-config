@@ -1,5 +1,6 @@
 (use-package org
   :ensure nil
+  :defer t
   :bind
   (:map org-mode-map
         ("C-c ." . 'org-time-stamp))
@@ -11,6 +12,7 @@
         org-todo-keywords '((sequence "TODO" "WAITING" "DOING" "|" "DONE" "CANCELLED"))))
 
 (use-package org-journal
+  :defer t
   :bind
   (("C-M-S-j" . 'org-journal-new-entry))
   :init
@@ -23,10 +25,12 @@
 ;;  :hook (org-mode . ox-search-mode))
 
 (use-package org-node
+  :defer t
   :after org
   :config (org-node-cache-mode))
 
 (use-package org-modern
+  :defer t
   :hook ((org-mode . org-modern-mode)))
 
 (defun org-babel-nushell-var-to-nushell (params)

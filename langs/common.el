@@ -32,7 +32,8 @@ Result depends on syntax table's comment character."
   (global-semantic-idle-completions-mode -1)
   (semantic-mode 1))
 
-(use-package srefactor)
+(use-package srefactor
+  :defer t)
 ;(use-package auto-complete
 ;  :init
 ;  (setq tab-always-indent 'complete)
@@ -42,12 +43,14 @@ Result depends on syntax table's comment character."
 ;(use-package auctex
 ;  :ensure t)
 ;; (use-package auto-complete-auctex)
-(use-package company-quickhelp)
+(use-package company-quickhelp
+  :defer t)
 (defun company-init-quickhelp (b-enable)
   "Initialize company-quickhelp only if company is running"
   (company-quickhelp-mode t)
   (remove-hook 'company-completion-started-hook 'company-init-quickhelp t))
 (use-package company
+  :defer t
   :init 
   (setq company-async-timeout 5
         company-dabbrev-downcase 0
@@ -62,17 +65,45 @@ Result depends on syntax table's comment character."
   (setq company-backends '())) ; we explicitly add all the backends we need
 
 (use-package lsp-mode
+  :defer t
   :commands (lsp lsp-deferred)
   :config (setq lsp-prefer-flymake nil
                 lsp-enable-file-watchers nil
                 lsp-enable-symbol-highlighting nil
                 lsp-headerline-breadcrumb-enable nil
                 lsp-file-watch-threshold 4000))
-(use-package flycheck)
+(use-package flycheck
+  :defer t)
 
-(use-package mmm-mode)
+(defun mmm-get-mode-for-lang (lang)
+  (cond ((string= lang "python") 'python-mode)
+        ((string= lang "elisp") 'emacs-lisp-mode)
+        ((string= lang "emacs-lisp") 'emacs-lisp-mode)
+        ((string= lang "js") 'js-mode)
+        ((string= lang "ruby") 'ruby-mode)
+        ;; Add more language mappings as needed
+        (t nil)))
+(use-package mmm-mode
+  :defer t
+  ;;:config
+  ;;(setq mmm-global-mode 'maybe)
+  ;;(mmm-add-classes
+  ;; '((org-babel
+  ;;    :submode nil
+  ;;    :front "#\\+(begin_src|BEGIN_SRC) +\\([a-zA-Z+-]+\\)"
+  ;;    :front-match 1
+  ;;    :front-offset 0
+  ;;    :back "#\\+(end_src|END_SRC)"
+  ;;    :save-matches 1
+  ;;    :delimiter-mode nil
+  ;;    :match-submode (lambda (lang)
+  ;;                     (let ((l (match-string-no-properties 1)))
+  ;;                       (mmm-get-mode-for-lang l))))))
+  ;;(mmm-add-mode-ext-class 'org-mode nil 'org-babel)
+  )
 
 (use-package lsp-ui
+  :defer t
   :after lsp-mode
   :config
   (setq lsp-ui-doc-enable t)

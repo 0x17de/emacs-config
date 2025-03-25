@@ -1,10 +1,17 @@
-(use-package go-guru)
-(use-package go-eldoc)
-(use-package godoctor)
-(use-package go-scratch)
-(use-package go-playground)
-(use-package flycheck-golangci-lint)
-(use-package go-complete)
+(use-package go-guru
+  :defer t)
+(use-package go-eldoc
+  :defer t)
+(use-package godoctor
+  :defer t)
+(use-package go-scratch
+  :defer t)
+(use-package go-playground
+  :defer t)
+(use-package flycheck-golangci-lint
+  :defer t)
+(use-package go-complete
+  :defer t)
 
 (defun ox-install-go-dependencies ()
   "Install go-mode dependencies"
@@ -22,6 +29,7 @@
       (message "Completed: %s" cmd))
     (message "All Go dependencies installed!")))
 (use-package go-mode
+  :defer t
   :bind
   (:map go-mode-map
         ([tab] . 'company-indent-or-complete-common))

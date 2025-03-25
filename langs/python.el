@@ -1,7 +1,10 @@
-(use-package auto-virtualenv)
-(use-package realgud)
+(use-package auto-virtualenv
+  :defer t)
+(use-package realgud
+  :defer t)
 (use-package python
   :ensure nil
+  :defer t
   :config
   (add-hook 'python-mode-hook
             (lambda ()
@@ -18,8 +21,10 @@
               (lsp-deferred)))
   (define-key python-mode-map [(tab)] 'company-indent-or-complete-common)
   (define-key python-mode-map [(f1)] 'lsp-describe-thing-at-point))
-(use-package pyimport)
-(use-package pyimpsort)
+(use-package pyimport
+  :defer t)
+(use-package pyimpsort
+  :defer t)
 (use-package highlight-indent-guides
   :config
   (setq highlight-indent-guides-auto-enabled nil)
@@ -28,6 +33,7 @@
   (set-face-background 'highlight-indent-guides-even-face "gray20")
   (set-face-foreground 'highlight-indent-guides-character-face "gray18"))
 (use-package lsp-pyright
+  :defer t
   :after lsp-mode
   :config
   (setq lsp-pyright-auto-import-completions t
