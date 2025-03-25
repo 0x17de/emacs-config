@@ -1,6 +1,12 @@
 ;; See https://github.com/ch11ng/exwm/wiki
 ;; https://github.com/ch11ng/exwm/wiki/Configuration-Example
-(when (boundp 'use-exwm)
+(defcustom _0x17de/use-exwm nil
+  "Non-nil means EXWM will be enabled.
+When this option is enabled, EXWM will be loaded and configured
+as the window manager for this session."
+  :type 'boolean
+  :group '_0x17de)
+(when _0x17de/use-exwm
   (setq mouse-autoselect-window nil
         focus-follows-mouse nil)
   ;;(ido-mode 1)
