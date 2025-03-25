@@ -33,6 +33,27 @@
   :defer t
   :hook ((org-mode . org-modern-mode)))
 
+(defun org-babel-nushell--list-includes (params)
+  "Extract values from all :include keys in PARAMS alist."
+  (let ((result nil))
+    (dolist (pair params result)
+      (when (and (consp pair)
+                 (eq (car pair) :include))
+        (push (cdr pair) result)))))
+
+(defun org-babel-nushell--read-includes (params)
+  "Read all includes"
+  (let ((result '()))
+    (dolist (name (org-babel-nushell--list-includes params))
+      (let ((block-position (org-babel-find-named-block name)))
+        (when block-position
+          (save-excursion
+            (goto-char block-position)
+            (let ((data (org-babel-get-src-block-info)))
+              (when data
+                (push (nth 1 data) result)))))))
+    (string-join (nreverse result) "\n")))
+
 (defun org-babel-nushell-var-to-nushell (params)
   (format "let $%s = %s" (car params) (json-encode (cdr params))))
 
@@ -44,7 +65,8 @@
          (vars (mapcar
                 'org-babel-nushell-var-to-nushell
                 (org-babel--get-vars params)))
-         (code (org-babel-chomp body))
+         (included-code (org-babel-nushell--read-includes params))
+         (code (string-join (list (or included-code "") (org-babel-chomp body)) "\n"))
          (full-code (if vars
                         (concat (string-join vars "\n") "\n" code)
                       code))
