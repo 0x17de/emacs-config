@@ -113,6 +113,7 @@
 (put 'downcase-region 'disabled nil)
 
 (use-package which-key
+  :demand t
   :init
   (setq which-key-idle-delay 0.3)
   (setq which-key-sort-order 'which-key-key-order-alpha)
