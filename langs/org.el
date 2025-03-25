@@ -57,9 +57,15 @@
 (defun org-babel-nushell-var-to-nushell (params)
   (format "let $%s = %s" (car params) (json-encode (cdr params))))
 
+(defcustom org-babel-nushell-eval-shell-file-name "/bin/sh"
+  "Shell executable used by `org-babel-eval' to execute Nushell source blocks.
+This shell is used to execute the Nushell command."
+  :type 'string
+  :group '_0x17de)
+
 (defun org-babel-execute:nushell (body params)
   "Execute a block of nushell code"
-  (let* ((shell-file-name "/bin/sh")
+  (let* ((shell-file-name org-babel-nushell-eval-shell-file-name)
          (cmd (or (cdr (assoc :cmd params)) "nu"))
          (args (or (cdr (assoc :args params)) "-c"))
          (vars (mapcar
