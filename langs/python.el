@@ -5,22 +5,21 @@
 (use-package python
   :ensure nil
   :defer t
-  :config
-  (add-hook 'python-mode-hook
-            (lambda ()
-              (make-local-variable 'company-backends)
-              (make-local-variable 'yas-indent-line)
-              (setq company-backends '(company-jedi
-                                       company-files))
-              (setq yas-indent-line 'fixed)
-              (company-mode t)
-              (flycheck-mode t)
-              (hs-minor-mode t)
-              (highlight-indent-guides-mode t)
-              (rainbow-delimiters-mode t)
-              (lsp-deferred)))
-  (define-key python-mode-map [(tab)] 'company-indent-or-complete-common)
-  (define-key python-mode-map [(f1)] 'lsp-describe-thing-at-point))
+  :bind (:map python-mode-map
+              ([tab] . company-indent-or-complete-common)
+              ([f1] . lsp-describe-thing-at-point))
+  :hook ((python-mode . (lambda ()
+                          (make-local-variable 'company-backends)
+                          (make-local-variable 'yas-indent-line)
+                          (setq company-backends '(company-jedi
+                                                   company-files))
+                          (setq yas-indent-line 'fixed)
+                          (company-mode t)
+                          (flycheck-mode t)
+                          (hs-minor-mode t)
+                          (highlight-indent-guides-mode t)
+                          (rainbow-delimiters-mode t)
+                          (lsp-deferred)))))
 (use-package pyimport
   :defer t)
 (use-package pyimpsort
