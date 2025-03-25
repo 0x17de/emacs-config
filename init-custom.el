@@ -7,3 +7,7 @@
     (progn
       (message "Using default custom file location: %s" custom-file))))
 
+(defgroup _0x17de nil
+  "Configuration options for _0x17de Emacs setup."
+  :prefix "_0x17de/"
+  :group 'convenience)
