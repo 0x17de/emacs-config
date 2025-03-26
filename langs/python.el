@@ -1,5 +1,3 @@
-(use-package auto-virtualenv
-  :defer t)
 (use-package realgud
   :defer t)
 (use-package python
@@ -9,10 +7,6 @@
               ([tab] . company-indent-or-complete-common)
               ([f1] . lsp-describe-thing-at-point))
   :hook ((python-mode . (lambda ()
-                          (make-local-variable 'company-backends)
-                          (make-local-variable 'yas-indent-line)
-                          (setq company-backends '(company-jedi
-                                                   company-files))
                           (setq yas-indent-line 'fixed)
                           (company-mode t)
                           (flycheck-mode t)
@@ -21,9 +15,11 @@
                           (rainbow-delimiters-mode t)
                           (lsp-deferred)))))
 (use-package pyimport
-  :defer t)
+  :defer t
+  :commands (pyimport-insert-missing pyimport-remove-unused))
 (use-package pyimpsort
-  :defer t)
+  :defer t
+  :commands pyimpsort-buffer)
 (use-package highlight-indent-guides
   :config
   (setq highlight-indent-guides-auto-enabled nil)
@@ -36,4 +32,33 @@
   :after lsp-mode
   :config
   (setq lsp-pyright-auto-import-completions t
-        lsp-pyright-use-library-code-for-types t))
+        lsp-pyright-use-library-code-for-types t
+        lsp-pyright-multi-root t
+        lsp-pyright-exclude ["**/node_modules" ".git" "**/__pycache__"
+                             "**/tests" "**/test" "**/.mypy_cache"]))
+
+(defcustom _0x17de/python-global-virtualenv-dir "~/.venv"
+  "Default directory for Python virtual environments.
+This is used by pyvenv to locate and activate virtual environments."
+  :type 'directory
+  :group '_0x17de
+  :safe #'stringp)
+(use-package pyvenv
+  :defer t
+  :after python
+  :hook (python-mode . pyvenv-mode)
+  :bind (:map python-mode-map
+              ("C-c v a" . pyvenv-activate)
+              ("C-c v d" . pyvenv-deactivate)
+              ("C-c v w" . pyvenv-workon))
+  :init
+  (setq pyvenv-workon-home _0x17de/python-global-virtualenv-dir)
+  :config
+  (add-hook 'pyvenv-post-activate-hooks
+            (lambda ()
+              (when (bound-and-true-p lsp-mode)
+                (lsp-restart-workspace))))
+  (add-hook 'pyvenv-post-deactivate-hooks
+            (lambda ()
+              (when (bound-and-true-p lsp-mode)
+                (lsp-restart-workspace)))))
