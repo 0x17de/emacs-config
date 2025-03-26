@@ -13,10 +13,16 @@
 (global-unset-key [(f1)])
 
 ;; handle backup files
+(defcustom _0x17de/backup-file-location "~/.emacs.d/backups"
+  "Directory where backup files will be stored.
+This specifies the path where Emacs will save backup files when
+editing. The default location is in the .emacs.d directory."
+  :type 'directory
+  :group '_0x17de)
 (condition-case nil
-    (make-directory "~/.emacs.d/backups" t)
+    (make-directory _0x17de/backup-file-location t)
   (error (message "Warning: Could not create backup directory")))
-(setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
+(setq backup-directory-alist (list (cons "." _0x17de/backup-file-location)))
 (setq backup-by-copying t)
 (setq delete-old-versions t
       kept-new-versions 6
@@ -58,8 +64,12 @@
 (setq x-select-enable-clipboard t)
 (setq mouse-yank-at-point t)
 ;;focus follow mouse
+(defcustom _0x17de/focus-follows-mouse t
+  "When non-nil, focus follows the mouse pointer."
+  :type 'boolean
+  :group '_0x17de)
 (setq mouse-autoselect-window 0
-      focus-follows-mouse t)
+      focus-follows-mouse _0x17de/focus-follows-mouse)
 ;;(setq interprogram-paste-function 'x-cut-buffer-or-selection-value)
 
 ;;Diff adjustements
@@ -90,8 +100,12 @@
 (global-set-key (kbd "C-x C-r") 'recentf-open-files)
 
 ;;Mouse scroll
-(defun up-slightly () (interactive) (scroll-up 5))
-(defun down-slightly () (interactive) (scroll-down 5))
+(defcustom _0x17de/scroll-amount 5
+  "Scolling up/down will jump by this amount."
+  :type 'integer
+  :group '_0x17de)
+(defun up-slightly () (interactive) (scroll-up _0x17de/scroll-amount))
+(defun down-slightly () (interactive) (scroll-down _0x17de/scroll-amount))
 (global-set-key [mouse-4] 'down-slightly)
 (global-set-key [mouse-5] 'up-slightly)
 
