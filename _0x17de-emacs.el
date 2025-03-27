@@ -13,6 +13,7 @@
 (load "init-encoding.el")
 (load "init-gui.el")
 (load "init-zoom-frm.el")
+(load "init-exwm.el")
 
 (use-package exec-path-from-shell
   :demand t
