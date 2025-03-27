@@ -136,6 +136,7 @@ editing. The default location is in the .emacs.d directory."
   (which-key-mode 1))
 
 (use-package ace-window
+  :demand t
   :bind
   (("C-x o" . ace-window)))
 
