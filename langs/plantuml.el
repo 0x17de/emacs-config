@@ -29,9 +29,16 @@
     (when (file-exists-p png-file)
       (let ((preview-buffer (get-buffer-create buf-name)))
         (with-current-buffer preview-buffer
+          (setq buffer-read-only nil)
           (erase-buffer)
+
+          (use-local-map (make-sparse-keymap))
+          (local-set-key (kbd "q") 'quit-window)
+          
           (clear-image-cache png-file)
           (insert-image (create-image png-file))
+          (setq header-line-format "Press 'q' to close.")
+          (setq buffer-read-only t)
           (unless (get-buffer-window preview-buffer)
             (display-buffer preview-buffer)))))))
 
