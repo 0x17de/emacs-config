@@ -139,6 +139,20 @@ editing. The default location is in the .emacs.d directory."
   :bind
   (("C-x o" . ace-window)))
 
+(defvar _0x17de/window-toggle-fullscreen:state nil)
+(defun _0x17de/window-toggle-fullscreen ()
+  (interactive)
+  (if _0x17de/window-toggle-fullscreen:state
+      (progn
+        (winner-undo)
+        (setq _0x17de/window-toggle-fullscreen:state nil))
+    (progn
+      (delete-other-windows)
+      (setq _0x17de/window-toggle-fullscreen:state t))))
+(when (boundp 'winner-mode)
+  (winner-mode t))
+(global-set-key (kbd "S-<f11>") '_0x17de/window-toggle-fullscreen)
+
 (use-package buffer-move
   :bind
   (("C-M-S-<up>"    . buf-move-up)
