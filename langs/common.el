@@ -75,32 +75,42 @@ Result depends on syntax table's comment character."
 (use-package flycheck
   :defer t)
 
-(defun mmm-get-mode-for-lang (lang)
-  (cond ((string= lang "python") 'python-mode)
-        ((string= lang "elisp") 'emacs-lisp-mode)
-        ((string= lang "emacs-lisp") 'emacs-lisp-mode)
-        ((string= lang "js") 'js-mode)
-        ((string= lang "ruby") 'ruby-mode)
-        ;; Add more language mappings as needed
-        (t nil)))
-(use-package mmm-mode
-  :defer t
-  ;;:config
-  ;;(setq mmm-global-mode 'maybe)
-  ;;(mmm-add-classes
-  ;; '((org-babel
-  ;;    :submode nil
-  ;;    :front "#\\+(begin_src|BEGIN_SRC) +\\([a-zA-Z+-]+\\)"
-  ;;    :front-match 1
-  ;;    :front-offset 0
-  ;;    :back "#\\+(end_src|END_SRC)"
-  ;;    :save-matches 1
-  ;;    :delimiter-mode nil
-  ;;    :match-submode (lambda (lang)
-  ;;                     (let ((l (match-string-no-properties 1)))
-  ;;                       (mmm-get-mode-for-lang l))))))
-  ;;(mmm-add-mode-ext-class 'org-mode nil 'org-babel)
-  )
+(defcustom _0x17de/mmm-mode:enable nil
+  "Enable mmm-mode."
+  :group '_0x17de
+  :type 'boolean)
+(defcustom _0x17de/mmm-mode:babel:enable nil
+  "Enable org-babel support for mmm-mode."
+  :group '_0x17de
+  :type 'boolean)
+
+(when _0x17de/mmm-mode:enable
+  (defun mmm-get-mode-for-lang (lang)
+    (cond ((string= lang "python") 'python-mode)
+          ((string= lang "elisp") 'emacs-lisp-mode)
+          ((string= lang "emacs-lisp") 'emacs-lisp-mode)
+          ((string= lang "js") 'js-mode)
+          ((string= lang "ruby") 'ruby-mode)
+          ;; Add more language mappings as needed
+          (t nil)))
+  (use-package mmm-mode
+    :config
+    (setq mmm-global-mode 'maybe)
+    (mmm-add-classes
+     '((org-babel
+        :submode nil
+        :front "#\\+\\(begin_src\\|BEGIN_SRC\\) \\([a-zA-Z+-]+\\)"
+        :front-match 2
+        :front-offset 0
+        :back "#\\+\\(end_src\\|END_SRC\\)"
+        :save-matches t
+        :delimiter-mode nil
+        :match-submode (lambda (lang)
+                         (let ((l (match-string-no-properties 2)))
+                           (mmm-get-mode-for-lang l))))))
+    (when _0x17de/mmm-mode:babel:enable
+      (mmm-add-mode-ext-class 'org-mode nil 'org-babel)
+      (mmm-add-mode-ext-class 'org-journal-mode nil 'org-babel))))
 
 (use-package lsp-ui
   :defer t
