@@ -14,7 +14,7 @@ as the window manager for this session."
     :config
     (require 'exwm-randr)
     (require 'exwm-systemtray)
-    ;;(use-package exwm-config)
+    ;;(require 'exwm-config)
     ;;(exwm-config-ido)
     ;;(exwm-config-default)
     ;;(add-hook 'exwm-randr-screen-change-hook
@@ -52,6 +52,6 @@ as the window manager for this session."
   		    (interactive)
   		    (start-process "" nil "/usr/bin/slock"))))
     (define-key exwm-mode-map [?\C-q] #'exwm-input-send-next-key)
-    ;;(exwm-randr-enable)
-    ;;(exwm-systemtray-enable)
+    (exwm-randr-enable)
+    (exwm-systemtray-enable)
     (exwm-enable)))
