@@ -38,6 +38,10 @@
          :map vterm-mode-map
          ("C-c C-x" . 'vterm--self-insert)))
 
+(use-package all-the-icons
+  :ensure t
+  :demand t)
+
 (defcustom _0x17de/modeline 'doom-modeline
   "The modeline to use.
 Options are 'doom-modeline or 'smart-mode-line."
