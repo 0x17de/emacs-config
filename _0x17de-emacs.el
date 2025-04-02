@@ -90,6 +90,7 @@ Options are 'doom-modeline or 'smart-mode-line."
 (load "langs/common")
 
 (load "langs/ansible")
+(load "langs/plantuml")
 (load "langs/lisp")
 (load "langs/java")
 (load "langs/go")
