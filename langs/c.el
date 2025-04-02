@@ -51,13 +51,9 @@ Each element of this list has the form:
   :defer t
   :config
   (condition-case err
-      (let ((changes '(((c-basic-offset) 4)
-                       ((c-offsets-alist member-init-intro) ++))
       (progn
         (load "ext/google-styleguide/google-c-style")
-        (setf (cdr (assoc 'c-basic-offset google-c-style)) 4)
-        (setf (cdr (assoc 'member-init-intro (assoc 'c-offsets-alist google-c-style))) '++)
-        (setf (cdr (assoc 'access-label (assoc 'c-offsets-alist google-c-style))) '-))
+        (_0x17de/google-c-style-set-overrides))
     (error (message "Failed to load google-c-style. Did you also sync the git submodules? %S" err)))
   :hook ((c-mode . '_0x17de/c-mode-common-init)
          (c++-mode . '_0x17de/c-mode-common-init))
