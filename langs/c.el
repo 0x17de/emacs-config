@@ -25,21 +25,6 @@ Each element of this list has the form:
         (setq init (assoc c init)))
       (setf (cdr init) (cdr cfg)))))
 
-(use-package irony
-  :defer t
-  :config
-  (require 'irony-cdb)
-  (customize-set-variable 'irony-cdb-compilation-databases '(irony-cdb-json
-                                                             irony-cdb-clang-complete
-                                                             irony-cdb-libclang)))
-
-(use-package company-irony
-  :defer t)
-(use-package company-c-headers
-  :defer t)
-(use-package flycheck-irony
-  :defer t)
-
 (use-package cmake-mode
   :defer t
   :mode (("CMakeInstallTargets\\.txt\\'" . cmake-mode))
@@ -47,30 +32,12 @@ Each element of this list has the form:
          ([f1] . cmake-help)
          ([f5] . recompile)
          ([tab] . company-indent-or-complete-common))
-  :config
-  (lambda ()
-    (company-mode t)
-    (setq company-backends '(company-cmake
-                             company-files))))
+  :hook (cmake-mode . (lambda ()
+                        (company-mode t))))
 
-(use-package cpputils-cmake
-  :defer t)
-
-(defun cross-recompile ()
-  "Recompile using cross-compile-command"
-  (interactive)
-  (let ((compile-command cross-compile-command))
-    (recompile)))
-(defun c-mode-common-init ()
+(defun _0x17de/c-mode-common-init ()
   "Callback for initialization of c-like modes"
-  (make-local-variable 'company-backends)
-  (setq company-backends '((company-irony-c-headers company-c-headers)
-                           company-irony
-                           company-files))
   (company-mode t)
-  (irony-mode t)
-  (irony-eldoc t)
-  (irony-cdb-autosetup-compile-options)
   (hs-minor-mode t)
   (flycheck-mode t)
   (flycheck-irony-setup)
@@ -84,40 +51,26 @@ Each element of this list has the form:
   :defer t
   :config
   (condition-case err
+      (let ((changes '(((c-basic-offset) 4)
+                       ((c-offsets-alist member-init-intro) ++))
       (progn
         (load "ext/google-styleguide/google-c-style")
-        (_0x17de/google-c-style-set-overrides))
+        (setf (cdr (assoc 'c-basic-offset google-c-style)) 4)
+        (setf (cdr (assoc 'member-init-intro (assoc 'c-offsets-alist google-c-style))) '++)
+        (setf (cdr (assoc 'access-label (assoc 'c-offsets-alist google-c-style))) '-))
     (error (message "Failed to load google-c-style. Did you also sync the git submodules? %S" err)))
-  (add-hook 'c-mode-hook 'c-mode-common-init)
-  (add-hook 'c++-mode-hook 'c-mode-common-init)
-  (define-key c-mode-map [(f1)] 'semantic-ia-show-doc)
-  (define-key c++-mode-map [(f1)] 'semantic-ia-show-doc)
-  (define-key c-mode-map [(f5)] 'recompile)
-  (define-key c-mode-map [(f6)] 'cross-recompile)
-  (define-key c-mode-map [(f7)] 'srefactor-refactor-at-point)
-  (define-key c-mode-map [(f8)] 'oxci--run-cmake)
-  (define-key c++-mode-map [(f5)] 'recompile)
-  (define-key c++-mode-map [(f6)] 'cross-recompile)
-  (define-key c++-mode-map [(f7)] 'srefactor-refactor-at-point)
-  (define-key c++-mode-map [(f8)] 'oxci--run-cmake)
-  (define-key c-mode-map [(tab)] 'company-indent-or-complete-common)
-  (define-key c++-mode-map [(tab)] 'company-indent-or-complete-common)
-  (define-key c-mode-map (kbd "C-C C-j") 'moo-jump-local)
-  (define-key c++-mode-map (kbd "C-C C-j") 'moo-jump-local)
-  (define-key c-mode-map (kbd "C-C M-j") 'semantic-ia-fast-jump)
-  (define-key c++-mode-map (kbd "C-C M-j") 'semantic-ia-fast-jump)
-  (load "ox-cmake-ide.el")
-  (ox-cmake-ide))
-
-(setq compile-command "ewcompile")
-(setq cross-compile-command "ewcompile") ; override via .dir-locals.el
-(defun my-compile ()
-  "Compile"
-  (interactive)
-  (setq compilation-search-path (or (cide--build-dir) default-directory))
-  (compile compile-command))
-(global-set-key (kbd "C-M-z C-M-a") 'my-compile)
-(global-set-key (kbd "C-M-z C-a") 'my-compile)
+  :hook ((c-mode . '_0x17de/c-mode-common-init)
+         (c++-mode . '_0x17de/c-mode-common-init))
+  :bind (:map c-mode-map
+              ([f1] . semantic-ia-show-doc)
+              ([f5] . recompile)
+              ([f6] . srefactor-refactor-at-point)
+              ([tab] . company-indent-or-complete-common)
+         :map c++-mode-map
+              ([f1] . semantic-ia-show-doc)
+              ([f5] . recompile)
+              ([f6] . srefactor-refactor-at-point))
+              ([tab] . company-indent-or-complete-common))
 
 (defun defguard (guard)
   "Inserts guard header for C++"
