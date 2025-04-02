@@ -48,7 +48,9 @@
   (flycheck-mode t)
   (flycheck-irony-setup)
   (rainbow-delimiters-mode t)
-  (google-set-c-style)
+  (condition-case err
+      (google-set-c-style)
+    (error (message "Failed to set google-c-style: Did loading it fail? %S" err)))
   (setq c-basic-offset 4))
 (use-package cc-mode
   :ensure nil
