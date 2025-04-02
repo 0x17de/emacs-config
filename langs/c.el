@@ -54,7 +54,9 @@
   :ensure nil
   :defer t
   :config
-  (load "ext/google-styleguide/google-c-style")
+  (condition-case err
+      (load "ext/google-styleguide/google-c-style")
+    (error (message "Failed to load google-c-style. Did you also sync the git submodules? %S" err)))
   (add-hook 'c-mode-hook 'c-mode-common-init)
   (add-hook 'c++-mode-hook 'c-mode-common-init)
   (define-key c-mode-map [(f1)] 'semantic-ia-show-doc)
