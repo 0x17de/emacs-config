@@ -1,3 +1,30 @@
+(defcustom _0x17de/google-c-style-overrides
+  '(((c-basic-offset) 4)
+    ((c-offsets-alist member-init-intro) ++)
+    ((c-offsets-alist access-label) -))
+  "Overwrite individual keys in google-c-style.
+
+Each element of this list has the form:
+
+  ((KEY1 KEY2 ...) NEW-VALUE)
+
+- The first part is a list of keys that describes how to traverse
+  into the `google-c-style` structure. If there's only a single key,
+  it modifies that top-level attribute. If multiple keys are given,
+  they are traversed in sequence to locate the nested attribute.
+
+- The second part is the NEW-VALUE to set for that attribute."
+  :group '_0x17de
+  :type '(repeat (list (repeat symbol) sexp)))
+(defun _0x17de/google-c-style-set-overrides ()
+  "Apply the overrides in `_0x17de/google-c-style-overrides' to `google-c-style' in place."
+  (interactive)
+  (dolist (cfg _0x17de/google-c-style-overrides)
+    (let* ((init google-c-style))
+      (dolist (c (car cfg))
+        (setq init (assoc c init)))
+      (setf (cdr init) (cdr cfg)))))
+
 (use-package irony
   :defer t
   :config
@@ -57,7 +84,9 @@
   :defer t
   :config
   (condition-case err
-      (load "ext/google-styleguide/google-c-style")
+      (progn
+        (load "ext/google-styleguide/google-c-style")
+        (_0x17de/google-c-style-set-overrides))
     (error (message "Failed to load google-c-style. Did you also sync the git submodules? %S" err)))
   (add-hook 'c-mode-hook 'c-mode-common-init)
   (add-hook 'c++-mode-hook 'c-mode-common-init)
