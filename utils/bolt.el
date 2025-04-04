@@ -181,8 +181,9 @@
                                            (setf (cdr param) (plist-put (cdr param) :value value)))))))
                   (widget-put widget :param param))
                 (insert "\n")
-                (when param-desc
-                  (insert param-desc)))))
+                (if param-desc
+                    (insert (string-trim-right param-desc) "\n\n")
+                  (insert "\n")))))
           (insert "\n\n  ")
           (widget-create 'push-button
                          :notify (lambda (widget &rest ignore)
