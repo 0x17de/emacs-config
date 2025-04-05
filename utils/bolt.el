@@ -1,7 +1,7 @@
 (require 'cl-lib)
 (require 'widget)
 (require 'wid-edit)
-(require 'xterm-color)
+(require 'vterm)
 
 (defcustom _0x17de/bolt-command-path "~/.local/share/gem/ruby/3.3.0/bin/bolt"
   "Path to the bolt binary."
@@ -30,12 +30,18 @@
 
 (defun _0x17de/bolt-run-shell (bolt-buffer-name bolt-args)
   (let* ((buffer (let ((default-directory _0x17de/bolt-repo-path)
-                       (vterm-shell "/bin/sh"))
-                   (vterm bolt-buffer-name))))
+                       (vterm-shell "/bin/sh")
+                       (vterm-buffer-name bolt-buffer-name)
+                       (vterm-exit-functions nil)
+                       (vterm-kill-buffer-on-exit nil))
+                   (vterm))))
     (with-current-buffer buffer
       (let* ((cmd (string-join (cl-list* "BOLT_GEM=1" _0x17de/bolt-command-path (mapcar 'shell-quote-argument (cl-list* bolt-args))) " ")))
+        (make-variable-buffer-local 'vterm-kill-buffer-on-exit)
+        (setq vterm-kill-buffer-on-exit nil)
+        (vterm-send-string "clear; ")
         (vterm-send-string cmd)
-        (vterm-send-string "\n")))
+        (vterm-send-string "; exit\n")))
     (switch-to-buffer buffer)))
 
 (defun _0x17de/bolt-run (bolt-buffer-name bolt-args on-finish-fun)
@@ -123,11 +129,6 @@
                      plans)
                     (forward-line 1))))
     plans))
-
-(defface _0x17de/bolt--debug-face
-  '((t :background "red" :foreground "red"))
-  "Face for editable fields in bolt plan parameters."
-  :group '_0x17de)
 
 (defun _0x17de/bolt-plan-run (bolt-plan-name bolt-params)
   "Run a bolt plan with given parameters."
