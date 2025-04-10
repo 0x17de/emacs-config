@@ -72,20 +72,11 @@ Options are 'doom-modeline or 'smart-mode-line."
     (sml/setup))))
 
 (load "utils/multiple-cursors")
-;;(use-package sudo-edit)
 (use-package refine)
 (use-package function-args)
-(use-package helm-swoop)
-(use-package helm-gtags)
-(use-package counsel)
 
 (use-package stickyfunc-enhance)
 
-;;(use-package orderless
-;;  :ensure t
-;;  :custom
-;;  (completion-styles '(orderless basic))
-;;  (completion-category-overrides '((file (styles . (partial-completion))))))
 (defcustom _0x17de/M-x-library 'amx
   "The default M-x interface."
   :type '(choice (const simple)
@@ -133,8 +124,6 @@ Options are 'doom-modeline or 'smart-mode-line."
 
 ;;(global-set-key (kbd "C-c w") 'whitespace-mode)
 ;;(windmove-default-keybindings)
-
-;; notes: speedbar, sr-speedbar
 
 (load "ext/tex-switch-quotes/tex-switch-quotes")
 (load "ext/misc/hl-line+")
