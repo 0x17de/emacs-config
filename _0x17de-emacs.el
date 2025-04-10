@@ -28,6 +28,7 @@
         (exec-path-from-shell-initialize)
       (error (message "Failed to get exec-path from shell: %S" err)))))
 
+(load "utils/minibuffer")
 (load "utils/indention")
 (load "utils/replace-with-shell")
 (load "utils/misc")
