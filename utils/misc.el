@@ -173,3 +173,11 @@ editing. The default location is in the .emacs.d directory."
   :hook (prog-mode . git-gutter-mode)
   :config
   (setq git-gutter:update-interval 0.2))
+
+(use-package all-the-icons
+  :ensure t
+  :demand t)
+
+(use-package refine)
+(use-package function-args)
+(use-package stickyfunc-enhance)

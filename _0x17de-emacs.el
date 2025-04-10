@@ -23,16 +23,7 @@
 (load "utils/bolt")
 (load "utils/vterm")
 (load "utils/modeline")
-
-(use-package all-the-icons
-  :ensure t
-  :demand t)
-
 (load "utils/multiple-cursors")
-(use-package refine)
-(use-package function-args)
-
-(use-package stickyfunc-enhance)
 
 (defcustom _0x17de/M-x-library 'amx
   "The default M-x interface."
