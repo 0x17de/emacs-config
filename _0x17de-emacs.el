@@ -39,7 +39,6 @@
 (load "langs/org")
 (load "langs/xml")
 (load "langs/misc")
-(load "ext/ox-confluence/ox-confluence")
 
 (load "langs/latex")
 

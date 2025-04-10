@@ -131,3 +131,5 @@ This shell is used to execute the Nushell command."
     (add-hook 'after-save-hook #'_0x17de/org-highlight-todays-deadlines nil t)
     (add-hook 'after-change-functions (lambda (&rest _) (_0x17de/org-highlight-todays-deadlines)) nil t)
     (_0x17de/org-highlight-todays-deadlines))) ;; run once initially
+
+(load "ext/ox-confluence/ox-confluence")
