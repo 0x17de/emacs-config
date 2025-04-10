@@ -117,7 +117,9 @@ editing. The default location is in the .emacs.d directory."
 ;;(setq interprogram-paste-function 'x-cut-buffer-or-selection-value)
 
 ;;Diff adjustements
-(setq ediff-split-window-function 'split-window-horizontally)
+(setq ediff-window-setup-function 'ediff-setup-windows-plain
+      ediff-split-window-function 'split-window-horizontally
+      ediff-diff-options "-w")
 ;;/etc/etc-update.conf
 ;;diff_command="emacs-diff %file1 %file2"
 ;;using_editor=1
