@@ -47,5 +47,3 @@
 
 (load "ext/tex-switch-quotes/tex-switch-quotes")
 (load "ext/misc/hl-line+")
-(load "ext/misc/col-highlight")
-(load "ext/misc/crosshairs")
