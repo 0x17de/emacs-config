@@ -31,6 +31,7 @@
                  (setq company-backends '(company-slime
                                           company-capf
                                           company-files))
+                 (highlight-indent-guides-mode t)
                  (company-mode t))))
 
 (use-package elisp-mode
@@ -43,6 +44,7 @@
                        (eldoc-mode t)
                        (prettify-symbols-mode t)
                        ;;(setq lisp-indent-function nil)
+                       (highlight-indent-guides-mode t)
                        (setq company-backends '(company-capf
                                                 company-files
                                                 company-dabbrev-code)))))

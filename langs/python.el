@@ -20,13 +20,6 @@
 (use-package pyimpsort
   :defer t
   :commands pyimpsort-buffer)
-(use-package highlight-indent-guides
-  :config
-  (setq highlight-indent-guides-auto-enabled nil)
-  (setq highlight-indent-guides-method 'fill)
-  (set-face-background 'highlight-indent-guides-odd-face "gray18")
-  (set-face-background 'highlight-indent-guides-even-face "gray20")
-  (set-face-foreground 'highlight-indent-guides-character-face "gray18"))
 (use-package lsp-pyright
   :defer t
   :after lsp-mode
