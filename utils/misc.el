@@ -1,4 +1,47 @@
-(ido-mode t)
+(defcustom _0x17de/minibuffer-completion-framework 'vertico
+  "The completion framework to use in minibuffer."
+  :type '(choice (const ido :tag "Ido (Classic)")
+                 (const vertico :tag "Vertico + Consult"))
+  :group '_0x17de)
+(pcase _0x17de/minibuffer-completion-framework
+  ('ido
+   (require 'ido)
+   (ido-mode t)
+   (setq ido-everywhere t)
+   (setq ido-enable-flex-matching t)
+   (use-package ido-completing-read+
+     :ensure t
+     :demand t
+     :config
+     (ido-ubiquitous-mode 1))
+   (use-package ido-vertical-mode
+     :ensure t
+     :demand t
+     :init (ido-vertical-mode 1)))
+  ('vertico
+   (use-package vertico
+     :ensure t
+     :demand t
+     :init
+     (vertico-mode)
+     :custom
+     (vertico-count 25)
+     (vertico-resize t))
+   (use-package consult
+     :ensure t
+     :demand t
+     :bind (("C-x b" . consult-buffer)
+            ("C-x 4 b" . consult-buffer-other-window)
+            ("C-x r b" . consult-bookmark)
+            ("M-y" . consult-yank-pop)
+            ("M-g g" . consult-goto-line)
+            ("M-s r" . consult-ripgrep)))))
+(use-package savehist
+  :ensure nil
+  :init
+  (savehist-mode t)
+  :config
+  (setq savehist-file (expand-file-name "savehist" user-emacs-directory)))
 
 (global-unset-key (kbd "C-z")) ; stop me from freezing emacs
 ;; Always group items in buffer menu
@@ -35,6 +78,7 @@ editing. The default location is in the .emacs.d directory."
 (defalias 'yes-or-no-p 'y-or-n-p)
 
 ;;Just kill buffer without asking
+(global-set-key (kbd "C-M-<escape>") (lambda () (interactive) (kill-emacs)))
 (global-set-key (kbd "C-M-S-q") (lambda () (interactive) (kill-this-buffer)))
 (global-set-key (kbd "C-M-S-w") (lambda () (interactive)
                                   (kill-this-buffer)
