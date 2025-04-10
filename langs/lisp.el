@@ -65,6 +65,6 @@
            (lisp-mode . paredit-mode)
            (lisp-interaction-mode . paredit-mode)
            (slime-repl-mode . paredit-mode))
-    :config
-    (define-key paredit-mode-map (kbd "C-M-f") 'paredit-forward)
-    (define-key paredit-mode-map (kbd "C-M-b") 'paredit-backward)))
+    :bind (:map paredit-mode-map
+                ("C-M-f" . paredit-forward)
+                ("C-M-b" . paredit-backward))))
