@@ -180,3 +180,12 @@ editing. The default location is in the .emacs.d directory."
 (use-package refine)
 (use-package function-args)
 (use-package stickyfunc-enhance)
+
+(use-package embark
+  :ensure t
+  :bind
+  (("C-." . embark-act)
+   ("C-;" . embark-dwim)))
+(use-package embark-consult
+  :ensure t
+  :after (embark consult))
