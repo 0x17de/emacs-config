@@ -131,6 +131,7 @@ editing. The default location is in the .emacs.d directory."
 
 (add-hook 'dired-mode-hook 'dired-hide-details-mode)
 (put 'downcase-region 'disabled nil)
+(put 'upcase-region 'disabled nil)
 
 (use-package which-key
   :demand t
