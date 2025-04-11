@@ -1,4 +1,8 @@
-(let ((customization-file (expand-file-name "custom.el" (expand-file-name "_0x17de" user-emacs-directory))))
+(let ((customization-file (expand-file-name "custom.el"
+                                            (file-name-directory
+                                             (directory-file-name
+                                              (file-name-directory (or load-file-name
+                                                                       buffer-file-name)))))))
   (if (file-exists-p customization-file)
       (progn
         (message "Using custom file: %s" customization-file)
