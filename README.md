@@ -1,5 +1,9 @@
 # My Emacs Configuration
 
+## Contributing
+
+I welcome feature requests and bug reports. Feel free to open an issue on GitHub or contact me directly.
+
 ## Overview
 
 A modular Emacs configuration with comprehensive language support, development tools, and UI enhancements. Designed for easy extension and maintenance, with particular focus on developer experience.
