@@ -10,10 +10,14 @@
 
 (use-package projectile
   :demand t
-  :config
-  (projectile-global-mode)
-  (setq projectile-enable-caching t)
-  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
+  :init
+  (projectile-mode +1)
+  :bind (("C-c p" . projectile-command-map)
+         :map projectile-mode-map
+         ("C-c p" . projectile-command-map))
+  :custom
+  (projectile-project-search-path '("~/git" "~/src"))
+  (projectile-enable-caching t))
 
 (use-package yasnippet
   :demand t
