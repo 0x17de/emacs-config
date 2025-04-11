@@ -15,26 +15,36 @@ A modular Emacs configuration with comprehensive language support, development t
 - Smart completion via company-mode and LSP
 - Documentation lookup integration
 - Many quality-of-life improvements for editing
+- Embark integration for contextual actions
 
 ### Development Tools
 - Version control using Magit
 - Language Server Protocol (LSP) support
 - Syntax checking via Flycheck
 - Code formatting and refactoring tools
-- Comprehensive support for project management
+- Comprehensive support for project management via Projectile
+- Terminal integration via VTerm
+- Puppet Bolt integration for infrastructure management
 
 ### Language Support
 
 Language support is primarily based on LSP and/or specialized modes:
 
-- **C/C++**: irony-mode + company-irony + flycheck + CMake integration
+- **C/C++**: LSP (clangd) + company + flycheck + CMake integration
 - **Python**: lsp-pyright + company + flycheck
 - **Go**: LSP (gopls) + comprehensive Go tooling
-- **Rust**: LSP-based tools
+- **Rust**: rust-analyzer + cargo integration
 - **LaTeX**: AUCTeX with compile-on-save functionality
 - **Web**: HTML, CSS, JavaScript support
+- **PlantUML**: Integrated preview and automatic generation of diagrams
 - **Org-mode**: Enhanced with org-modern, org-journal, and custom babel support
-- **Misc**: Support for YAML, JSON, Docker, Ansible, and many others
+- **Ansible/Salt**: YAML mode with specialized snippets and formatting
+- **Misc**: Support for YAML, JSON, Docker, and many others
+
+### Additional Features
+- Confluence export from Org mode documents
+- EXWM (Emacs X Window Manager) integration (optional)
+- Google Styleguide integration
 
 ## Setup
 
@@ -72,11 +82,6 @@ After that, create a `.emacs` file with the following content:
 
 LSP and language features will need additional setup:
 
-### For C/C++ development
-```
-M-x irony-install-server
-```
-
 ### For Go development
 Run once to install Go language tools:
 ```
@@ -88,6 +93,27 @@ Install the Java language server:
 ```
 M-x lsp-install-server RET jdtls RET
 ```
+
+### For PlantUML
+Set the path to your PlantUML jar file via `M-x customize-group RET _0x17de RET`, then make `_0x17de/plantuml-jar-file` point to the jar file location.
+
+### For EXWM (optional/experimental)
+The EXWM configuration is rather experimental and not really supported. It is recommended to use `emacs-lucid` instead of `emacs-gtk` when trying this out.
+EXWM can be enabled through customize: `M-x customize-group RET _0x17de RET`.
+
+## Directory Structure
+
+The configuration is organized into several directories:
+
+- `init/`: Core initialization files
+  - `custom.el`: User customization file
+  - `exwm.el`: EXWM configuration
+  - `package.el`: Package management
+  - `speedup.el`: Performance optimizations
+- `langs/`: Language-specific configurations
+- `utils/`: Utility functions and tools
+- `snippets/`: YASnippet templates
+- `ext/`: External packages and resources
 
 ## Customization
 
@@ -129,6 +155,39 @@ Automatically formats code with gofmt/goimports on save.
 
 ### LaTeX Projects
 Use the minor mode `latex-compile-on-save-mode` to automatically compile on saving.
+
+### PlantUML Projects
+Automatically generates and previews diagrams on save for `.puml` files.
+
+### Puppet Bolt
+Use `M-x _0x17de/bolt` to open the Bolt interface for managing infrastructure.
+
+## Customization Options
+
+The configuration uses a custom group called `_0x17de` with many customizable variables. You can use `M-x customize-group RET _0x17de RET` to see all options. Here are the main customizable features:
+
+### General Options
+- **_0x17de/backup-file-location**: Directory for backup files (default: "~/.emacs.d/backups")
+- **_0x17de/focus-follows-mouse**: Enable focus follows mouse (default: t)
+- **_0x17de/scroll-amount**: Number of lines to scroll at a time (default: 5)
+- **_0x17de/modeline**: Modeline style to use (default: doom-modeline)
+- **_0x17de/minibuffer-completion-framework**: Completion framework (default: vertico)
+- **_0x17de/M-x-library**: Command completion interface (default: amx)
+
+### Language-Specific Options
+- **_0x17de/plantuml:enable**: Enable PlantUML mode (default: t)
+- **_0x17de/plantuml-jar-file**: Path to PlantUML jar file
+- **_0x17de/lisp-paredit:enabled**: Enable paredit for Lisp modes (default: nil)
+- **_0x17de/python-global-virtualenv-dir**: Default directory for Python virtualenvs
+- **_0x17de/google-c-style-overrides**: Customize C/C++ formatting
+
+### Environment Options
+- **_0x17de/exec-path-from-shell:enable**: Import environment from shell (default: nil)
+- **_0x17de/bolt-command-path**: Path to Puppet Bolt binary
+- **_0x17de/bolt-repo-path**: Path to Bolt repository
+- **_0x17de/use-exwm**: Enable EXWM window manager (default: nil)
+
+You can customize these options either through the customize interface or by setting them in your `init/custom.el` file.
 
 ## Troubleshooting
 
