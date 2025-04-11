@@ -129,8 +129,6 @@ editing. The default location is in the .emacs.d directory."
   (defun track-mouse (e))
   (setq mouse-sel-mode t))
 
-(load "directory-helper-functions")
-
 (add-hook 'dired-mode-hook 'dired-hide-details-mode)
 (put 'downcase-region 'disabled nil)
 
