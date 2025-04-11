@@ -120,7 +120,6 @@ editing. The default location is in the .emacs.d directory."
 ;; Git diff fix
 (setq vc-handled-backends ())
 
-(load "init-exwm.el")
 ;;Term or GUI mode mouse changes
 (unless (display-graphic-p)
   (require 'mouse)
