@@ -52,9 +52,9 @@ Language support is primarily based on LSP and/or specialized modes:
 
 ## Setup
 
-Clone the repository into `~/.emacs.d/_0x17de/` and install the submodules:
+Clone the repository to anywhere and install the submodules:
 ```
-git clone --recursive https://github.com/0x17de/emacs-config/ ~/.emacs.d/_0x17de/
+git clone --recursive https://github.com/0x17de/emacs-config/ /path/to/_0x17de-emacs-config/
 ```
 
 After that, create a `.emacs` file with the following content:
@@ -62,24 +62,24 @@ After that, create a `.emacs` file with the following content:
 ```elisp
 (package-initialize)
 
-; optional org mode encryption settings
+;; optional org mode encryption settings
 (require 'org-crypt)
 (org-crypt-use-before-save-magic)
 (setq org-tags-exclude-from-inheritance (quote ("crypt")))
 (setq org-crypt-key "123...GPGID...DEF")
 
-; optional for rust configuration (if you need Rust)
+;; optional for rust configuration (if you need Rust)
 (setenv "PATH" (concat (getenv "PATH") ":" (getenv "HOME") "/.cargo/bin"))
 (add-to-list 'exec-path (concat (getenv "HOME") "/.cargo/bin"))
 
-(add-to-list 'load-path "~/.emacs.d/_0x17de/")
+;; INFO: Your custom config can be either here or inside /path/to/_0x17de-emacs-config/custom.el
 
-; INFO: Your custom config can be either here or inside ~/.emacs.d/_0x17de/custom.el
 
-(load "_0x17de-emacs")
+;; IMPORTANT: This will actually enable this configuration
+(load "/path/to/_0x17de-emacs/_0x17de-emacs")
 
-; optional for hugo blogging
-; (setq easy-hugo-basedir "~/hugo/0x17blog")
+;; optional for hugo blogging
+;; (setq easy-hugo-basedir "~/hugo/0x17blog")
 ```
 
 ## First-Time Setup
