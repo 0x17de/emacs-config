@@ -57,7 +57,7 @@ Clone the repository to anywhere and install the submodules:
 git clone --recursive https://github.com/0x17de/emacs-config/ /path/to/_0x17de-emacs-config/
 ```
 
-After that, create a `.emacs` file with the following content:
+Here's how your `.emacs` file could be structured. The most critical element is the load command. If you're unsure about the location of your `.emacs` file, simply execute `M-: user-init-file` (`M-:` means "press `Alt` and `:` at the same time) in Emacs, and the minibuffer will display the path to your initialization file.
 
 ```elisp
 (package-initialize)
