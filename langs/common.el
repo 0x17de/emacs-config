@@ -83,13 +83,17 @@ Result depends on syntax table's comment character."
 (use-package flycheck
   :defer t)
 
+(defgroup _0x17de/mmm nil
+  "mmm mode configuration."
+  :group '_0x17de
+  :prefix "_0x17de/mmm-")
 (defcustom _0x17de/mmm-mode:enable nil
   "Enable mmm-mode."
-  :group '_0x17de
+  :group '_0x17de/mmm
   :type 'boolean)
 (defcustom _0x17de/mmm-mode:babel:enable nil
   "Enable org-babel support for mmm-mode."
-  :group '_0x17de
+  :group '_0x17de/mmm
   :type 'boolean)
 
 (when _0x17de/mmm-mode:enable

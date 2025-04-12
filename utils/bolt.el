@@ -3,13 +3,17 @@
 (require 'wid-edit)
 (require 'vterm)
 
+(defgroup _0x17de/bolt nil
+  "Bolt configuration."
+  :group '_0x17de
+  :prefix "_0x17de/bolt-")
 (defcustom _0x17de/bolt-command-path "~/.local/share/gem/ruby/3.3.0/bin/bolt"
   "Path to the bolt binary."
-  :group '_0x17de
+  :group '_0x17de/bolt
   :type 'file)
 (defcustom _0x17de/bolt-repo-path "~/git/bolt-control"
   "Path to the bolt binary."
-  :group '_0x17de
+  :group '_0x17de/bolt
   :type 'directory)
 
 (defvar _0x17de/bolt-finish-fun nil
