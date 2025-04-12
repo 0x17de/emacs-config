@@ -23,7 +23,6 @@
    "./init/package.el"
    "./init/encoding.el"
    "./init/gui.el"
-   "./init/zoom-frm.el"
    "./init/exwm.el"))
 
 (_0x17de/load
