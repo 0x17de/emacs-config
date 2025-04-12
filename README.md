@@ -1,5 +1,11 @@
 # My Emacs Configuration
 
+## New to Emacs?
+
+If you're new to Emacs, check out these resources to get started:
+- [Essential Emacs Hotkeys](https://blog.0x17.de/post/essential-emacs-hotkeys/)
+- [Emacs Lisp Introduction](https://blog.0x17.de/post/emacs-list-introduction/)
+
 ## Contributing
 
 I welcome feature requests and bug reports. Feel free to open an issue on GitHub or contact me directly.
