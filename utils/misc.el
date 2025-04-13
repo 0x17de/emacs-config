@@ -195,6 +195,16 @@ editing. The default location is in the .emacs.d directory."
   :bind (("C-:" . avy-goto-char)
          ("C-M-:" . avy-goto-char-timer)))
 
+(use-package persp-mode
+  :ensure t
+  :demand t
+  :custom
+  (wg-morph-on nil)
+  (persp-autokill-buffer-on-remove 'kill-weak)
+  :init
+  (persp-set-keymap-prefix (kbd "C-c P"))
+  (persp-mode t))
+
 (global-set-key
  (kbd "C-c b")
  (lambda ()
