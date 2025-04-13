@@ -202,8 +202,9 @@ editing. The default location is in the .emacs.d directory."
   (wg-morph-on nil)
   (persp-autokill-buffer-on-remove 'kill-weak)
   :init
-  (persp-set-keymap-prefix (kbd "C-c P"))
-  (persp-mode t))
+  (persp-mode t)
+  :config
+  (persp-set-keymap-prefix (kbd "C-c P")))
 
 (global-set-key
  (kbd "C-c b")
