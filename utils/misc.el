@@ -194,3 +194,14 @@ editing. The default location is in the .emacs.d directory."
   :demand t
   :bind (("C-:" . avy-goto-char)
          ("C-M-:" . avy-goto-char-timer)))
+
+(global-set-key
+ (kbd "C-c b")
+ (lambda ()
+   (interactive)
+   (let ((url (thing-at-point 'url))
+         (filename (thing-at-point 'filename)))
+     (cond
+      (url (browse-url url))
+      (filename (find-file filename))
+      (t (message "No URL or file found"))))))
