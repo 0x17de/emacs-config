@@ -20,7 +20,8 @@
 (use-package org-journal
   :defer t
   :bind
-  (("C-M-S-j" . 'org-journal-new-entry))
+  (("C-M-S-j" . (lambda () (interactive) (org-journal-new-entry nil nil t)))
+   ("C-M-S-i" . (lambda () (interactive) (org-journal-new-entry nil))))
   :init
   (setq org-journal-dir "~/org/journal"
         org-journal-date-format "%Y-%m-%d"
