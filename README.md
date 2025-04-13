@@ -131,26 +131,28 @@ You can put your own customizations in either your `.emacs` file or in `~/.emacs
 
 ## Hotkeys
 
-| Hotkey          | Description                                                           |
-|-----------------|-----------------------------------------------------------------------|
-| `C-M-z \|`      | Multiple cursors: select all instances of the selected region         |
-| `C-M-z C-c`     | Multiple cursors: place cursor in every line of selected region       |
-| `C-M-z C-M-c`   | Multiple cursors: place cursor on non-empty lines of selected region  |
-| `C-M-z >`       | Multiple cursors: add a cursor at the next matching region            |
-| `C-M-z <`       | Multiple cursors: add a cursor at the previous matching region        |
-| `M-<mouse1>`    | Multiple cursors: add/remove a cursor at the pointer location         |
-| `C-M-S-y`       | Show snippets for current mode                                        |
-| `C-M-S-q`       | Close current buffer without asking                                   |
-| `C-M-S-w`       | Close current buffer and window without asking                        |
-| `C-M-x`         | The original M-x since `smex` is used for command selection           |
-| `C-M-\|`        | Pipe region through shell command and replace with result             |
-| `S-<tab>`       | Insert a real tab character instead of spaces                         |
-| `<f1>`          | Show documentation for item at point (context-dependent)              |
-| `<f5>`          | Generic compile command (project-specific actions in some modes)      |
-| `<tab>`         | Auto-indentation and completion (intelligent context handling)        |
-| `C-x o`         | Smart navigation between windows/frames                               |
-| `M-<arrows>`    | Move between frames                                                   |
-| `C-M-<up/down>` | Resize frames                                                       |
+| Hotkey          | Description                                                          |
+|-----------------|----------------------------------------------------------------------|
+| `C-M-z \|`      | Multiple cursors: select all instances of the selected region        |
+| `C-M-z C-c`     | Multiple cursors: place cursor in every line of selected region      |
+| `C-M-z C-M-c`   | Multiple cursors: place cursor on non-empty lines of selected region |
+| `C-M-z >`       | Multiple cursors: add a cursor at the next matching region           |
+| `C-M-z <`       | Multiple cursors: add a cursor at the previous matching region       |
+| `M-<mouse1>`    | Multiple cursors: add/remove a cursor at the pointer location        |
+| `C-M-S-y`       | Show snippets for current mode                                       |
+| `C-M-S-q`       | Close current buffer without asking                                  |
+| `C-M-S-w`       | Close current buffer and window without asking                       |
+| `C-M-x`         | The original M-x since `smex` is used for command selection          |
+| `C-M-\|`        | Pipe region through shell command and replace with result            |
+| `S-<tab>`       | Insert a real tab character instead of spaces                        |
+| `<f1>`          | Show documentation for item at point (context-dependent)             |
+| `<f5>`          | Generic compile command (project-specific actions in some modes)     |
+| `<tab>`         | Auto-indentation and completion (intelligent context handling)       |
+| `C-x o`         | Smart navigation between windows/frames                              |
+| `M-<arrows>`    | Move between frames                                                  |
+| `C-M-<up/down>` | Resize frames                                                        |
+| `C-:`           | [Avy](https://github.com/abo-abo/avy)-goto-char                      |
+| `C-M-:`         | [Avy](https://github.com/abo-abo/avy)-goto-char-timer                |
 
 ## Language-Specific Features
 

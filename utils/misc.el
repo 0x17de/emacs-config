@@ -188,3 +188,9 @@ editing. The default location is in the .emacs.d directory."
 (use-package embark-consult
   :ensure t
   :after (embark consult))
+
+(use-package avy
+  :ensure t
+  :demand t
+  :bind (("C-:" . avy-goto-char)
+         ("C-M-:" . avy-goto-char-timer)))
