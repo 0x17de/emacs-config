@@ -52,7 +52,7 @@ Each element of this list has the form:
   :config
   (condition-case err
       (progn
-        (load "ext/google-styleguide/google-c-style")
+        (_0x17de/load "ext/google-styleguide/google-c-style")
         (_0x17de/google-c-style-set-overrides))
     (error (message "Failed to load google-c-style. Did you also sync the git submodules? %S" err)))
   :hook ((c-mode . '_0x17de/c-mode-common-init)
