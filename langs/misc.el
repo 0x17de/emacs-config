@@ -24,7 +24,7 @@
   :config
   (progn
     (add-to-list 'yas-snippet-dirs (expand-file-name "snippets" user-emacs-directory))
-    (add-to-list 'yas-snippet-dirs (expand-file-name "snippets" (expand-file-name "_0x17de" user-emacs-directory)))
+    (add-to-list 'yas-snippet-dirs (expand-file-name "snippets" _0x17de/load-path))
     (yas-global-mode 1))
   :bind (("C-M-S-y" . 'yas-describe-tables)))
 
