@@ -5,7 +5,9 @@
   :defer t
   :bind (:map python-mode-map
               ([tab] . company-indent-or-complete-common)
-              ([f1] . lsp-describe-thing-at-point))
+              ([f1] . lsp-describe-thing-at-point)
+              ([f12] . lsp-find-definition)
+              ("S-<f12>" . lsp-find-references))
   :hook ((python-mode . (lambda ()
                           (setq yas-indent-line 'fixed)
                           (company-mode t)
