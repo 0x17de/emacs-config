@@ -3,7 +3,8 @@
 ;;
 ;; (load "/path/to/_0x17de-emacs-config/_0x17de-emacs")
 
-(setq initial-scratch-message nil)
+(setq initial-scratch-message nil
+      ring-bell-function #'ignore)
 
 (defvar _0x17de/load-path (file-name-directory (or load-file-name buffer-file-name))
   "Path of the _0x17de emacs config")
