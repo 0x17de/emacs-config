@@ -16,7 +16,9 @@
   (when (not (listp paths))
     (setq paths (list paths)))
   (dolist (path paths)
-    (load (expand-file-name path _0x17de/load-path))))
+    (condition-case err
+        (load (expand-file-name path _0x17de/load-path))
+      (error (message "Failed to load _0x17de-config sub-library at %S: %S" path err)))))
 
 (_0x17de/load
  '("./init/custom.el"
