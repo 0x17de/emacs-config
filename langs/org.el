@@ -12,6 +12,7 @@
    '((shell . t)))
   (setq org-confirm-babel-evaluate nil
         org-hide-emphasis-markers t
+        org-journal-carryover-items "TODO={TODO\\|WAITING\\|DOING}"
         org-todo-keywords '((sequence "TODO" "WAITING" "DOING" "|" "DONE" "CANCELLED"))
         org-modern-todo-faces '(("TODO" :foreground "white" :background "darkgreen" :weight bold)
                                 ("DOING" :foreground "white" :background "orange" :weight bold)
