@@ -5,6 +5,7 @@
 If you're new to Emacs, check out these resources to get started:
 - [Essential Emacs Hotkeys](https://blog.0x17.de/post/essential-emacs-hotkeys/)
 - [Emacs Lisp Introduction](https://blog.0x17.de/post/emacs-list-introduction/)
+- [Building a Modular Emacs Configuration](https://blog.0x17.de/post/modular-emacs-config/)
 
 ## Contributing
 
