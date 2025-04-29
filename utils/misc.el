@@ -202,6 +202,8 @@ editing. The default location is in the .emacs.d directory."
   (wg-morph-on nil)
   (persp-autokill-buffer-on-remove 'kill-weak)
   (persp-auto-resume-time -1.0)
+  (persp-emacsclient-init-frame-behaviour-override nil)
+  (persp-nil-name "main")
   :init
   (persp-mode t)
   :config
