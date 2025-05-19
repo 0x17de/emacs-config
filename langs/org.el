@@ -131,7 +131,6 @@ This shell is used to execute the Nushell command."
 (defun _0x17de/org-setup-deadline-highlighting ()
   (when (derived-mode-p 'org-mode)
     (add-hook 'after-save-hook #'_0x17de/org-highlight-todays-deadlines nil t)
-    (add-hook 'after-change-functions (lambda (&rest _) (_0x17de/org-highlight-todays-deadlines)) nil t)
     (_0x17de/org-highlight-todays-deadlines))) ;; run once initially
 
 (_0x17de/load '("./ext/ox-confluence/ox-confluence"))
