@@ -1,5 +1,11 @@
 (use-package realgud
   :defer t)
+(defcustom _0x17de/python-isort-on-save nil
+  "Enable automatic import sorting with py-isort on save.
+When non-nil, py-isort-buffer will be called before saving Python files."
+  :type 'boolean
+  :group '_0x17de
+  :safe #'booleanp)
 (use-package python
   :ensure nil
   :defer t
@@ -15,11 +21,14 @@
                           (hs-minor-mode t)
                           (highlight-indent-guides-mode t)
                           (rainbow-delimiters-mode t)
+                          (when _0x17de/python-isort-on-save
+                            (add-hook 'before-save-hook 'py-isort-buffer nil t))
                           (lsp-deferred)))))
-(use-package pyimport
+(use-package py-isort
   :defer t
-  :commands (pyimport-insert-missing pyimport-remove-unused))
-(use-package pyimpsort
+  :commands (py-isort-buffer py-isort-region)
+  :config
+  (setq py-isort-options '("--line-length=100" "--multi-line=3")))
   :defer t
   :commands pyimpsort-buffer)
 (use-package lsp-pyright
