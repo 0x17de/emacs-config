@@ -18,7 +18,6 @@ When non-nil, py-isort-buffer will be called before saving Python files."
                           (setq yas-indent-line 'fixed)
                           (company-mode t)
                           (flycheck-mode t)
-                          (hs-minor-mode t)
                           (highlight-indent-guides-mode t)
                           (rainbow-delimiters-mode t)
                           (when _0x17de/python-isort-on-save
@@ -38,8 +37,10 @@ When non-nil, py-isort-buffer will be called before saving Python files."
   (setq lsp-pyright-auto-import-completions t
         lsp-pyright-use-library-code-for-types t
         lsp-pyright-multi-root t
-        lsp-pyright-exclude ["**/node_modules" ".git" "**/__pycache__"
-                             "**/tests" "**/test" "**/.mypy_cache"]))
+        lsp-pyright-exclude ["**/.mypy_cache"
+                             "**/__pycache__"
+                             "**/node_modules"
+                             ".git"]))
 
 (defcustom _0x17de/python-global-virtualenv-dir "~/.venv"
   "Default directory for Python virtual environments.
