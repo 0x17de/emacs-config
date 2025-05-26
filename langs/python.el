@@ -28,8 +28,28 @@ When non-nil, py-isort-buffer will be called before saving Python files."
   :commands (py-isort-buffer py-isort-region)
   :config
   (setq py-isort-options '("--line-length=100" "--multi-line=3")))
+(use-package blacken
   :defer t
-  :commands pyimpsort-buffer)
+  :hook (python-mode . blacken-mode)
+  :config
+  (setq blacken-line-length 100
+        blacken-skip-string-normalization t))
+(use-package python-docstring
+  :defer t
+  :hook (python-mode . python-docstring-mode)
+  :config
+  (setq python-docstring-sentence-end-double-space nil))
+(use-package coverage
+  :defer t
+  :commands (coverage-mode coverage-clear-overlays)
+  :bind (:map python-mode-map
+              ("C-c t c" . coverage-mode)
+              ("C-c t C" . coverage-clear-overlays)))
+(use-package poetry
+  :defer t
+  :commands (poetry-venv-activate poetry-install poetry-add)
+  :config
+  (setq poetry-tracking-strategy 'switch-buffer))
 (use-package lsp-pyright
   :defer t
   :after lsp-mode
