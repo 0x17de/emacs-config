@@ -71,7 +71,8 @@ Result depends on syntax table's comment character."
   :config
   (add-hook 'company-completion-started-hook 'company-init-quickhelp)
   (company-tng-mode t)
-  (setq company-backends '())) ; we explicitly add all the backends we need
+  (setq company-backends '())
+  (add-to-list 'company-backends 'company-capf)) ; LSP completion backend
 
 (use-package lsp-mode
   :defer t
