@@ -221,3 +221,9 @@ editing. The default location is in the .emacs.d directory."
       (url (browse-url url))
       (filename (find-file filename))
       (t (message "No URL or file found"))))))
+
+(use-package origami
+  :ensure t
+  :defer t
+  :config
+  (global-origami-mode t))
