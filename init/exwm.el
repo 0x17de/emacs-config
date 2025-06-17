@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t; -*-
 ;; See https://github.com/ch11ng/exwm/wiki
 ;; https://github.com/ch11ng/exwm/wiki/Configuration-Example
 (defcustom _0x17de/use-exwm nil

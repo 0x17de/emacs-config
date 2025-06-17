@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t; -*-
 ;; To enable put the following as your .emacs file assuming
 ;; all contents were installed into ~/.emacs/_0x17de/
 ;;

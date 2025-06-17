@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t; -*-
 (defcustom _0x17de/plantuml:enable t
   "Whether the plantuml mode is enabled."
   :group '_0x17de

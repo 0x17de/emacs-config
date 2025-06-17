@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t; -*-
 (use-package emr
   :defer t)
 (use-package rainbow-delimiters

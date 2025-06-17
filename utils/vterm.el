@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t; -*-
 (defvar _0x17de/vterm-counter 0
   "Counter to make unique vterm buffers.")
 (defun _0x17de/start-vterm ()

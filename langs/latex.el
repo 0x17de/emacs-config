@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t; -*-
 (defun my/latex-setup ()
   "Setup the latex environment"
   (reftex-mode t)

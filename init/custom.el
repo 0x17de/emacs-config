@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t; -*-
 (let ((customization-file (expand-file-name "custom.el"
                                             (file-name-directory
                                              (directory-file-name

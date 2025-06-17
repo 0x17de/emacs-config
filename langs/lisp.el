@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t; -*-
 (defcustom _0x17de/lisp-paredit:enabled nil
   "When enabled, this option automatically activates paredit mode in Lisp modes."
   :group '_0x17de

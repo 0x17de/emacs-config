@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t; -*-
 (defcustom _0x17de/modeline 'doom-modeline
   "The modeline to use.
 Options are 'doom-modeline or 'smart-mode-line."

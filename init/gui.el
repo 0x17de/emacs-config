@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t; -*-
 ;;No splash screen
 (setq inhibit-startup-message t)
 

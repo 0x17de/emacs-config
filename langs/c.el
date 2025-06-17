@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t; -*-
 (defcustom _0x17de/google-c-style-overrides
   '(((c-basic-offset) 4)
     ((c-offsets-alist member-init-intro) ++)

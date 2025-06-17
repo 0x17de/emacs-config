@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t; -*-
 (require 'cl-lib)
 (require 'widget)
 (require 'wid-edit)

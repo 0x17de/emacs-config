@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t; -*-
 (defcustom _0x17de/exec-path-from-shell:enable nil
   "Try to get the environment variables form shell."
   :group '_0x17de

@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t; -*-
 ;; see https://github.com/company-mode/company-mode/issues/525#issuecomment-348635719
 (defun inside-string-q ()
   "Returns non-nil if inside string, else nil.

@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t; -*-
 (defcustom _0x17de/M-x-library 'amx
   "The default M-x interface."
   :type '(choice (const simple)

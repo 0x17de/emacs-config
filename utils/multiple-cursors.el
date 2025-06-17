@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t; -*-
 (defun _0x17de/add-multiple-cursors-to-non-empty-lines (start end)
   "Add a cursor in each non-empty line of selection"
   (interactive "r")

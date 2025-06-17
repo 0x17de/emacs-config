@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t; -*-
 (use-package realgud
   :defer t)
 (defcustom _0x17de/python-isort-on-save nil

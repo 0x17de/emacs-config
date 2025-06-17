@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t; -*-
 (use-package go-guru
   :defer t)
 (use-package go-eldoc

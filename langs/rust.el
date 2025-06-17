@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t; -*-
 (use-package flycheck-rust
   :defer t)
 ;(use-package racer)

@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t; -*-
 ;; Tab fix
 (global-set-key (kbd "<backtab>") 'insert-tab-char)
 (global-set-key (kbd "<C-tab>") 'company-complete)

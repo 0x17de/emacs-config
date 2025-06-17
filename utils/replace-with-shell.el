@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t; -*-
 (defun replace-with-shell (posBegin posEnd command)
   "Pipe region through shell command and replace"
   (interactive (let (command)
