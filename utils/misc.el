@@ -227,3 +227,7 @@ editing. The default location is in the .emacs.d directory."
   :defer t
   :config
   (global-origami-mode t))
+
+(use-package envrc
+  :ensure t
+  :hook (after-init . envrc-global-mode))
