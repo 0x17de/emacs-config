@@ -131,8 +131,8 @@ Result depends on syntax table's comment character."
   :after lsp-mode
   :config
   (setq lsp-ui-doc-enable t)
-  (setq lsp-ui-doc-show-with-cursor t)
-  (setq lsp-ui-doc-show-with-mouse nil)
+  (setq lsp-ui-doc-show-with-cursor nil)
+  (setq lsp-ui-doc-show-with-mouse t)
   (setq lsp-ui-doc-position 'at-point)
   (setq lsp-ui-doc-delay 0.5)
   (setq lsp-ui-doc-use-childframe t)
