@@ -231,3 +231,9 @@ editing. The default location is in the .emacs.d directory."
 (use-package envrc
   :ensure t
   :hook (after-init . envrc-global-mode))
+
+(use-package shackle
+  :custom
+  (shackle-rules '((org-journal-mode :same t)))
+  :config
+  (shackle-mode t))
