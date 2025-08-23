@@ -234,6 +234,8 @@ editing. The default location is in the .emacs.d directory."
 
 (use-package shackle
   :custom
-  (shackle-rules '((org-journal-mode :same t)))
+  (shackle-rules
+   '((org-journal-mode :same t)
+     (magit-status-mode :same t :inhibit-window-quit t)))
   :config
   (shackle-mode t))
