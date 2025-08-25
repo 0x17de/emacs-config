@@ -62,9 +62,10 @@ When non-nil, py-isort-buffer will be called before saving Python files."
 (use-package blacken
   :defer t
   :hook (python-mode . blacken-mode)
-  :config
-  (setq blacken-line-length 100
-        blacken-skip-string-normalization t))
+  :custom
+  (blacken-only-if-project-is-blackened t)
+  (blacken-line-length 100)
+  (blacken-skip-string-normalization t))
 (use-package python-docstring
   :defer t
   :hook (python-mode . python-docstring-mode)
