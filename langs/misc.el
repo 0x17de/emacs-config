@@ -15,7 +15,9 @@
   (projectile-mode +1)
   :bind (("C-c p" . projectile-command-map)
          :map projectile-mode-map
-         ("C-c p" . projectile-command-map))
+         ("C-c p" . projectile-command-map)
+         ("<f5>" . projectile-compile-project)
+         ("S-<f5>" . projectile-test-project))
   :custom
   (projectile-project-search-path '("~/git" "~/src"))
   (projectile-enable-caching t))
