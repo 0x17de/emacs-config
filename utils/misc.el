@@ -239,3 +239,7 @@ editing. The default location is in the .emacs.d directory."
      (magit-status-mode :same t :inhibit-window-quit t)))
   :config
   (shackle-mode t))
+
+(add-hook 'compilation-filter-hook
+          (lambda ()
+            (ansi-color-apply-on-region compilation-filter-start (point))))
