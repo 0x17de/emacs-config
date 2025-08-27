@@ -55,7 +55,9 @@
 (use-package gh-md
   :defer t)
 (use-package magit
-  :defer t)
+  :defer t
+  :custom
+  (magit-bury-buffer-function 'magit-restore-window-configuration))
 
 (use-package ein
   :defer t)
