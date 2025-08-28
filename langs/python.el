@@ -7,6 +7,15 @@ When non-nil, py-isort-buffer will be called before saving Python files."
   :type 'boolean
   :group '_0x17de
   :safe #'booleanp)
+(defcustom _0x17de/python-format-tool 'ruff
+  "Python code formatting tool to use.
+Determines which tool is used for formatting Python code on save or when
+explicitly formatting buffers."
+  :type '(choice (const :tag "Ruff (fast, modern formatter)" ruff)
+                 (const :tag "Black/Blacken (traditional formatter)" blacken)
+                 (const :tag "No formatting" none))
+  :group '_0x17de
+  :safe #'symbolp)
 (use-package python
   :ensure nil
   :defer t
@@ -59,13 +68,6 @@ When non-nil, py-isort-buffer will be called before saving Python files."
   :commands (py-isort-buffer py-isort-region)
   :config
   (setq py-isort-options '("--line-length=100" "--multi-line=3")))
-(use-package blacken
-  :defer t
-  :hook (python-mode . blacken-mode)
-  :custom
-  (blacken-only-if-project-is-blackened t)
-  (blacken-line-length 100)
-  (blacken-skip-string-normalization t))
 (use-package python-docstring
   :defer t
   :hook (python-mode . python-docstring-mode)
@@ -93,6 +95,29 @@ When non-nil, py-isort-buffer will be called before saving Python files."
                              "**/__pycache__"
                              "**/node_modules"
                              ".git"]))
+
+(pcase _0x17de/python-format-tool
+  ('ruff
+   (use-package lazy-ruff
+     :ensure t
+     :bind (("C-c f f" . lazy-ruff-lint-format-dwim))
+     :custom
+     (lazy-ruff-check-command "ruff check --fix --no-unsafe-fixes -s --line-length=100 ")
+     (lazy-ruff-only-format-block nil)
+     (lazy-ruff-only-format-region nil)
+     (lazy-ruff-only-format-buffer nil)
+     :config
+     (lazy-ruff-global-mode t)))
+  ('blacken
+   (use-package blacken
+     :defer t
+     ;;:hook (python-mode . blacken-mode)
+     :custom
+     (blacken-only-if-project-is-blackened t)
+     (blacken-line-length 100)
+     (blacken-skip-string-normalization t)))
+  ('none
+   nil))
 
 (defcustom _0x17de/python-global-virtualenv-dir "~/.venv"
   "Default directory for Python virtual environments.
