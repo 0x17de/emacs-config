@@ -38,6 +38,7 @@
    "./utils/misc"
    "./utils/bolt"
    "./utils/vterm"
+   "./utils/eat-terminal"
    "./utils/modeline"
    "./utils/multiple-cursors"
    "./utils/extended-command"))
