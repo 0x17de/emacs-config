@@ -144,6 +144,9 @@ editing. The default location is in the .emacs.d directory."
 
 (use-package ace-window
   :demand t
+  :custom
+  (aw-dispatch-always . t)
+  (aw-dispatch-when-more-than . 0)
   :bind
   (("C-x o" . ace-window)))
 
