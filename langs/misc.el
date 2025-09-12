@@ -56,6 +56,8 @@
   :defer t)
 (use-package magit
   :defer t
+  :bind
+  (("C-M-g" . magit))
   :custom
   (magit-bury-buffer-function 'magit-restore-window-configuration))
 
