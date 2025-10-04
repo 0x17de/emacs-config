@@ -55,6 +55,7 @@
    "./langs/rust"
    "./langs/org"
    "./langs/xml"
+   "./langs/nix"
    "./langs/misc"))
 
 (_0x17de/load "./langs/latex")
