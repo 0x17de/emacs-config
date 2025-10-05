@@ -128,26 +128,25 @@ Result depends on syntax table's comment character."
 
 (use-package lsp-ui
   :defer t
-  :after lsp-mode
+  :bind (:map lsp-ui-doc-frame-mode-map          
+    ([mouse-1] . #'ignore)
+    ([mouse-3] . #'lsp-ui-doc-hide)
+    ([mouse-wheel-up] . #'lsp-ui-doc-scroll-up)
+    ([mouse-wheel-down] . #'lsp-ui-doc-scroll-down))
   :config
-  (setq lsp-ui-doc-enable t)
-  (setq lsp-ui-doc-show-with-cursor nil)
-  (setq lsp-ui-doc-show-with-mouse t)
-  (setq lsp-ui-doc-position 'at-point)
-  (setq lsp-ui-doc-delay 0.5)
-  (setq lsp-ui-doc-use-childframe t)
-  (setq lsp-ui-doc-use-webkit nil)
-  (setq lsp-ui-doc-include-signature t)
-  (setq lsp-ui-doc-max-width 150)
-  (setq lsp-ui-doc-max-height 30)
-  (setq lsp-ui-doc-header t)
-  (setq lsp-ui-doc-border "white")
-
-  ;; Use mouse events to trigger and navigate doc
-  (define-key lsp-ui-doc-frame-mode-map [mouse-1] #'ignore)
-  (define-key lsp-ui-doc-frame-mode-map [mouse-3] #'lsp-ui-doc-hide)
-  (define-key lsp-ui-doc-frame-mode-map [mouse-wheel-up] #'lsp-ui-doc-scroll-up)
-  (define-key lsp-ui-doc-frame-mode-map [mouse-wheel-down] #'lsp-ui-doc-scroll-down))
+  (with-eval-after-load 'lsp-mode
+    (setq lsp-ui-doc-enable t)
+    (setq lsp-ui-doc-show-with-cursor nil)
+    (setq lsp-ui-doc-show-with-mouse t)
+    (setq lsp-ui-doc-position 'at-point)
+    (setq lsp-ui-doc-delay 0.5)
+    (setq lsp-ui-doc-use-childframe t)
+    (setq lsp-ui-doc-use-webkit nil)
+    (setq lsp-ui-doc-include-signature t)
+    (setq lsp-ui-doc-max-width 150)
+    (setq lsp-ui-doc-max-height 30)
+    (setq lsp-ui-doc-header t)
+    (setq lsp-ui-doc-border "white")))
 
 ;; Autocomplete changes
 (setq icomplete-mode t)
