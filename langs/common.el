@@ -152,5 +152,3 @@ Result depends on syntax table's comment character."
 (setq icomplete-mode t)
 ;; (setq completion-cycle-threshold t)"
 (setq completion-auto-help t)
-
-(hs-global-mode t)
