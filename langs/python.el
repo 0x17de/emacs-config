@@ -61,8 +61,7 @@ explicitly formatting buffers."
                           (highlight-indent-guides-mode t)
                           (rainbow-delimiters-mode t)
                           (when _0x17de/python-isort-on-save
-                            (add-hook 'before-save-hook 'py-isort-buffer nil t))
-                          (lsp-deferred)))))
+                            (add-hook 'before-save-hook 'py-isort-buffer nil t))))))
 (use-package py-isort
   :defer t
   :commands (py-isort-buffer py-isort-region)
@@ -86,15 +85,17 @@ explicitly formatting buffers."
   (setq poetry-tracking-strategy 'switch-buffer))
 (use-package lsp-pyright
   :defer t
+  :hook (python-mode . (lambda ()
+                         (require 'lsp-pyright)
+                         (lsp-deferred)))
   :config
-  (with-eval-after-load 'lsp-mode
-    (setq lsp-pyright-auto-import-completions t
-          lsp-pyright-use-library-code-for-types t
-          lsp-pyright-multi-root t
-          lsp-pyright-exclude ["**/.mypy_cache"
-                               "**/__pycache__"
-                               "**/node_modules"
-                               ".git"])))
+  (setq lsp-pyright-auto-import-completions t
+        lsp-pyright-use-library-code-for-types t
+        lsp-pyright-multi-root t
+        lsp-pyright-exclude ["**/.mypy_cache"
+                             "**/__pycache__"
+                             "**/node_modules"
+                             ".git"]))
 
 (pcase _0x17de/python-format-tool
   ('ruff
