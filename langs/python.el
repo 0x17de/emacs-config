@@ -100,15 +100,16 @@ explicitly formatting buffers."
 (pcase _0x17de/python-format-tool
   ('ruff
    (use-package lazy-ruff
-     :ensure t
+     :defer t
      :bind (("C-c f f" . lazy-ruff-lint-format-dwim))
+     :hook (python-mode . lazy-ruff-mode)
      :custom
      (lazy-ruff-check-command "ruff check --fix --no-unsafe-fixes -s --line-length=100 ")
      (lazy-ruff-only-format-block nil)
      (lazy-ruff-only-format-region nil)
      (lazy-ruff-only-format-buffer nil)
      :config
-     (lazy-ruff-global-mode t)))
+     (lazy-ruff-global-mode nil)))
   ('blacken
    (use-package blacken
      :defer t
