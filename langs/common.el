@@ -79,6 +79,7 @@ Result depends on syntax table's comment character."
   :commands (lsp lsp-deferred)
   :config (setq lsp-prefer-flymake nil
                 lsp-enable-file-watchers nil
+                lsp-enable-multi-root nil
                 lsp-enable-symbol-highlighting nil
                 lsp-headerline-breadcrumb-enable nil
                 lsp-file-watch-threshold 4000))

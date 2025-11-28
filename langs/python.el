@@ -91,7 +91,7 @@ explicitly formatting buffers."
   :config
   (setq lsp-pyright-auto-import-completions t
         lsp-pyright-use-library-code-for-types t
-        lsp-pyright-multi-root t
+        lsp-pyright-multi-root nil
         lsp-pyright-exclude ["**/.mypy_cache"
                              "**/__pycache__"
                              "**/node_modules"
