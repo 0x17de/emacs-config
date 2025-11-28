@@ -32,14 +32,13 @@ Result depends on syntax table's comment character."
   (global-set-key (kbd "C-S-j") 'dumb-jump-go))
 (use-package semantic
   :ensure nil
+  :commands semantic-mode
+  :hook ((c-mode . semantic-mode)
+         (c++-mode . semantic-mode))
   :config
   (advice-add 'semantic-analyze-completion-at-point-function
               :around #'semantic-completion-advice)
-  (global-semanticdb-minor-mode 1)
-  (global-semantic-idle-scheduler-mode 1)
-  (global-semantic-stickyfunc-mode 1)
-  (global-semantic-idle-completions-mode -1)
-  (semantic-mode 1))
+  (global-semantic-idle-completions-mode -1))
 
 (use-package srefactor
   :defer t)
@@ -78,7 +77,7 @@ Result depends on syntax table's comment character."
   :defer t
   :commands (lsp lsp-deferred)
   :config (setq lsp-prefer-flymake nil
-                lsp-enable-file-watchers nil
+                lsp-enable-file-watchers t
                 lsp-enable-multi-root nil
                 lsp-enable-symbol-highlighting nil
                 lsp-headerline-breadcrumb-enable nil

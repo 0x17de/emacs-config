@@ -16,6 +16,15 @@ explicitly formatting buffers."
                  (const :tag "No formatting" none))
   :group '_0x17de
   :safe #'symbolp)
+(defun _0x17de/python--setup ()
+  "Common setup shared between python-mode and python-ts-mode."
+  (setq yas-indent-line 'fixed)
+  (company-mode t)
+  (flycheck-mode t)
+  (highlight-indent-guides-mode t)
+  (rainbow-delimiters-mode t)
+  (when _0x17de/python-isort-on-save
+    (add-hook 'before-save-hook 'py-isort-buffer nil t)))
 (use-package python
   :ensure nil
   :defer t
@@ -53,15 +62,38 @@ explicitly formatting buffers."
               ("C-c e p" . flycheck-previous-error)
               ("C-c e l" . flycheck-list-errors)
               ("C-c e c" . flycheck-clear)
+              ("C-c e v" . flycheck-verify-setup)
+         :map python-ts-mode-map
+              ([tab] . company-indent-or-complete-common)
+              ([f1] . lsp-describe-thing-at-point)
+              ([f12] . lsp-find-definition)
+              ("S-<f12>" . lsp-find-references)
+              ("C-c i s" . py-isort-buffer)
+              ("C-c f b" . python-black-buffer)
+              ("C-c f r" . python-black-region)
+              ("C-c f a" . py-autopep8-buffer)
+              ("C-c C-p" . run-python)
+              ("C-c C-r" . python-shell-send-region)
+              ("C-c C-b" . python-shell-send-buffer)
+              ("C-c C-l" . python-shell-send-file)
+              ("C-c h h" . python-eldoc-at-point)
+              ("C-c h d" . python-describe-at-point)
+              ("C-c h f" . python-info-lookup-symbol)
+              ("M-." . xref-find-definitions)
+              ("M-," . xref-pop-marker-stack)
+              ("M-?" . xref-find-references)
+              ("C-c r" . lsp-find-references)
+              ("C-M-." . lsp-find-implementation)
+              ("C-M-," . lsp-find-type-definition)
+              ("C-c n" . python-nav-forward-defun)
+              ("C-c p" . python-nav-backward-defun)
+              ("C-c e n" . flycheck-next-error)
+              ("C-c e p" . flycheck-previous-error)
+              ("C-c e l" . flycheck-list-errors)
+              ("C-c e c" . flycheck-clear)
               ("C-c e v" . flycheck-verify-setup))
-  :hook ((python-mode . (lambda ()
-                          (setq yas-indent-line 'fixed)
-                          (company-mode t)
-                          (flycheck-mode t)
-                          (highlight-indent-guides-mode t)
-                          (rainbow-delimiters-mode t)
-                          (when _0x17de/python-isort-on-save
-                            (add-hook 'before-save-hook 'py-isort-buffer nil t))))))
+  :hook ((python-mode . _0x17de/python--setup)
+         (python-ts-mode . _0x17de/python--setup)))
 (use-package py-isort
   :defer t
   :commands (py-isort-buffer py-isort-region)
@@ -69,7 +101,8 @@ explicitly formatting buffers."
   (setq py-isort-options '("--line-length=100" "--multi-line=3")))
 (use-package python-docstring
   :defer t
-  :hook (python-mode . python-docstring-mode)
+  :hook ((python-mode . python-docstring-mode)
+         (python-ts-mode . python-docstring-mode))
   :config
   (setq python-docstring-sentence-end-double-space nil))
 (use-package coverage
@@ -77,17 +110,25 @@ explicitly formatting buffers."
   :commands (coverage-mode coverage-clear-overlays)
   :bind (:map python-mode-map
               ("C-c t c" . coverage-mode)
+              ("C-c t C" . coverage-clear-overlays)
+         :map python-ts-mode-map
+              ("C-c t c" . coverage-mode)
               ("C-c t C" . coverage-clear-overlays)))
 (use-package poetry
   :defer t
   :commands (poetry-venv-activate poetry-install poetry-add)
   :config
-  (setq poetry-tracking-strategy 'switch-buffer))
+  (setq poetry-tracking-strategy 'switch-buffer)
+  :hook ((python-mode . poetry-tracking-mode)
+         (python-ts-mode . poetry-tracking-mode)))
 (use-package lsp-pyright
   :defer t
-  :hook (python-mode . (lambda ()
-                         (require 'lsp-pyright)
-                         (lsp-deferred)))
+  :hook ((python-mode . (lambda ()
+                          (require 'lsp-pyright)
+                          (lsp-deferred)))
+         (python-ts-mode . (lambda ()
+                             (require 'lsp-pyright)
+                             (lsp-deferred))))
   :config
   (setq lsp-pyright-auto-import-completions t
         lsp-pyright-use-library-code-for-types t
@@ -95,14 +136,16 @@ explicitly formatting buffers."
         lsp-pyright-exclude ["**/.mypy_cache"
                              "**/__pycache__"
                              "**/node_modules"
-                             ".git"]))
+                             ".git"]
+        lsp-pyright-venv-path _0x17de/python-global-virtualenv-dir))
 
 (pcase _0x17de/python-format-tool
   ('ruff
    (use-package lazy-ruff
      :defer t
      :bind (("C-c f f" . lazy-ruff-lint-format-dwim))
-     :hook (python-mode . lazy-ruff-mode)
+     :hook ((python-mode . lazy-ruff-mode)
+            (python-ts-mode . lazy-ruff-mode))
      :custom
      (lazy-ruff-check-command "ruff check --fix --no-unsafe-fixes -s --line-length=100 ")
      (lazy-ruff-only-format-block nil)
@@ -113,7 +156,8 @@ explicitly formatting buffers."
   ('blacken
    (use-package blacken
      :defer t
-     ;;:hook (python-mode . blacken-mode)
+     ;;:hook ((python-mode . blacken-mode)
+     ;;       (python-ts-mode . blacken-mode))
      :custom
      (blacken-only-if-project-is-blackened t)
      (blacken-line-length 100)
@@ -130,8 +174,13 @@ This is used by pyvenv to locate and activate virtual environments."
 (use-package pyvenv
   :defer t
   :after python
-  :hook (python-mode . pyvenv-mode)
+  :hook ((python-mode . pyvenv-mode)
+         (python-ts-mode . pyvenv-mode))
   :bind (:map python-mode-map
+              ("C-c v a" . pyvenv-activate)
+              ("C-c v d" . pyvenv-deactivate)
+              ("C-c v w" . pyvenv-workon)
+         :map python-ts-mode-map
               ("C-c v a" . pyvenv-activate)
               ("C-c v d" . pyvenv-deactivate)
               ("C-c v w" . pyvenv-workon))
@@ -146,3 +195,11 @@ This is used by pyvenv to locate and activate virtual environments."
             (lambda ()
               (when (bound-and-true-p lsp-mode)
                 (lsp-restart-workspace)))))
+(use-package python-black
+  :defer t
+  :after python
+  :commands (python-black-buffer python-black-region))
+(use-package py-autopep8
+  :defer t
+  :after python
+  :commands (py-autopep8-buffer py-autopep8-region))
