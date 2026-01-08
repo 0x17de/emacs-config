@@ -14,7 +14,9 @@
 (defvaralias 'cperl-indent-level 'tab-width)
 
 ;; Auto indentation
-(add-to-list 'load-path "guess-style")
+(add-to-list 'load-path
+             (expand-file-name "guess-style"
+                               (file-name-directory (or load-file-name buffer-file-name default-directory))))
 (autoload 'guess-style-set-variable "guess-style" nil t)
 (autoload 'guess-style-guess-variable "guess-style")
 (autoload 'guess-style-guess-all "guess-style" nil t)
