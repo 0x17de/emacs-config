@@ -41,7 +41,8 @@ Each element of this list has the form:
   (company-mode t)
   (hs-minor-mode t)
   (flycheck-mode t)
-  (flycheck-irony-setup)
+  (when (fboundp 'flycheck-irony-setup)
+    (flycheck-irony-setup))
   (rainbow-delimiters-mode t)
   (condition-case err
       (google-set-c-style)
@@ -66,8 +67,8 @@ Each element of this list has the form:
          :map c++-mode-map
               ([f1] . semantic-ia-show-doc)
               ([f5] . recompile)
-              ([f6] . srefactor-refactor-at-point))
-              ([tab] . company-indent-or-complete-common))
+              ([f6] . srefactor-refactor-at-point)
+              ([tab] . company-indent-or-complete-common)))
 
 (defun defguard (guard)
   "Inserts guard header for C++"

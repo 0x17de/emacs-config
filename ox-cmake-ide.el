@@ -191,7 +191,8 @@
             (make-local-variable 'company-clang-arguments)
             (setq company-clang-arguments flags))
 
-          (when (featurep 'flycheck)
+          (when (and (featurep 'flycheck)
+                     (fboundp 'flycheck-irony-setup))
             (flycheck-irony-setup)))))))
 
 
@@ -244,7 +245,6 @@
           (progn (setf (oxci--project-initial project) nil)
                  (oxci--run-cmake project))
         (oxci--apply-flags project buffer)))))
-
 
 
 
