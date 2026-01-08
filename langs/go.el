@@ -39,11 +39,11 @@
         ("S-<f12>" . lsp-find-references))
   :hook
   (go-mode . (lambda ()
-               (setq tab-width 2)
-               (setq company-backends '(company-capf
-                                        company-files))
-               (setq gofmt-command "goimports")
-               (add-hook 'before-save-hook 'gofmt-before-save)
+               (setq-local tab-width 2)
+               (setq-local company-backends '(company-capf
+                                              company-files))
+               (setq-local gofmt-command "goimports")
+               (add-hook 'before-save-hook #'gofmt-before-save nil t)
                (go-guru-hl-identifier-mode)
                (lsp-deferred)
                (setenv "GOGC" "20")
