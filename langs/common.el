@@ -149,6 +149,6 @@ Result depends on syntax table's comment character."
     (setq lsp-ui-doc-border "white")))
 
 ;; Autocomplete changes
-(setq icomplete-mode t)
+(icomplete-mode -1)
 ;; (setq completion-cycle-threshold t)"
 (setq completion-auto-help t)
