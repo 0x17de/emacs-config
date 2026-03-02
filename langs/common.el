@@ -81,7 +81,7 @@ Result depends on syntax table's comment character."
                 lsp-enable-multi-root nil
                 lsp-enable-symbol-highlighting nil
                 lsp-headerline-breadcrumb-enable nil
-                lsp-file-watch-threshold 4000))
+                lsp-file-watch-threshold 10000))
 (use-package flycheck
   :defer t)
 
