@@ -81,7 +81,8 @@ Result depends on syntax table's comment character."
                 lsp-enable-multi-root nil
                 lsp-enable-symbol-highlighting nil
                 lsp-headerline-breadcrumb-enable nil
-                lsp-file-watch-threshold 10000))
+                lsp-file-watch-threshold 10000)
+          (setq lsp-client-packages (delete 'lsp-java lsp-client-packages)))
 (use-package flycheck
   :defer t)
 

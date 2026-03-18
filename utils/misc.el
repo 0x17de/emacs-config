@@ -103,9 +103,10 @@ editing. The default location is in the .emacs.d directory."
 ;(setq ring-bell-function 'ignore)
 
 (require 'recentf)
-(setq recentf-auto-cleanup 'never)
+(setq recentf-auto-cleanup 'never
+      recentf-max-menu-items 25
+      recentf-max-saved-items 50)
 (recentf-mode 1)
-(setq recentf-max-menu-items 25)
 (global-set-key (kbd "C-x C-r") 'recentf-open-files)
 
 ;;Mouse scroll
