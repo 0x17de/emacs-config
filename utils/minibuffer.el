@@ -41,4 +41,9 @@
      :ensure t
      :demand t
      :config
-     (setq completion-styles '(orderless basic)))))
+     (setq completion-styles '(orderless basic)))
+   (use-package marginalia
+     :ensure t
+     :demand t
+     :init
+     (marginalia-mode))))
