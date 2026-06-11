@@ -7,6 +7,12 @@ Requires lsp-ruff package and `ruff server' in PATH (ruff >= 0.2.0)."
   :type 'boolean
   :group '_0x17de
   :safe #'booleanp)
+(defun _0x17de/python-pytest ()
+  (interactive)
+  (compile "uv run pytest"))
+(defun _0x17de/python-pytest-file ()
+  (interactive)
+  (compile (format "uv run pytest %s" (buffer-file-name))))
 (defun _0x17de/python--setup-keys (map)
   "Define shared Python keybindings in MAP."
   (define-key map [tab]           #'company-indent-or-complete-common)
@@ -34,7 +40,9 @@ Requires lsp-ruff package and `ruff server' in PATH (ruff >= 0.2.0)."
   (define-key map (kbd "C-c e l") #'flycheck-list-errors)
   (define-key map (kbd "C-c e c") #'flycheck-clear)
   (define-key map (kbd "C-c e v") #'flycheck-verify-setup)
-  (define-key map (kbd "C-c f f") #'ruff-format-buffer))
+  (define-key map (kbd "C-c f f") #'ruff-format-buffer)
+  (define-key map (kbd "C-c t t") #'_0x17de/python-pytest)
+  (define-key map (kbd "C-c t f") #'_0x17de/python-pytest-file))
 (defun _0x17de/python--setup ()
   "Common setup shared between python-mode and python-ts-mode."
   (setq yas-indent-line 'fixed)
@@ -72,13 +80,10 @@ Requires lsp-ruff package and `ruff server' in PATH (ruff >= 0.2.0)."
                              (require 'lsp-pyright)
                              (lsp-deferred))))
   :config
-  (setq lsp-pyright-auto-import-completions t
-        lsp-pyright-use-library-code-for-types t
+  (setq lsp-pyright-langserver-command "basedpyright"
+        lsp-pyright-auto-import-completions t
         lsp-pyright-multi-root nil
-        lsp-pyright-exclude ["**/.mypy_cache"
-                             "**/__pycache__"
-                             "**/node_modules"
-                             ".git"]))
+        lsp-pyright-type-checking-mode "standard"))
 
 (when _0x17de/python-lsp-ruff-enable
   (use-package lsp-ruff
