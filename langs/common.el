@@ -62,7 +62,7 @@ Result depends on syntax table's comment character."
   :init 
   (setq company-async-timeout 5
         company-dabbrev-downcase 0
-        company-idle-delay 0.5
+        company-idle-delay 0.2
         company-irony-ignore-case t
         company-require-match nil
         company-selection-wrap-around t
