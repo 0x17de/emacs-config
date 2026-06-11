@@ -101,34 +101,24 @@ This shell is used to execute the Nushell command."
   "Highlight face for today's deadlines")
 
 (defun _0x17de/org-highlight-todays-deadlines ()
-  "Highlight headlines with a deadline of today in Org mode."
+  "Highlight headlines with a deadline of today or earlier in Org mode."
   (interactive)
-  (save-excursion
-    (remove-overlays (point-min) (point-max) 'face '_0x17de/org-deadline-highlight)
-    (goto-char (point-min))
-    (let ((today (calendar-current-date))
-          (current-headline nil)
-          (current-headline-start nil)
-          (current-headline-end nil))
-      (while (re-search-forward "^\\*+ \\(.*\\)$\\|DEADLINE: <\\([^>]+\\)>" nil t)
-        (cond
-         ((match-string 1)
-          (setq current-headline (match-string-no-properties 1)
-                current-headline-start (match-beginning 0)
-                current-headline-end (line-end-position)))
-         ((match-string 2)
-          (ignore-errors
-            (let* ((current-deadline (match-string-no-properties 2))
-                   (deadline-parsed (org-parse-time-string current-deadline))
-                   (deadline-date-abs (calendar-absolute-from-gregorian
-                                       (list (nth 4 deadline-parsed)
-                                             (nth 3 deadline-parsed)
-                                             (nth 5 deadline-parsed))))
-                   (today-date-abs (calendar-absolute-from-gregorian today))
-                   (days-diff (- deadline-date-abs today-date-abs)))
-              (when (eq days-diff 0)
-                (let ((ov (make-overlay current-headline-start current-headline-end)))
-                  (overlay-put ov 'face '_0x17de/org-deadline-highlight)))))))))))
+  (remove-overlays (point-min) (point-max) '_0x17de/deadline t)
+  (let ((today (calendar-absolute-from-gregorian (calendar-current-date))))
+    (org-element-map (org-element-parse-buffer 'headline) 'headline
+      (lambda (hl)
+        (when-let* ((deadline (org-element-property :deadline hl))
+                    (raw (org-element-property :raw-value deadline))
+                    (parsed (org-parse-time-string raw))
+                    (abs (calendar-absolute-from-gregorian
+                          (list (nth 4 parsed) (nth 3 parsed) (nth 5 parsed)))))
+          (when (and (not (eq (org-element-property :todo-type hl) 'done))
+                     (<= abs today))
+            (let* ((start (org-element-property :begin hl))
+                   (end (save-excursion (goto-char start) (line-end-position)))
+                   (ov (make-overlay start end)))
+              (overlay-put ov '_0x17de/deadline t)
+              (overlay-put ov 'face '_0x17de/org-deadline-highlight))))))))
 
 (defun _0x17de/org-setup-deadline-highlighting ()
   (when (derived-mode-p 'org-mode)
