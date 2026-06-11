@@ -50,6 +50,7 @@ Requires lsp-ruff package and `ruff server' in PATH (ruff >= 0.2.0)."
   (flycheck-mode t)
   (highlight-indent-guides-mode t)
   (rainbow-delimiters-mode t)
+  (lsp-inlay-hints-mode t)
   (_0x17de/python--setup-keys (current-local-map)))
 (use-package python
   :ensure nil
