@@ -13,7 +13,6 @@
    '((shell . t)))
   (setq org-confirm-babel-evaluate nil
         org-hide-emphasis-markers t
-        org-journal-carryover-items "TODO={TODO\\|WAITING\\|DOING}"
         org-todo-keywords '((sequence "TODO" "WAITING" "DOING" "|" "DONE" "CANCELLED"))
         org-modern-todo-faces '(("TODO" :foreground "white" :background "darkgreen" :weight bold)
                                 ("DOING" :foreground "white" :background "orange" :weight bold)
@@ -27,20 +26,22 @@
   :init
   (setq org-journal-dir "~/org/journal"
         org-journal-date-format "%Y-%m-%d"
-        org-journal-enable-agenda-integration t))
+        org-journal-enable-agenda-integration t
+        org-journal-carryover-items "TODO={TODO\\|WAITING\\|DOING}"))
 
 ;;(use-package ox-search
 ;;  :ensure nil
 ;;  :hook (org-mode . ox-search-mode))
 
 (use-package org-node
-  :defer t
-  :after org
-  :config (org-node-cache-mode))
+  :hook (after-init . org-node-cache-mode))
 
 (use-package org-modern
   :defer t
   :hook ((org-mode . org-modern-mode)))
+
+(use-package org-appear
+  :hook (org-mode . org-appear-mode))
 
 (defun org-babel-nushell--list-includes (params)
   "Extract values from all :include keys in PARAMS alist."
