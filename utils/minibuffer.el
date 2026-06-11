@@ -36,4 +36,9 @@
             ("C-x r b" . consult-bookmark)
             ("M-y" . consult-yank-pop)
             ("M-g g" . consult-goto-line)
-            ("M-s r" . consult-ripgrep)))))
+            ("M-s r" . consult-ripgrep)))
+   (use-package orderless
+     :ensure t
+     :demand t
+     :config
+     (setq completion-styles '(orderless basic)))))

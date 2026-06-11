@@ -21,7 +21,6 @@
       :init
       (amx-mode t)
       :custom
-      (completion-styles '(flex basic partial-completion emacs22))
       (amx-completing-read-function #'completing-read)
       (amx-save-file (concat user-emacs-directory "amx-items"))
       (amx-history-length 50)))
