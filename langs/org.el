@@ -107,13 +107,13 @@ This shell is used to execute the Nushell command."
   (let ((today (calendar-absolute-from-gregorian (calendar-current-date))))
     (org-element-map (org-element-parse-buffer 'headline) 'headline
       (lambda (hl)
-        (when-let* ((deadline (org-element-property :deadline hl))
-                    (raw (org-element-property :raw-value deadline))
-                    (parsed (org-parse-time-string raw))
-                    (abs (calendar-absolute-from-gregorian
-                          (list (nth 4 parsed) (nth 3 parsed) (nth 5 parsed)))))
+        (when-let* ((deadline     (org-element-property :deadline hl))
+                    (year         (org-element-property :year-start deadline))
+                    (month        (org-element-property :month-start deadline))
+                    (day          (org-element-property :day-start deadline))
+                    (deadline-abs (calendar-absolute-from-gregorian (list month day year))))
           (when (and (not (eq (org-element-property :todo-type hl) 'done))
-                     (<= abs today))
+                     (<= deadline-abs today))
             (let* ((start (org-element-property :begin hl))
                    (end (save-excursion (goto-char start) (line-end-position)))
                    (ov (make-overlay start end)))
@@ -121,8 +121,7 @@ This shell is used to execute the Nushell command."
               (overlay-put ov 'face '_0x17de/org-deadline-highlight))))))))
 
 (defun _0x17de/org-setup-deadline-highlighting ()
-  (when (derived-mode-p 'org-mode)
-    (add-hook 'after-save-hook #'_0x17de/org-highlight-todays-deadlines nil t)
-    (_0x17de/org-highlight-todays-deadlines))) ;; run once initially
+  (add-hook 'after-save-hook #'_0x17de/org-highlight-todays-deadlines nil t)
+  (_0x17de/org-highlight-todays-deadlines))
 
 (_0x17de/load '("./ext/ox-confluence/ox-confluence"))
