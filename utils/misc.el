@@ -75,7 +75,10 @@ editing. The default location is in the .emacs.d directory."
   "When non-nil, focus follows the mouse pointer."
   :type 'boolean
   :group '_0x17de)
-(setq mouse-autoselect-window 0
+;; Negative delay: debounces auto-selection (brushing past a split won't grab
+;; it) and, crucially, suppresses minibuffer auto-selection so mouse nudges
+;; don't yank focus out of an active vertico/consult session.
+(setq mouse-autoselect-window -0.2
       focus-follows-mouse _0x17de/focus-follows-mouse)
 ;;(setq interprogram-paste-function 'x-cut-buffer-or-selection-value)
 
