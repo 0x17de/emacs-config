@@ -64,7 +64,9 @@ editing. The default location is in the .emacs.d directory."
 (defun find-emacs-config ()
   "Open the emacs configuration file"
   (interactive)
-  (find-file "~/.emacs.d/_0x17de/_0x17de-emacs.el"))
+  ;; Derived from the loader rather than hardcoded: this config is not
+  ;; necessarily checked out under ~/.emacs.d.
+  (find-file (expand-file-name "_0x17de-emacs.el" _0x17de/load-path)))
 
 ;; Selection/Clipboard improvements
 (delete-selection-mode t)

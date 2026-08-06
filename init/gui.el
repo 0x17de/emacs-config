@@ -2,6 +2,13 @@
 ;;No splash screen
 (setq inhibit-startup-message t)
 
+;; custom.el selects doom-challenger-deep via custom-enabled-themes, but
+;; nothing pulled in the package providing it. custom.el is loaded before this
+;; file, so on a machine that does not have it yet the theme only takes effect
+;; after the next restart.
+(use-package doom-themes
+  :demand t)
+
 ;;Disable bars
 (defun simplify-ui (frame)
   "Remove unwanted menubar/scrollbar/etc from FRAME."

@@ -4,16 +4,12 @@
   "Returns non-nil if inside string, else nil.
 Result depends on syntax table's string quote character."
   (interactive)
-  (let ((result (nth 3 (syntax-ppss))))
-    (message "%s" result)
-    result))
+  (nth 3 (syntax-ppss)))
 (defun inside-comment-q ()
   "Returns non-nil if inside comment, else nil.
 Result depends on syntax table's comment character."
   (interactive)
-  (let ((result (nth 4 (syntax-ppss))))
-    (message "%s" result)
-    result))
+  (nth 4 (syntax-ppss)))
 (defun semantic-completion-advice (adviced-f &rest r)
   "Check if POINT it's inside a string or comment before calling semantic-*"
   (unless (or (inside-string-q) (inside-comment-q))
@@ -67,7 +63,6 @@ Result depends on syntax table's comment character."
   (setq company-async-timeout 5
         company-dabbrev-downcase 0
         company-idle-delay 0.2
-        company-irony-ignore-case t
         company-require-match nil
         company-selection-wrap-around t
         company-tooltip-align-annotations t)

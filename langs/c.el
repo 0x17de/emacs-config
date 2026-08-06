@@ -43,8 +43,6 @@ Each element of this list has the form:
   (company-mode t)
   (hs-minor-mode t)
   (flycheck-mode t)
-  (when (fboundp 'flycheck-irony-setup)
-    (flycheck-irony-setup))
   (rainbow-delimiters-mode t)
   (condition-case err
       (google-set-c-style)

@@ -136,15 +136,16 @@ You can put your own customizations in either your `.emacs` file or in `~/.emacs
 | `C-M-S-y`       | Show snippets for current mode                                       |
 | `C-M-S-q`       | Close current buffer without asking                                  |
 | `C-M-S-w`       | Close current buffer and window without asking                       |
-| `C-M-x`         | The original M-x since `smex` is used for command selection          |
+| `C-M-x`         | The original M-x (only when `_0x17de/M-x-library` is set to `smex`)   |
 | `C-M-\|`        | Pipe region through shell command and replace with result            |
 | `S-<tab>`       | Insert a real tab character instead of spaces                        |
 | `<f1>`          | Show documentation for item at point (context-dependent)             |
 | `<f5>`          | Generic compile command (project-specific actions in some modes)     |
 | `<tab>`         | Auto-indentation and completion (intelligent context handling)       |
 | `C-x o`         | Smart navigation between windows/frames                              |
-| `M-<arrows>`    | Move between frames                                                  |
-| `C-M-<up/down>` | Resize frames                                                        |
+| `M-<up/down>`   | Move the current line or region up/down                              |
+| `C-M-S-<arrows>`| Move the current buffer into the window in that direction            |
+| `C-M-<up/down>` | Increase/decrease the default font size                              |
 | `C-:`           | [Avy](https://github.com/abo-abo/avy)-goto-char                      |
 | `C-M-:`         | [Avy](https://github.com/abo-abo/avy)-goto-char-timer                |
 
@@ -154,7 +155,7 @@ You can put your own customizations in either your `.emacs` file or in `~/.emacs
 Place a `.dir-locals.el` in the project root for project-specific configuration. For CMake projects, the system will try to use `$PROJECT_ROOT/build` for builds.
 
 ### Python Projects
-Requires `pyright` to be installed (recommended via `pipx install pyright`).
+Requires `basedpyright` to be installed (recommended via `pipx install basedpyright`), plus `ruff` for formatting and import sorting.
 
 ### Go Projects
 Automatically formats code with gofmt/goimports on save.
@@ -181,8 +182,11 @@ The configuration uses a custom group called `_0x17de` with many customizable va
 - **_0x17de/plantuml:enable**: Enable PlantUML mode (default: t)
 - **_0x17de/plantuml-jar-file**: Path to PlantUML jar file
 - **_0x17de/lisp-paredit:enabled**: Enable paredit for Lisp modes (default: nil)
-- **_0x17de/python-global-virtualenv-dir**: Default directory for Python virtualenvs
+- **_0x17de/python-lsp-ruff-enable**: Run the ruff LSP server alongside basedpyright for live linting (default: nil)
+- **_0x17de/nix-mode-enable**: Enable nix-mode with nixd LSP support (default: nil)
 - **_0x17de/google-c-style-overrides**: Customize C/C++ formatting
+- **_0x17de/mmm-mode:enable**: Enable mmm-mode (default: nil)
+- **_0x17de/mmm-mode:babel:enable**: Enable org-babel support for mmm-mode (default: nil)
 
 ### Environment Options
 - **_0x17de/exec-path-from-shell:enable**: Import environment from shell (default: nil)
