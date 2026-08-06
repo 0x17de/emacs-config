@@ -27,8 +27,7 @@
    "./init/speedup.el"
    "./init/package.el"
    "./init/encoding.el"
-   "./init/gui.el"
-   "./init/exwm.el"))
+   "./init/gui.el"))
 
 (_0x17de/load
  '("./utils/exec-path-from-shell"
@@ -36,7 +35,6 @@
    "./utils/indention"
    "./utils/replace-with-shell"
    "./utils/misc"
-   "./utils/bolt"
    "./utils/vterm"
    "./utils/eat-terminal"
    "./utils/modeline"

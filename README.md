@@ -35,7 +35,6 @@ A modular Emacs configuration with comprehensive language support, development t
 - Code formatting and refactoring tools
 - Comprehensive support for project management via Projectile
 - Terminal integration via VTerm
-- Puppet Bolt integration for infrastructure management
 
 ### Language Support
 
@@ -54,7 +53,6 @@ Language support is primarily based on LSP and/or specialized modes:
 
 ### Additional Features
 - Confluence export from Org mode documents
-- EXWM (Emacs X Window Manager) integration (optional)
 - Google Styleguide integration
 
 ## Setup
@@ -108,17 +106,12 @@ M-x lsp-install-server RET jdtls RET
 ### For PlantUML
 Set the path to your PlantUML jar file via `M-x customize-group RET _0x17de RET`, then make `_0x17de/plantuml-jar-file` point to the jar file location.
 
-### For EXWM (optional/experimental)
-The EXWM configuration is rather experimental and not really supported. It is recommended to use `emacs-lucid` instead of `emacs-gtk` when trying this out.
-EXWM can be enabled through customize: `M-x customize-group RET _0x17de RET`.
-
 ## Directory Structure
 
 The configuration is organized into several directories:
 
 - `init/`: Core initialization files
   - `custom.el`: User customization file
-  - `exwm.el`: EXWM configuration
   - `package.el`: Package management
   - `speedup.el`: Performance optimizations
 - `langs/`: Language-specific configurations
@@ -172,9 +165,6 @@ Use the minor mode `latex-compile-on-save-mode` to automatically compile on savi
 ### PlantUML Projects
 Automatically generates and previews diagrams on save for `.puml` files.
 
-### Puppet Bolt
-Use `M-x _0x17de/bolt` to open the Bolt interface for managing infrastructure.
-
 ## Customization Options
 
 The configuration uses a custom group called `_0x17de` with many customizable variables. You can use `M-x customize-group RET _0x17de RET` to see all options. Here are the main customizable features:
@@ -196,9 +186,6 @@ The configuration uses a custom group called `_0x17de` with many customizable va
 
 ### Environment Options
 - **_0x17de/exec-path-from-shell:enable**: Import environment from shell (default: nil)
-- **_0x17de/bolt-command-path**: Path to Puppet Bolt binary
-- **_0x17de/bolt-repo-path**: Path to Bolt repository
-- **_0x17de/use-exwm**: Enable EXWM window manager (default: nil)
 
 You can customize these options either through the customize interface or by setting them in your `init/custom.el` file.
 

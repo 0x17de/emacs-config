@@ -4,27 +4,12 @@
   :group '_0x17de
   :type 'boolean)
 
-(use-package sly
-  :ensure t
-  :defer t
-  :init
-  (setq inferior-lisp-program "sbcl")
-  :config
-  (setq sly-complete-symbol-function 'sly-flex-completions
-  :hook ((lisp-mode . (lambda ()
-                        (sly-mode t)))
-         (sly-repl-mode . (lambda ()
-                            (company-mode t))))))
-
 (use-package lisp-mode
   :ensure nil
   :demand t
   :bind
   (:map lisp-mode-map
-        ;;([tab] . sly-complete-symbol)
-        ([tab] . company-indent-or-complete-common)
-        ("C-c C-d h" . sly-documentation-lookup)
-        ("C-c C-z" . sly))
+        ([tab] . company-indent-or-complete-common))
   :hook
   ((lisp-mode . (lambda ()
                  (setq company-backends '(company-capf
@@ -54,8 +39,7 @@
     ;;:diminish paredit-mode
     :hook ((emacs-lisp-mode . paredit-mode)
            (lisp-mode . paredit-mode)
-           (lisp-interaction-mode . paredit-mode)
-           (sly-repl-mode . paredit-mode))
+           (lisp-interaction-mode . paredit-mode))
     :bind (:map paredit-mode-map
                 ("C-M-f" . paredit-forward)
                 ("C-M-b" . paredit-backward))))
