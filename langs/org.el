@@ -29,10 +29,6 @@
         org-journal-enable-agenda-integration t
         org-journal-carryover-items "TODO={TODO\\|WAITING\\|DOING}"))
 
-;;(use-package ox-search
-;;  :ensure nil
-;;  :hook (org-mode . ox-search-mode))
-
 (use-package org-node
   :hook (after-init . org-node-cache-mode))
 
