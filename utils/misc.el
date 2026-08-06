@@ -38,17 +38,17 @@ editing. The default location is in the .emacs.d directory."
 (setq create-lockfiles nil)
 
 ;; Yes or no short
-(defalias 'yes-or-no-p 'y-or-n-p)
+(setq use-short-answers t)
 
 ;;Just kill buffer without asking
 (global-set-key (kbd "C-M-<escape>") (lambda () (interactive) (kill-emacs)))
-(global-set-key (kbd "C-M-S-q") (lambda () (interactive) (kill-this-buffer)))
+(global-set-key (kbd "C-M-S-q") #'kill-current-buffer)
 (global-set-key (kbd "C-M-S-w") (lambda () (interactive)
-                                  (kill-this-buffer)
+                                  (kill-current-buffer)
                                   (if (equal 1 (length (window-list)))
                                       (delete-frame)
                                     (delete-window))))
-(global-set-key (kbd "C-x k") (lambda () (interactive) (kill-this-buffer)))
+(global-set-key (kbd "C-x k") #'kill-current-buffer)
 (global-set-key (kbd "C-M-<up>") (lambda () (interactive)
                                    (set-face-attribute 'default nil :height (+ (face-attribute 'default :height) 5))))
 (global-set-key (kbd "C-M-<down>") (lambda () (interactive)
@@ -68,7 +68,7 @@ editing. The default location is in the .emacs.d directory."
 ;; Selection/Clipboard improvements
 (delete-selection-mode t)
 (transient-mark-mode t)
-(setq x-select-enable-clipboard t)
+(setq select-enable-clipboard t)
 (setq mouse-yank-at-point t)
 ;;focus follow mouse
 (defcustom _0x17de/focus-follows-mouse t
@@ -102,7 +102,6 @@ editing. The default location is in the .emacs.d directory."
 (transient-mark-mode t)
 (global-hl-line-mode t)
 ;(setq cursor-type 'bar)
-(setq redisplay-dont-pause t)
 ;(setq ring-bell-function 'ignore)
 
 (require 'recentf)
@@ -185,9 +184,13 @@ editing. The default location is in the .emacs.d directory."
   :ensure t
   :demand t)
 
-(use-package refine)
-(use-package function-args)
-(use-package stickyfunc-enhance)
+(use-package refine
+  :defer t)
+(use-package function-args
+  :defer t)
+;; Loaded alongside semantic, whose stickyfunc it advises.
+(use-package stickyfunc-enhance
+  :after semantic)
 
 (use-package embark
   :ensure t

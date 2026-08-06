@@ -20,6 +20,7 @@ Result depends on syntax table's comment character."
     (apply adviced-f r)))
 
 (use-package highlight-indent-guides
+  :defer t
   :config
   (setq highlight-indent-guides-auto-enabled nil)
   (setq highlight-indent-guides-method 'fill)
@@ -28,6 +29,7 @@ Result depends on syntax table's comment character."
   (set-face-foreground 'highlight-indent-guides-character-face "gray16"))
 
 (use-package dumb-jump
+  :defer t
   :init
   (global-set-key (kbd "C-S-j") 'dumb-jump-go))
 (use-package semantic

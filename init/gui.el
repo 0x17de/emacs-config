@@ -4,8 +4,7 @@
 
 ;;Disable bars
 (defun simplify-ui (frame)
-  (interactive)
-  "Remove unwanted menubar/scrollbar/etc"
+  "Remove unwanted menubar/scrollbar/etc from FRAME."
   (modify-frame-parameters frame
                            '((menu-bar-lines . 0)
                              (tool-bar-lines . 0)

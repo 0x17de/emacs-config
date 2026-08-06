@@ -101,8 +101,10 @@ Requires lsp-ruff package and `ruff server' in PATH (ruff >= 0.2.0)."
   (reformatter-define ruff-isort
     :program "ruff"
     :args '("check" "--select" "I" "--fix" "--fix-only" "-")))
-;; isort added first so it is prepended before format in python-mode-hook,
-;; meaning format ends up at the front and runs last — correct order on save.
+;; Order matters and is doubly inverted, so do not reorder these lines.
+;; `add-hook' prepends, so format-on-save-mode is enabled first; each
+;; -on-save-mode then prepends its own entry to the local `before-save-hook',
+;; putting isort ahead of format. Net effect on save: isort, then format.
 (add-hook 'python-mode-hook #'ruff-isort-on-save-mode)
 (add-hook 'python-mode-hook #'ruff-format-on-save-mode)
 (add-hook 'python-ts-mode-hook #'ruff-isort-on-save-mode)

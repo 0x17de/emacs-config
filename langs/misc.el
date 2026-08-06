@@ -5,9 +5,9 @@
   :hook ((prog-mode . rainbow-delimiters-mode)
          (salt-mode . rainbow-delimiters-mode)))
 (use-package rainbow-mode
-  :config
-  (progn (setq rainbow-x-colors nil)
-         (add-hook 'prog-mode-hook 'rainbow-mode)))
+  ;; Must be set before the mode activates, so :init rather than :config.
+  :init (setq rainbow-x-colors nil)
+  :hook (prog-mode . rainbow-mode))
 
 (use-package projectile
   :demand t
