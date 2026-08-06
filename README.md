@@ -97,6 +97,9 @@ Run once to install Go language tools:
 M-x ox-install-go-dependencies
 ```
 
+### For C/C++ development
+Install `clangd` (part of `clang-tools` on NixOS/Debian, `clang` on Arch). Without it on `PATH`, C/C++ buffers still get company, flycheck and the Google style, but no LSP features.
+
 ### For Java development
 Install the Java language server:
 ```
@@ -152,7 +155,7 @@ You can put your own customizations in either your `.emacs` file or in `~/.emacs
 ## Language-Specific Features
 
 ### C/C++ Projects
-Place a `.dir-locals.el` in the project root for project-specific configuration. For CMake projects, the system will try to use `$PROJECT_ROOT/build` for builds.
+Handled by `clangd` through lsp-mode. clangd resolves includes from a `compile_commands.json` in the project root, which CMake generates with `-DCMAKE_EXPORT_COMPILE_COMMANDS=ON` (symlink or copy it out of the build directory). Place a `.dir-locals.el` in the project root for project-specific configuration.
 
 ### Python Projects
 Requires `basedpyright` to be installed (recommended via `pipx install basedpyright`), plus `ruff` for formatting and import sorting.

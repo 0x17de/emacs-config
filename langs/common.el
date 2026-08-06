@@ -1,20 +1,4 @@
 ;; -*- lexical-binding: t; -*-
-;; see https://github.com/company-mode/company-mode/issues/525#issuecomment-348635719
-(defun inside-string-q ()
-  "Returns non-nil if inside string, else nil.
-Result depends on syntax table's string quote character."
-  (interactive)
-  (nth 3 (syntax-ppss)))
-(defun inside-comment-q ()
-  "Returns non-nil if inside comment, else nil.
-Result depends on syntax table's comment character."
-  (interactive)
-  (nth 4 (syntax-ppss)))
-(defun semantic-completion-advice (adviced-f &rest r)
-  "Check if POINT it's inside a string or comment before calling semantic-*"
-  (unless (or (inside-string-q) (inside-comment-q))
-    (apply adviced-f r)))
-
 (use-package highlight-indent-guides
   :defer t
   :config
@@ -28,18 +12,6 @@ Result depends on syntax table's comment character."
   :defer t
   :init
   (global-set-key (kbd "C-S-j") 'dumb-jump-go))
-(use-package semantic
-  :ensure nil
-  :commands semantic-mode
-  :hook ((c-mode . semantic-mode)
-         (c++-mode . semantic-mode))
-  :config
-  (advice-add 'semantic-analyze-completion-at-point-function
-              :around #'semantic-completion-advice)
-  (global-semantic-idle-completions-mode -1))
-
-(use-package srefactor
-  :defer t)
 ;(use-package auto-complete
 ;  :init
 ;  (setq tab-always-indent 'complete)

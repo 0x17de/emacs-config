@@ -189,11 +189,6 @@ editing. The default location is in the .emacs.d directory."
 
 (use-package refine
   :defer t)
-(use-package function-args
-  :defer t)
-;; Loaded alongside semantic, whose stickyfunc it advises.
-(use-package stickyfunc-enhance
-  :after semantic)
 
 (use-package embark
   :ensure t

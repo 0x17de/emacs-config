@@ -44,10 +44,19 @@ Each element of this list has the form:
   (hs-minor-mode t)
   (flycheck-mode t)
   (rainbow-delimiters-mode t)
+  (setq-local company-backends '(company-capf
+                                 company-files))
   (condition-case err
       (google-set-c-style)
     (error (message "Failed to set google-c-style: Did loading it fail? %S" err)))
-  (setq-local c-basic-offset 4))
+  (setq-local c-basic-offset 4)
+  ;; clangd, via lsp-mode's built-in client. Needs a compile_commands.json in
+  ;; the project (CMAKE_EXPORT_COMPILE_COMMANDS=ON) to resolve includes.
+  ;; Guarded so that a machine without clang-tools still gets company,
+  ;; flycheck and the style setup instead of an lsp server prompt.
+  (if (executable-find "clangd")
+      (lsp-deferred)
+    (message "clangd not found in PATH; C/C++ LSP features disabled")))
 (use-package cc-mode
   :ensure nil
   :defer t
@@ -62,14 +71,16 @@ Each element of this list has the form:
   :hook ((c-mode . _0x17de/c-mode-common-init)
          (c++-mode . _0x17de/c-mode-common-init))
   :bind (:map c-mode-map
-              ([f1] . semantic-ia-show-doc)
+              ([f1] . lsp-describe-thing-at-point)
               ([f5] . recompile)
-              ([f6] . srefactor-refactor-at-point)
+              ([f12] . lsp-find-definition)
+              ("S-<f12>" . lsp-find-references)
               ([tab] . company-indent-or-complete-common)
          :map c++-mode-map
-              ([f1] . semantic-ia-show-doc)
+              ([f1] . lsp-describe-thing-at-point)
               ([f5] . recompile)
-              ([f6] . srefactor-refactor-at-point)
+              ([f12] . lsp-find-definition)
+              ("S-<f12>" . lsp-find-references)
               ([tab] . company-indent-or-complete-common)))
 
 (defun defguard (guard)
