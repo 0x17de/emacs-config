@@ -43,22 +43,26 @@
                (setq-local company-backends '(company-capf
                                               company-files))
                (setq-local gofmt-command "goimports")
+               ;; Consulted per buffer at render time, so keep these local
+               ;; instead of flipping eldoc off for every other language.
+               (setq-local lsp-eldoc-enable-hover nil)
+               (setq-local lsp-eldoc-render-all nil)
                (add-hook 'before-save-hook #'gofmt-before-save nil t)
                (go-guru-hl-identifier-mode)
                (lsp-deferred)
-               (setenv "GOGC" "20")
-               (setenv "GOMEMLIMIT" "4GiB")
-               (setq lsp-gopls-staticcheck nil)
-               (setq lsp-eldoc-enable-hover nil)
-               (setq lsp-eldoc-render-all nil)
-               (setq lsp-gopls-complete-unimported t)
-               (setq lsp-gopls-use-placeholders t)
-               (setq lsp-gopls-codelens nil)
-               (setq lsp-idle-delay 0.5)
-               (setq lsp-file-watch-threshold 2000)
-               (setq lsp-gopls-workspace-folders-filter 'filesystem-root)
                (company-mode t)))
   :config
+  ;; Global, but gopls-specific and only relevant once go-mode is loaded.
+  ;; These used to run per buffer, which meant e.g. lsp-file-watch-threshold
+  ;; was permanently lowered for every language as soon as a Go file was
+  ;; opened; it now keeps the value set in langs/common.el.
+  (setenv "GOGC" "20")
+  (setenv "GOMEMLIMIT" "4GiB")
+  (setq lsp-gopls-staticcheck nil
+        lsp-gopls-complete-unimported t
+        lsp-gopls-use-placeholders t
+        lsp-gopls-codelens nil
+        lsp-gopls-workspace-folders-filter 'filesystem-root)
   (setq go-godoc-reuse-buffer t)
   (setq godoc-at-point-function 'godoc-gogetdoc)
   (setq godoc-use-completing-read t))

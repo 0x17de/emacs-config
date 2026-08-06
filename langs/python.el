@@ -33,8 +33,9 @@ Requires lsp-ruff package and `ruff server' in PATH (ruff >= 0.2.0)."
   (define-key map (kbd "C-c r")   #'lsp-find-references)
   (define-key map (kbd "C-M-.")   #'lsp-find-implementation)
   (define-key map (kbd "C-M-,")   #'lsp-find-type-definition)
-  (define-key map (kbd "C-c n")   #'python-nav-forward-defun)
-  (define-key map (kbd "C-c p")   #'python-nav-backward-defun)
+  ;; Under a "d" prefix: a plain C-c p would shadow projectile's prefix.
+  (define-key map (kbd "C-c d n") #'python-nav-forward-defun)
+  (define-key map (kbd "C-c d p") #'python-nav-backward-defun)
   (define-key map (kbd "C-c e n") #'flycheck-next-error)
   (define-key map (kbd "C-c e p") #'flycheck-previous-error)
   (define-key map (kbd "C-c e l") #'flycheck-list-errors)
@@ -50,11 +51,14 @@ Requires lsp-ruff package and `ruff server' in PATH (ruff >= 0.2.0)."
   (flycheck-mode t)
   (highlight-indent-guides-mode t)
   (rainbow-delimiters-mode t)
-  (lsp-inlay-hints-mode t)
-  (_0x17de/python--setup-keys (current-local-map)))
+  (lsp-inlay-hints-mode t))
 (use-package python
   :ensure nil
   :defer t
+  :config
+  ;; Once, on the shared parent keymap of python-mode and python-ts-mode,
+  ;; rather than re-running against (current-local-map) in every buffer.
+  (_0x17de/python--setup-keys python-base-mode-map)
   :hook ((python-mode . _0x17de/python--setup)
          (python-ts-mode . _0x17de/python--setup)))
 (use-package python-docstring

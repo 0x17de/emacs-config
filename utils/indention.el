@@ -8,14 +8,10 @@
   (insert "\t"))
 ;; Tab width
 (setq-default indent-tabs-mode nil)
-(setq tab-width 4)
-(defvaralias 'c-basic-offset 'tab-width)
+;; setq-default, not setq: tab-width is automatically buffer-local, so a plain
+;; setq here only ever applied to whichever buffer was current during startup.
+(setq-default tab-width 4)
+;; NB: no alias for c-basic-offset. Aliasing it to tab-width coupled cc-mode
+;; indentation to the display tab width, so go-mode's (setq-local tab-width 2)
+;; silently reindented C/C++. cc-mode sets it per-mode instead.
 (defvaralias 'cperl-indent-level 'tab-width)
-
-;; Auto indentation
-(add-to-list 'load-path
-             (expand-file-name "guess-style"
-                               (file-name-directory (or load-file-name buffer-file-name default-directory))))
-(autoload 'guess-style-set-variable "guess-style" nil t)
-(autoload 'guess-style-guess-variable "guess-style")
-(autoload 'guess-style-guess-all "guess-style" nil t)

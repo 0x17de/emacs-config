@@ -67,7 +67,7 @@
   :ensure ess
   :defer t
   :hook (ess-mode . (lambda ()
-                      ('company-mode t)))
+                      (company-mode t)))
   :bind (:map ess-mode-map
               ([tab] . company-indent-or-complete-common)
               ([f1] . company-show-doc-buffer))

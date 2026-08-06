@@ -1,8 +1,8 @@
 ;; -*- lexical-binding: t; -*-
 (defcustom _0x17de/minibuffer-completion-framework 'vertico
   "The completion framework to use in minibuffer."
-  :type '(choice (const ido :tag "Ido (Classic)")
-                 (const vertico :tag "Vertico + Consult"))
+  :type '(choice (const :tag "Ido (Classic)" ido)
+                 (const :tag "Vertico + Consult" vertico))
   :group '_0x17de)
 (pcase _0x17de/minibuffer-completion-framework
   ('ido

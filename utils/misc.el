@@ -11,9 +11,11 @@
 (setq mouse-buffer-menu-mode-mult 0)
 ;; Use ibuffer instead of temporary buffer popup
 (global-set-key (kbd "C-x C-b") 'ibuffer)
-(global-set-key (kbd "<M-up>") 'move-text-up)
-(global-set-key (kbd "<M-down>") 'move-text-down)
 ;(global-set-key (kbd "<home>") 'smart-beginning-of-line)
+(use-package move-text
+  :defer t
+  :bind (("<M-up>" . move-text-up)
+         ("<M-down>" . move-text-down)))
 
 ;; avoid help-for-help via f1
 (global-unset-key [(f1)])
@@ -59,7 +61,6 @@ editing. The default location is in the .emacs.d directory."
 (global-set-key (kbd "C-M-z C-e") 'eval-region)
 (global-set-key (kbd "C-M-z C-M-e") 'eval-buffer)
 (global-set-key (kbd "C-M-S-c") 'find-emacs-config)
-(global-set-key (kbd "C-M-S-z") 'cmake-ide-compile)
 (defun find-emacs-config ()
   "Open the emacs configuration file"
   (interactive)
@@ -121,16 +122,16 @@ editing. The default location is in the .emacs.d directory."
 (global-set-key [mouse-4] 'down-slightly)
 (global-set-key [mouse-5] 'up-slightly)
 
-;; Git diff fix
-(setq vc-handled-backends ())
+;; Day-to-day VC goes through magit and git-gutter, but emptying this list also
+;; disables project.el: `project-try-vc' needs a backend here to find repo roots
+;; at all. Narrowed to Git rather than emptied.
+(setq vc-handled-backends '(Git))
 
 ;;Term or GUI mode mouse changes
 (unless (display-graphic-p)
   (require 'mouse)
   ;;http://stackoverflow.com/questions/3466643/emacs-unicode-xterm-mouse-escape-sequences-and-wide-terminals
-  (xterm-mouse-mode t)
-  (defun track-mouse (e))
-  (setq mouse-sel-mode t))
+  (xterm-mouse-mode t))
 
 (add-hook 'dired-mode-hook 'dired-hide-details-mode)
 (put 'downcase-region 'disabled nil)
@@ -232,11 +233,15 @@ editing. The default location is in the .emacs.d directory."
       (filename (find-file filename))
       (t (message "No URL or file found"))))))
 
+;; On demand only. The previous ":defer t" + global-origami-mode in :config
+;; never loaded at all, but auto-loading it from prog-mode-hook is worse:
+;; origami's defface derives a :box colour from the `highlight' face at load
+;; time and signals "Invalid face box" when that colour is unspecified, which
+;; is the case in a daemon/no-frame context. That error aborts the rest of
+;; prog-mode-hook, taking company/flycheck/hideshow down with it.
 (use-package origami
   :ensure t
-  :defer t
-  :config
-  (global-origami-mode t))
+  :commands (origami-mode global-origami-mode origami-toggle-node))
 
 (use-package envrc
   :ensure t

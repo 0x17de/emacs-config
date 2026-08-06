@@ -20,7 +20,12 @@
   (dolist (path paths)
     (condition-case err
         (load (expand-file-name path _0x17de/load-path))
-      (error (message "Failed to load _0x17de-config sub-library at %S: %S" path err)))))
+      ;; A warning rather than a message: load failures used to scroll past in
+      ;; *Messages* unnoticed, silently disabling whole chunks of this config.
+      (error (display-warning '_0x17de
+                              (format "Failed to load sub-library %S: %s"
+                                      path (error-message-string err))
+                              :error)))))
 
 (_0x17de/load
  '("./init/custom.el"

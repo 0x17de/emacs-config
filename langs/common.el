@@ -55,10 +55,12 @@ Result depends on syntax table's comment character."
 ;; (use-package auto-complete-auctex)
 (use-package company-quickhelp
   :defer t)
-(defun company-init-quickhelp (b-enable)
+(defun company-init-quickhelp (_manual)
   "Initialize company-quickhelp only if company is running"
   (company-quickhelp-mode t)
-  (remove-hook 'company-completion-started-hook 'company-init-quickhelp t))
+  ;; Added globally, so it must be removed globally: passing LOCAL here made
+  ;; this a no-op and re-ran the setup on every completion.
+  (remove-hook 'company-completion-started-hook #'company-init-quickhelp))
 (use-package company
   :defer t
   :init 

@@ -24,7 +24,9 @@ Each element of this list has the form:
     (let* ((init google-c-style))
       (dolist (c (car cfg))
         (setq init (assoc c init)))
-      (setf (cdr init) (cdr cfg)))))
+      ;; cadr, not cdr: the value is the second element, and `(cdr cfg)' would
+      ;; store the enclosing list, e.g. c-basic-offset -> (4) instead of 4.
+      (setf (cdr init) (cadr cfg)))))
 
 (use-package cmake-mode
   :defer t
@@ -47,7 +49,7 @@ Each element of this list has the form:
   (condition-case err
       (google-set-c-style)
     (error (message "Failed to set google-c-style: Did loading it fail? %S" err)))
-  (setq c-basic-offset 4))
+  (setq-local c-basic-offset 4))
 (use-package cc-mode
   :ensure nil
   :defer t
@@ -57,8 +59,10 @@ Each element of this list has the form:
         (_0x17de/load "ext/google-styleguide/google-c-style")
         (_0x17de/google-c-style-set-overrides))
     (error (message "Failed to load google-c-style. Did you also sync the git submodules? %S" err)))
-  :hook ((c-mode . '_0x17de/c-mode-common-init)
-         (c++-mode . '_0x17de/c-mode-common-init))
+  ;; Do not quote these: use-package reads a quoted cdr as a list of hook
+  ;; names, which silently adds `cc-mode' to c-mode-hook instead.
+  :hook ((c-mode . _0x17de/c-mode-common-init)
+         (c++-mode . _0x17de/c-mode-common-init))
   :bind (:map c-mode-map
               ([f1] . semantic-ia-show-doc)
               ([f5] . recompile)

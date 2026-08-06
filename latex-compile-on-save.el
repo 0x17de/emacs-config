@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t; -*-
 ;; Just a little helper minor mode to compile latex files on save
 
 (defgroup latex-compile-on-save nil

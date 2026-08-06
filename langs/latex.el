@@ -39,4 +39,5 @@
               ([tab] . company-indent-or-complete-common)
               ([f1] . company-show-doc-buffer))
   :config
-  (load "latex-compile-on-save.el"))
+  ;; The config root is not on `load-path', so resolve relative to it.
+  (_0x17de/load "latex-compile-on-save"))
