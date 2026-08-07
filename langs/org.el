@@ -1,7 +1,13 @@
 ;; -*- lexical-binding: t; -*-
+(defvar _0x17de/org-directory (expand-file-name "~/org")
+  "Root directory of all org files.
+Shared by `org-directory', `org-journal-dir' and `org-mem-watch-dirs'.")
+
 (use-package org
   :ensure nil
   :defer t
+  :init
+  (setq org-directory _0x17de/org-directory)
   :bind
   (:map org-mode-map
         ("C-c ." . 'org-time-stamp))
@@ -24,12 +30,17 @@
   (("C-M-S-j" . (lambda () (interactive) (org-journal-new-entry nil nil t)))
    ("C-M-S-i" . (lambda () (interactive) (org-journal-new-entry nil))))
   :init
-  (setq org-journal-dir "~/org/journal"
+  (setq org-journal-dir (expand-file-name "journal" _0x17de/org-directory)
         org-journal-date-format "%Y-%m-%d"
         org-journal-enable-agenda-integration t
         org-journal-carryover-items "TODO={TODO\\|WAITING\\|DOING}"))
 
 (use-package org-node
+  ;; org-mem (pulled in by org-node) refuses to start unless it is told where to
+  ;; look: it user-errors on "At least one setting must be non-nil" otherwise.
+  :init
+  (setq org-mem-watch-dirs (list _0x17de/org-directory)
+        org-mem-do-sync-with-org-id t)
   :hook (after-init . org-node-cache-mode))
 
 (use-package org-modern
