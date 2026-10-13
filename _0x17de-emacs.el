@@ -63,6 +63,10 @@
 
 (_0x17de/load "./langs/latex")
 
-(_0x17de/load
- '("./ext/tex-switch-quotes/tex-switch-quotes"
-   "./ext/misc/hl-line+"))
+;; tex-switch-quotes is a third-party gist (a submodule), so it cannot carry a
+;; lexical-binding cookie. It relies on dynamically binding `tex-open-quote'
+;; and friends, so keep loading it with dynamic binding and only silence the
+;; Emacs 30+ warning about the missing cookie.
+(let ((warning-inhibit-types '((files missing-lexbind-cookie))))
+  (_0x17de/load "./ext/tex-switch-quotes/tex-switch-quotes"))
+(_0x17de/load "./ext/misc/hl-line+")

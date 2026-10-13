@@ -1,4 +1,4 @@
-;;; ox-confluence --- Confluence Wiki Back-End for Org Export Engine
+;;; ox-confluence --- Confluence Wiki Back-End for Org Export Engine  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2012, 2014 Sébastien Delafond
 
