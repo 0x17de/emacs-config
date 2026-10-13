@@ -9,6 +9,20 @@
 (use-package doom-themes
   :demand t)
 
+;; Emacs 31 makes gnus-group-news-low inherit gnus-group-news-low-empty, while
+;; doom-themes makes gnus-group-news-low-empty inherit gnus-group-news-low.
+;; The resulting inheritance cycle errors on every frame creation and wedges
+;; the daemon. Point the -empty face at gnus-group-mail-1-empty instead, like
+;; doom-themes does for gnus-group-mail-low-empty.
+(defun _0x17de/doom-break-gnus-face-cycle (theme)
+  "Break the gnus-group-news-low face inheritance cycle in doom THEME."
+  (when (string-prefix-p "doom-" (symbol-name theme))
+    (custom-theme-set-faces
+     theme
+     '(gnus-group-news-low-empty ((t (:inherit gnus-group-mail-1-empty :weight normal)))))))
+(mapc #'_0x17de/doom-break-gnus-face-cycle custom-enabled-themes)
+(add-hook 'enable-theme-functions #'_0x17de/doom-break-gnus-face-cycle)
+
 ;;Disable bars
 (defun simplify-ui (frame)
   "Remove unwanted menubar/scrollbar/etc from FRAME."
