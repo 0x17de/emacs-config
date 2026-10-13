@@ -33,7 +33,21 @@ Shared by `org-directory', `org-journal-dir' and `org-mem-watch-dirs'.")
   (setq org-journal-dir (expand-file-name "journal" _0x17de/org-directory)
         org-journal-date-format "%Y-%m-%d"
         org-journal-enable-agenda-integration t
-        org-journal-carryover-items "TODO={TODO\\|WAITING\\|DOING}"))
+        org-journal-carryover-items "TODO={TODO\\|WAITING\\|DOING}")
+  :config
+  (advice-add 'org-journal--carryover-delete-empty-journal
+              :before #'_0x17de/org-journal-save-carryover-target))
+
+(defun _0x17de/org-journal-save-carryover-target (&rest _)
+  "Save the journal that received carried-over items.
+Runs before `org-journal--carryover-delete-empty-journal', whose
+`org-journal--empty-journal-p' saves the previous journal, now without
+the moved items, even when nothing is to be deleted. The current buffer
+is the new journal at that point, which holds the only copy of those
+items, so write it first: a crash in between then leaves them in both
+files rather than in neither."
+  (when (buffer-file-name)
+    (save-buffer)))
 
 (use-package org-node
   ;; org-mem (pulled in by org-node) refuses to start unless it is told where to
