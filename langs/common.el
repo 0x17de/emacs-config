@@ -1,4 +1,17 @@
 ;; -*- lexical-binding: t; -*-
+(defvar _0x17de/treesit-modes
+  '((python-ts-mode . python)
+    (go-ts-mode . go)
+    (rust-ts-mode . rust))
+  "Tree-sitter major modes to prefer, each with the grammar it needs.
+C and C++ stay on cc-mode: c-ts-mode cannot express google-c-style and
+the overrides in `_0x17de/google-c-style-overrides'.")
+;; Only where the grammar is installed (the Nix config links them into
+;; ~/.emacs.d/tree-sitter); elsewhere the classic modes stay.
+(when (and (treesit-available-p) (boundp 'treesit-enabled-modes))
+  (setopt treesit-enabled-modes
+          (mapcar #'car (seq-filter (lambda (m) (treesit-language-available-p (cdr m)))
+                                    _0x17de/treesit-modes))))
 (use-package highlight-indent-guides
   :defer t
   :config
