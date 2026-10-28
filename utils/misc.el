@@ -132,6 +132,7 @@ editing. The default location is in the .emacs.d directory."
 (put 'upcase-region 'disabled nil)
 
 (use-package which-key
+  :ensure nil
   :demand t
   :init
   (setq which-key-idle-delay 0.3)
@@ -139,6 +140,12 @@ editing. The default location is in the .emacs.d directory."
   (setq which-key-max-description-length 40)
   :config
   (which-key-mode 1))
+
+(use-package editorconfig
+  :ensure nil
+  :demand t
+  :config
+  (editorconfig-mode 1))
 
 (use-package ace-window
   :demand t

@@ -43,8 +43,7 @@
    "./utils/vterm"
    "./utils/eat-terminal"
    "./utils/modeline"
-   "./utils/multiple-cursors"
-   "./utils/extended-command"))
+   "./utils/multiple-cursors"))
 
 (_0x17de/load
  '("./langs/common"

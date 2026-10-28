@@ -1,28 +1,16 @@
 ;; -*- lexical-binding: t; -*-
-(use-package go-guru
-  :defer t)
-(use-package go-eldoc
-  :defer t)
-(use-package godoctor
-  :defer t)
 (use-package go-scratch
   :defer t)
 (use-package go-playground
   :defer t)
 (use-package flycheck-golangci-lint
   :defer t)
-(use-package go-complete
-  :defer t)
 
 (defun ox-install-go-dependencies ()
   "Install go-mode dependencies"
   (interactive)
+  ;; gopls covers what guru, godef, gogetdoc and godoctor used to do.
   (let ((commands '("go install golang.org/x/tools/cmd/goimports@latest"
-                    "go install github.com/godoctor/godoctor@latest"
-                    "go install golang.org/x/tools/cmd/guru@latest"
-                    "go install github.com/rogpeppe/godef@latest"
-                    "go install golang.org/x/tools/cmd/godoc@latest"
-                    "go install github.com/zmb3/gogetdoc@latest"
                     "go install golang.org/x/tools/gopls@latest")))
     (dolist (cmd commands)
       (message "Running: %s" cmd)
@@ -48,7 +36,6 @@
                (setq-local lsp-eldoc-enable-hover nil)
                (setq-local lsp-eldoc-render-all nil)
                (add-hook 'before-save-hook #'gofmt-before-save nil t)
-               (go-guru-hl-identifier-mode)
                (lsp-deferred)
                (company-mode t)))
   :config
@@ -62,7 +49,4 @@
         lsp-gopls-complete-unimported t
         lsp-gopls-use-placeholders t
         lsp-gopls-codelens nil
-        lsp-gopls-workspace-folders-filter 'filesystem-root)
-  (setq go-godoc-reuse-buffer t)
-  (setq godoc-at-point-function 'godoc-gogetdoc)
-  (setq godoc-use-completing-read t))
+        lsp-gopls-workspace-folders-filter 'filesystem-root))

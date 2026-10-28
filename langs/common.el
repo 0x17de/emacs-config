@@ -11,7 +11,10 @@
 (use-package dumb-jump
   :defer t
   :init
-  (global-set-key (kbd "C-S-j") 'dumb-jump-go))
+  ;; Global, so it only answers after mode-local backends such as lsp-mode's.
+  (add-hook 'xref-backend-functions #'dumb-jump-xref-activate)
+  (setq xref-show-definitions-function #'xref-show-definitions-completing-read)
+  (global-set-key (kbd "C-S-j") #'xref-find-definitions))
 ;(use-package auto-complete
 ;  :init
 ;  (setq tab-always-indent 'complete)

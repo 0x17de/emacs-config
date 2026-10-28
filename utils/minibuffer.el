@@ -25,6 +25,10 @@
      :demand t
      :init
      (vertico-mode)
+     ;; vertico sorts M-x by history already; also hide commands that do not
+     ;; apply to the current buffer.
+     (setq read-extended-command-predicate
+           #'command-completion-default-include-p)
      :custom
      (vertico-count 25)
      (vertico-resize t))
