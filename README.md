@@ -50,7 +50,7 @@ Python, Go and Rust use the tree-sitter major modes when their grammars are inst
 - **Web**: HTML, CSS, JavaScript support
 - **PlantUML**: Integrated preview and automatic generation of diagrams
 - **Org-mode**: Enhanced with org-modern, org-journal, and custom babel support
-- **Ansible/Salt**: YAML mode with specialized snippets and formatting
+- **Ansible**: YAML mode with specialized snippets and formatting
 - **Misc**: Support for YAML, JSON, Docker, and many others
 
 ### Additional Features
