@@ -145,7 +145,6 @@ You can put your own customizations in either your `.emacs` file or in `~/.emacs
 | `C-M-S-y`       | Show snippets for current mode                                       |
 | `C-M-S-q`       | Close current buffer without asking                                  |
 | `C-M-S-w`       | Close current buffer and window without asking                       |
-| `C-M-x`         | The original M-x (only when `_0x17de/M-x-library` is set to `smex`)   |
 | `C-M-\|`        | Pipe region through shell command and replace with result            |
 | `S-<tab>`       | Insert a real tab character instead of spaces                        |
 | `<f1>`          | Show documentation for item at point (context-dependent)             |
@@ -185,7 +184,6 @@ The configuration uses a custom group called `_0x17de` with many customizable va
 - **_0x17de/scroll-amount**: Number of lines to scroll at a time (default: 5)
 - **_0x17de/modeline**: Modeline style to use (default: doom-modeline)
 - **_0x17de/minibuffer-completion-framework**: Completion framework (default: vertico)
-- **_0x17de/M-x-library**: Command completion interface (default: amx)
 
 ### Language-Specific Options
 - **_0x17de/plantuml:enable**: Enable PlantUML mode (default: t)
