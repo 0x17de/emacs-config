@@ -72,6 +72,29 @@ selected: the key is still in the buffer then, and TAB cycles after."
   "Match LSP completions with orderless, like the minibuffer does."
   (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
         '(orderless)))
+;; emacs-lsp-booster sits between Emacs and the server, parses the JSON off
+;; the main thread and hands Emacs ready-made bytecode.
+;; https://github.com/blahgeek/emacs-lsp-booster
+(defun _0x17de/lsp-booster-parse (old-fn &rest args)
+  "Read bytecode from emacs-lsp-booster, else parse JSON with OLD-FN."
+  (or (when (equal (following-char) ?#)
+        (let ((bytecode (read (current-buffer))))
+          (when (byte-code-function-p bytecode)
+            (funcall bytecode))))
+      (apply old-fn args)))
+(defun _0x17de/lsp-booster-command (old-fn cmd &optional test?)
+  "Run the server command from OLD-FN for CMD under emacs-lsp-booster."
+  (let ((orig-result (funcall old-fn cmd test?)))
+    (if (and (not test?)
+             ;; Remote commands get a shell wrapper the booster cannot see past.
+             (not (file-remote-p default-directory))
+             lsp-use-plists
+             (executable-find "emacs-lsp-booster"))
+        (progn
+          (when-let* ((command (executable-find (car orig-result))))
+            (setcar orig-result command))
+          (cons "emacs-lsp-booster" orig-result))
+      orig-result)))
 (use-package lsp-mode
   :defer t
   :commands (lsp lsp-deferred)
@@ -89,7 +112,10 @@ selected: the key is still in the buffer then, and TAB cycles after."
                 lsp-enable-symbol-highlighting nil
                 lsp-headerline-breadcrumb-enable nil
                 lsp-file-watch-threshold 10000)
-          (setq lsp-client-packages (delete 'lsp-java lsp-client-packages)))
+          (setq lsp-client-packages (delete 'lsp-java lsp-client-packages))
+          (advice-add 'json-parse-buffer :around #'_0x17de/lsp-booster-parse)
+          (advice-add 'lsp-resolve-final-command :around
+                      #'_0x17de/lsp-booster-command))
 (use-package flycheck
   :defer t)
 

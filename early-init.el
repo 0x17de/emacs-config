@@ -2,6 +2,11 @@
 ;; Loaded from ~/.emacs.d/early-init.el, before package.el activates packages
 ;; and before the first frame exists. Nothing here may depend on a package.
 
+;; lsp-mode picks plists or hash tables for LSP messages when it is compiled,
+;; so this has to be in the environment before lsp-mode is first loaded or
+;; byte-compiled. Recompile lsp-mode and its dependents after changing it.
+(setenv "LSP_USE_PLISTS" "true")
+
 ;; Defer GC and skip file name handlers (jka-compr, tramp) for the whole
 ;; startup. Handlers registered while loading are kept on restore.
 (setq gc-cons-threshold most-positive-fixnum
