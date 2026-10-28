@@ -85,6 +85,10 @@ selected: the key is still in the buffer then, and TAB cycles after."
   "Match LSP completions with orderless, like the minibuffer does."
   (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
         '(orderless)))
+;; lsp-mode picks plists or hash tables for LSP messages when it is compiled
+;; and reads this again when it loads, so it has to be set before either.
+;; Recompile lsp-mode and its dependents after changing it.
+(setenv "LSP_USE_PLISTS" "true")
 ;; emacs-lsp-booster sits between Emacs and the server, parses the JSON off
 ;; the main thread and hands Emacs ready-made bytecode.
 ;; https://github.com/blahgeek/emacs-lsp-booster
