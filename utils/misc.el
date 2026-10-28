@@ -70,7 +70,6 @@ editing. The default location is in the .emacs.d directory."
 
 ;; Selection/Clipboard improvements
 (delete-selection-mode t)
-(transient-mark-mode t)
 (setq select-enable-clipboard t)
 (setq mouse-yank-at-point t)
 ;;focus follow mouse
@@ -94,15 +93,8 @@ editing. The default location is in the .emacs.d directory."
 ;;using_editor=1
 ;;merge_command="emacs-merge %orig %new %merged"
 
-(global-font-lock-mode t)
-(delete-selection-mode t)
-(auto-compression-mode t)
-(line-number-mode t)
 (column-number-mode t)
-;;Show matching parentheses
-(show-paren-mode t)
 (setq show-paren-delay 0)
-(transient-mark-mode t)
 (global-hl-line-mode t)
 ;(setq cursor-type 'bar)
 ;(setq ring-bell-function 'ignore)
@@ -182,10 +174,6 @@ editing. The default location is in the .emacs.d directory."
   :config
   (global-git-gutter-mode t)
   (setq git-gutter:update-interval 0.2))
-
-(use-package all-the-icons
-  :ensure t
-  :demand t)
 
 (use-package refine
   :defer t)

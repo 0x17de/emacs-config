@@ -11,10 +11,7 @@
   (package-refresh-contents))
 
 (require 'use-package)
-(setq-default
- use-package-always-ensure t
- use-package-compute-statistics t
- use-package-verbose t)
+(setq-default use-package-always-ensure t)
 
 (let* ((base-dir (file-name-parent-directory (file-name-directory (or load-file-name buffer-file-name))))
        (packages-dir (expand-file-name "packages" base-dir)))
