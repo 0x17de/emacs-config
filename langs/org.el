@@ -33,10 +33,22 @@ Shared by `org-directory', `org-journal-dir' and `org-mem-watch-dirs'.")
   (setq org-journal-dir (expand-file-name "journal" _0x17de/org-directory)
         org-journal-date-format "%Y-%m-%d"
         org-journal-enable-agenda-integration t
-        org-journal-carryover-items "TODO={TODO\\|WAITING\\|DOING}")
+        org-journal-carryover-items "TODO={TODO\\|WAITING\\|DOING}"
+        ;; org-indent keeps its prefixes in global vectors, so this applies
+        ;; to every buffer using it.
+        org-indent-indentation-per-level 1)
+  ;; Runs early on org-mode-hook, before org-modern-mode: org-modern checks
+  ;; org-indent-mode only when it starts, and otherwise draws block fringes
+  ;; through line-prefix, which drops the indentation inside #+begin_ blocks.
+  (add-hook 'org-mode-hook #'_0x17de/org-journal-indent -50)
   :config
   (advice-add 'org-journal--carryover-delete-empty-journal
               :before #'_0x17de/org-journal-save-carryover-target))
+
+(defun _0x17de/org-journal-indent ()
+  "Indent journal entries by one column per outline level."
+  (when (derived-mode-p 'org-journal-mode)
+    (org-indent-mode 1)))
 
 (defun _0x17de/org-journal-save-carryover-target (&rest _)
   "Save the journal that received carried-over items.
