@@ -119,6 +119,17 @@ selected: the key is still in the buffer then, and TAB cycles after."
 (use-package flycheck
   :defer t)
 
+;; Format on save, asynchronously and without moving point. Enabled per
+;; language by `apheleia-mode' in its hook, not globally: a global mode would
+;; also run clang-format or rustfmt over projects that never asked for it.
+(use-package apheleia
+  :defer t
+  :config
+  (dolist (mode '(python-mode python-ts-mode))
+    (setf (alist-get mode apheleia-mode-alist) '(ruff-isort ruff)))
+  (dolist (mode '(go-mode go-ts-mode))
+    (setf (alist-get mode apheleia-mode-alist) 'goimports)))
+
 (defgroup _0x17de/mmm nil
   "mmm mode configuration."
   :group '_0x17de

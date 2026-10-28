@@ -13,9 +13,13 @@ Requires lsp-ruff package and `ruff server' in PATH (ruff >= 0.2.0)."
 (defun _0x17de/python-pytest-file ()
   (interactive)
   (compile (format "uv run pytest %s" (buffer-file-name))))
+(defun _0x17de/python-isort ()
+  "Sort the imports of the current buffer with ruff."
+  (interactive)
+  (apheleia-format-buffer 'ruff-isort))
 (defun _0x17de/python--setup-keys (map)
   "Define shared Python keybindings in MAP."
-  (define-key map (kbd "C-c i s") #'ruff-isort-buffer)
+  (define-key map (kbd "C-c i s") #'_0x17de/python-isort)
   (define-key map (kbd "C-c C-p") #'run-python)
   (define-key map (kbd "C-c C-r") #'python-shell-send-region)
   (define-key map (kbd "C-c C-b") #'python-shell-send-buffer)
@@ -37,12 +41,14 @@ Requires lsp-ruff package and `ruff server' in PATH (ruff >= 0.2.0)."
   (define-key map (kbd "C-c e l") #'flycheck-list-errors)
   (define-key map (kbd "C-c e c") #'flycheck-clear)
   (define-key map (kbd "C-c e v") #'flycheck-verify-setup)
-  (define-key map (kbd "C-c f f") #'ruff-format-buffer)
+  (define-key map (kbd "C-c f f") #'apheleia-format-buffer)
   (define-key map (kbd "C-c t t") #'_0x17de/python-pytest)
   (define-key map (kbd "C-c t f") #'_0x17de/python-pytest-file))
 (defun _0x17de/python--setup ()
   "Common setup shared between python-mode and python-ts-mode."
   (setq yas-indent-line 'fixed)
+  ;; ruff isort, then ruff format; see apheleia in langs/common.el.
+  (apheleia-mode t)
   (flycheck-mode t)
   (highlight-indent-guides-mode t)
   (rainbow-delimiters-mode t)
@@ -90,21 +96,3 @@ Requires lsp-ruff package and `ruff server' in PATH (ruff >= 0.2.0)."
     :defer t
     :hook ((python-mode . (lambda () (require 'lsp-ruff) (lsp-deferred)))
            (python-ts-mode . (lambda () (require 'lsp-ruff) (lsp-deferred))))))
-
-(use-package reformatter
-  :demand t
-  :config
-  (reformatter-define ruff-format
-    :program "ruff"
-    :args '("format" "-"))
-  (reformatter-define ruff-isort
-    :program "ruff"
-    :args '("check" "--select" "I" "--fix" "--fix-only" "-")))
-;; Order matters and is doubly inverted, so do not reorder these lines.
-;; `add-hook' prepends, so format-on-save-mode is enabled first; each
-;; -on-save-mode then prepends its own entry to the local `before-save-hook',
-;; putting isort ahead of format. Net effect on save: isort, then format.
-(add-hook 'python-mode-hook #'ruff-isort-on-save-mode)
-(add-hook 'python-mode-hook #'ruff-format-on-save-mode)
-(add-hook 'python-ts-mode-hook #'ruff-isort-on-save-mode)
-(add-hook 'python-ts-mode-hook #'ruff-format-on-save-mode)

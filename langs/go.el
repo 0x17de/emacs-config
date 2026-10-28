@@ -22,12 +22,12 @@
   :hook
   (go-mode . (lambda ()
                (setq-local tab-width 2)
-               (setq-local gofmt-command "goimports")
                ;; Consulted per buffer at render time, so keep these local
                ;; instead of flipping eldoc off for every other language.
                (setq-local lsp-eldoc-enable-hover nil)
                (setq-local lsp-eldoc-render-all nil)
-               (add-hook 'before-save-hook #'gofmt-before-save nil t)
+               ;; goimports on save; see apheleia in langs/common.el.
+               (apheleia-mode t)
                (lsp-deferred)))
   :config
   ;; Global, but gopls-specific and only relevant once go-mode is loaded.
