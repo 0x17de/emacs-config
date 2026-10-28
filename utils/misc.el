@@ -193,6 +193,15 @@ editing. The default location is in the .emacs.d directory."
 (use-package embark-consult
   :ensure t
   :after (embark consult))
+;; Edit grep results in place: consult-ripgrep, embark-export (C-. E), then
+;; C-c C-p to edit and C-c C-c to write the changes back to the files.
+(use-package wgrep
+  :defer t)
+
+(use-package vundo
+  :bind (("C-x u" . vundo))
+  :custom
+  (vundo-glyph-alist vundo-unicode-symbols))
 
 (use-package avy
   :ensure t
