@@ -1,7 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 ;; Tab fix
 (global-set-key (kbd "<backtab>") 'insert-tab-char)
-(global-set-key (kbd "<C-tab>") 'company-complete)
+(global-set-key (kbd "<C-tab>") #'completion-at-point)
 (defun insert-tab-char ()
   "insert a tab char. (ASCII 9, \t)"
   (interactive)

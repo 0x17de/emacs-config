@@ -8,12 +8,7 @@
   (setq TeX-PDF-mode t)
   (setq TeX-source-correlate-mode t)
   (TeX-fold-mode 1)
-  (rainbow-delimiters-mode t)
-  (make-local-variable 'company-backends)
-  (setq company-backends '(company-auctex
-                           company-files))
-  (company-auctex-init)
-  (company-mode t))
+  (rainbow-delimiters-mode t))
 (defun my/latexmk-run ()
   "Run latexmk on the master file"
   (interactive)
@@ -27,17 +22,13 @@
       (minibuffer-message "latexmk-done"))))
 (use-package auctex-latexmk
   :defer t)
-(use-package company-auctex
-  :defer t)
 
 (use-package latex
   :ensure nil
   :defer t
   :hook (TeX-mode . my/latex-setup)
   :bind (:map TeX-mode-map
-              ([f5] . my/latexmk-run)
-              ([tab] . company-indent-or-complete-common)
-              ([f1] . company-show-doc-buffer))
+              ([f5] . my/latexmk-run))
   :config
   ;; The config root is not on `load-path', so resolve relative to it.
   (_0x17de/load "latex-compile-on-save"))

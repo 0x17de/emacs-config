@@ -33,26 +33,20 @@ Each element of this list has the form:
   :mode (("CMakeInstallTargets\\.txt\\'" . cmake-mode))
   :bind (:map cmake-mode-map
          ([f1] . cmake-help)
-         ([f5] . recompile)
-         ([tab] . company-indent-or-complete-common))
-  :hook (cmake-mode . (lambda ()
-                        (company-mode t))))
+         ([f5] . recompile)))
 
 (defun _0x17de/c-mode-common-init ()
   "Callback for initialization of c-like modes"
-  (company-mode t)
   (hs-minor-mode t)
   (flycheck-mode t)
   (rainbow-delimiters-mode t)
-  (setq-local company-backends '(company-capf
-                                 company-files))
   (condition-case err
       (google-set-c-style)
     (error (message "Failed to set google-c-style: Did loading it fail? %S" err)))
   (setq-local c-basic-offset 4)
   ;; clangd, via lsp-mode's built-in client. Needs a compile_commands.json in
   ;; the project (CMAKE_EXPORT_COMPILE_COMMANDS=ON) to resolve includes.
-  ;; Guarded so that a machine without clang-tools still gets company,
+  ;; Guarded so that a machine without clang-tools still gets completion,
   ;; flycheck and the style setup instead of an lsp server prompt.
   (if (executable-find "clangd")
       (lsp-deferred)
@@ -75,13 +69,11 @@ Each element of this list has the form:
               ([f5] . recompile)
               ([f12] . lsp-find-definition)
               ("S-<f12>" . lsp-find-references)
-              ([tab] . company-indent-or-complete-common)
          :map c++-mode-map
               ([f1] . lsp-describe-thing-at-point)
               ([f5] . recompile)
               ([f12] . lsp-find-definition)
-              ("S-<f12>" . lsp-find-references)
-              ([tab] . company-indent-or-complete-common)))
+              ("S-<f12>" . lsp-find-references)))
 
 (defun defguard (guard)
   "Inserts guard header for C++"

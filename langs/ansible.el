@@ -3,10 +3,13 @@
   :defer t
   :bind
   (:map ansible-key-map
-        ([f1] . 'ansible-doc)
-        ([tab] . 'company-indent-or-complete-common))
+        ([f1] . 'ansible-doc))
   :hook (ansible-mode . (lambda ()
-                          (add-to-list 'company-backends 'company-ansible)
-                          (company-mode t))))
+                          ;; ansible-mode is a minor mode on yaml-mode, which
+                          ;; global-corfu-modes leaves out.
+                          (add-hook 'completion-at-point-functions
+                                    (cape-company-to-capf #'company-ansible) nil t)
+                          (corfu-mode t))))
 (use-package company-ansible
-  :defer t)
+  :defer t
+  :commands company-ansible)

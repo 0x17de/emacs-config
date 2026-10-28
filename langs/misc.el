@@ -66,11 +66,6 @@
 (use-package ess-mode
   :ensure ess
   :defer t
-  :hook (ess-mode . (lambda ()
-                      (company-mode t)))
-  :bind (:map ess-mode-map
-              ([tab] . company-indent-or-complete-common)
-              ([f1] . company-show-doc-buffer))
   :config
   (add-to-list
    'display-buffer-alist

@@ -11,7 +11,6 @@
     :mode "\\.nix\\'"
     :hook (nix-mode . lsp-deferred)
     :bind (:map nix-mode-map
-                ([tab] . company-indent-or-complete-common)
                 ([f1] . lsp-describe-thing-at-point)
                 ([f12] . lsp-find-definition))
     :config

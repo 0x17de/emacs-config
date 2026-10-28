@@ -15,7 +15,6 @@ Requires lsp-ruff package and `ruff server' in PATH (ruff >= 0.2.0)."
   (compile (format "uv run pytest %s" (buffer-file-name))))
 (defun _0x17de/python--setup-keys (map)
   "Define shared Python keybindings in MAP."
-  (define-key map [tab]           #'company-indent-or-complete-common)
   (define-key map [f1]            #'lsp-describe-thing-at-point)
   (define-key map [f12]           #'lsp-find-definition)
   (define-key map (kbd "S-<f12>") #'lsp-find-references)
@@ -47,7 +46,6 @@ Requires lsp-ruff package and `ruff server' in PATH (ruff >= 0.2.0)."
 (defun _0x17de/python--setup ()
   "Common setup shared between python-mode and python-ts-mode."
   (setq yas-indent-line 'fixed)
-  (company-mode t)
   (flycheck-mode t)
   (highlight-indent-guides-mode t)
   (rainbow-delimiters-mode t)

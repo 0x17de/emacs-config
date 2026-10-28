@@ -24,33 +24,61 @@
 ;(use-package auctex
 ;  :ensure t)
 ;; (use-package auto-complete-auctex)
-(use-package company-quickhelp
-  :defer t)
-(defun company-init-quickhelp (_manual)
-  "Initialize company-quickhelp only if company is running"
-  (company-quickhelp-mode t)
-  ;; Added globally, so it must be removed globally: passing LOCAL here made
-  ;; this a no-op and re-ran the setup on every completion.
-  (remove-hook 'company-completion-started-hook #'company-init-quickhelp))
-(use-package company
-  :defer t
-  :init 
-  (setq company-async-timeout 5
-        company-dabbrev-downcase 0
-        company-idle-delay 0.2
-        company-require-match nil
-        company-selection-wrap-around t
-        company-tooltip-align-annotations t)
-  :config
-  (add-hook 'company-completion-started-hook 'company-init-quickhelp)
-  (company-tng-mode t)
-  (setq company-backends '())
-  (add-to-list 'company-backends 'company-capf)) ; LSP completion backend
+;; In-buffer completion. Every mode feeds `completion-at-point-functions', so
+;; there is no per-mode backend list; TAB indents, then completes.
+(setq tab-always-indent 'complete)
+(defun _0x17de/corfu-tab ()
+  "Expand the snippet key before point, else select the next candidate.
+The popup keymap shadows `yas-minor-mode-map', so without this TAB only
+expanded snippets when it beat the popup. Only while no candidate is
+selected: the key is still in the buffer then, and TAB cycles after."
+  (interactive)
+  (if (and (< corfu--index 0)
+           (bound-and-true-p yas-minor-mode)
+           (yas-maybe-expand-abbrev-key-filter t))
+      (progn
+        (corfu-quit)
+        (yas-expand))
+    (corfu-next)))
+(use-package corfu
+  :demand t
+  :custom
+  (corfu-auto t)
+  (corfu-auto-delay 0.2)
+  (corfu-cycle t)
+  ;; Tab-and-go: nothing is selected until TAB, and the selected candidate is
+  ;; inserted as a preview that typing on simply keeps.
+  (corfu-preselect 'prompt)
+  ;; Where company was enabled before; text modes like org stay quiet.
+  (global-corfu-modes '(prog-mode TeX-mode))
+  :bind
+  (:map corfu-map
+        ("TAB" . _0x17de/corfu-tab)
+        ([tab] . _0x17de/corfu-tab)
+        ("S-TAB" . corfu-previous)
+        ([backtab] . corfu-previous)
+        ([f1] . corfu-info-documentation))
+  :init
+  (global-corfu-mode)
+  (corfu-popupinfo-mode)
+  (corfu-history-mode))
+(use-package cape
+  :demand t
+  :init
+  ;; Global, so it is tried after each mode's own completion functions.
+  (add-hook 'completion-at-point-functions #'cape-file))
 
+(defun _0x17de/lsp-completion-orderless ()
+  "Match LSP completions with orderless, like the minibuffer does."
+  (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
+        '(orderless)))
 (use-package lsp-mode
   :defer t
   :commands (lsp lsp-deferred)
+  :hook (lsp-completion-mode . _0x17de/lsp-completion-orderless)
   :config (setq lsp-prefer-flymake nil
+                ;; Plain capf for corfu; :capf would set up company.
+                lsp-completion-provider :none
                 lsp-enable-file-watchers t
                 lsp-enable-multi-root nil
                 lsp-enable-symbol-highlighting nil

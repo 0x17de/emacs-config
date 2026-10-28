@@ -21,23 +21,19 @@
   :defer t
   :bind
   (:map go-mode-map
-        ([tab] . 'company-indent-or-complete-common)
         ([f1] . lsp-describe-thing-at-point)
         ([f12] . lsp-find-definition)
         ("S-<f12>" . lsp-find-references))
   :hook
   (go-mode . (lambda ()
                (setq-local tab-width 2)
-               (setq-local company-backends '(company-capf
-                                              company-files))
                (setq-local gofmt-command "goimports")
                ;; Consulted per buffer at render time, so keep these local
                ;; instead of flipping eldoc off for every other language.
                (setq-local lsp-eldoc-enable-hover nil)
                (setq-local lsp-eldoc-render-all nil)
                (add-hook 'before-save-hook #'gofmt-before-save nil t)
-               (lsp-deferred)
-               (company-mode t)))
+               (lsp-deferred)))
   :config
   ;; Global, but gopls-specific and only relevant once go-mode is loaded.
   ;; These used to run per buffer, which meant e.g. lsp-file-watch-threshold

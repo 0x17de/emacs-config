@@ -23,7 +23,7 @@ A modular Emacs configuration with comprehensive language support, development t
 - Frame and window management utilities (resize, zoom, tiling, etc.)
 - Multiple cursor editing
 - Snippets (yasnippet; user-defined ones can be put into ~/.emacs.d/snippets)
-- Smart completion via company-mode and LSP
+- In-buffer completion via corfu and cape, fed by LSP and the major modes
 - Documentation lookup integration
 - Many quality-of-life improvements for editing
 - Embark integration for contextual actions
@@ -40,8 +40,8 @@ A modular Emacs configuration with comprehensive language support, development t
 
 Language support is primarily based on LSP and/or specialized modes:
 
-- **C/C++**: LSP (clangd) + company + flycheck + CMake integration
-- **Python**: lsp-pyright + company + flycheck
+- **C/C++**: LSP (clangd) + corfu + flycheck + CMake integration
+- **Python**: lsp-pyright + corfu + flycheck
 - **Go**: LSP (gopls) + comprehensive Go tooling
 - **Rust**: rust-analyzer + cargo integration
 - **LaTeX**: AUCTeX with compile-on-save functionality
@@ -104,7 +104,7 @@ M-x ox-install-go-dependencies
 ```
 
 ### For C/C++ development
-Install `clangd` (part of `clang-tools` on NixOS/Debian, `clang` on Arch). Without it on `PATH`, C/C++ buffers still get company, flycheck and the Google style, but no LSP features.
+Install `clangd` (part of `clang-tools` on NixOS/Debian, `clang` on Arch). Without it on `PATH`, C/C++ buffers still get completion, flycheck and the Google style, but no LSP features.
 
 ### For Java development
 Install the Java language server:

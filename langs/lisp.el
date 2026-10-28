@@ -7,30 +7,22 @@
 (use-package lisp-mode
   :ensure nil
   :demand t
-  :bind
-  (:map lisp-mode-map
-        ([tab] . company-indent-or-complete-common))
   :hook
-  ((lisp-mode . (lambda ()
-                 (setq company-backends '(company-capf
-                                          company-files))
-                 (highlight-indent-guides-mode t)
-                 (company-mode t)))))
+  (lisp-mode . (lambda ()
+                 (highlight-indent-guides-mode t))))
 
 (use-package elisp-mode
   :ensure nil
   :demand t
-  :bind (:map emacs-lisp-mode-map ([tab] . 'company-indent-or-complete-common))
   :hook
   (emacs-lisp-mode . (lambda ()
-                       (company-mode t)
                        (eldoc-mode t)
                        (prettify-symbols-mode t)
                        ;;(setq lisp-indent-function nil)
                        (highlight-indent-guides-mode t)
-                       (setq company-backends '(company-capf
-                                                company-files
-                                                company-dabbrev-code)))))
+                       ;; After elisp's own completion, like company-dabbrev-code.
+                       (add-hook 'completion-at-point-functions
+                                 #'cape-dabbrev 90 t))))
 
 (when _0x17de/lisp-paredit:enabled
   (use-package paredit
