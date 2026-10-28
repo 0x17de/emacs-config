@@ -32,7 +32,7 @@ A modular Emacs configuration with comprehensive language support, development t
 - Version control using Magit
 - Language Server Protocol (LSP) support
 - Syntax checking via Flycheck
-- Code formatting and refactoring tools
+- Format on save via apheleia (ruff for Python, goimports for Go)
 - Comprehensive support for project management via Projectile
 - Terminal integration via VTerm
 
@@ -41,9 +41,11 @@ A modular Emacs configuration with comprehensive language support, development t
 Language support is primarily based on LSP and/or specialized modes:
 
 - **C/C++**: LSP (clangd) + corfu + flycheck + CMake integration
-- **Python**: lsp-pyright + corfu + flycheck
-- **Go**: LSP (gopls) + comprehensive Go tooling
+- **Python**: basedpyright + corfu + flycheck, ruff on save
+- **Go**: LSP (gopls), goimports on save
 - **Rust**: rust-analyzer + cargo integration
+
+Python, Go and Rust use the tree-sitter major modes when their grammars are installed, and the classic modes otherwise.
 - **LaTeX**: AUCTeX with compile-on-save functionality
 - **Web**: HTML, CSS, JavaScript support
 - **PlantUML**: Integrated preview and automatic generation of diagrams
@@ -103,6 +105,12 @@ Run once to install Go language tools:
 M-x ox-install-go-dependencies
 ```
 
+### Tree-sitter grammars (optional)
+Python, Go and Rust switch to their tree-sitter modes when the grammars are available, e.g. in `~/.emacs.d/tree-sitter` (`M-x treesit-install-language-grammar`, or from Nix: `emacs.pkgs.treesit-grammars.with-grammars`).
+
+### emacs-lsp-booster (optional)
+With [emacs-lsp-booster](https://github.com/blahgeek/emacs-lsp-booster) on `PATH`, language servers run behind it and lsp-mode spends less time parsing JSON. lsp-mode is configured for plists (`LSP_USE_PLISTS`); after enabling that for the first time, reinstall or recompile lsp-mode and the packages depending on it.
+
 ### For C/C++ development
 Install `clangd` (part of `clang-tools` on NixOS/Debian, `clang` on Arch). Without it on `PATH`, C/C++ buffers still get completion, flycheck and the Google style, but no LSP features.
 
@@ -119,8 +127,9 @@ Set the path to your PlantUML jar file via `M-x customize-group RET _0x17de RET`
 
 The configuration is organized into several directories:
 
+- `early-init.el`: Startup GC and frame settings, loaded from `~/.emacs.d/early-init.el`
 - `init/`: Core initialization files
-  - `custom.el`: User customization file
+  - `custom.el`: Loads `custom.el` from the repository root as `custom-file`
   - `package.el`: Package management
   - `speedup.el`: Performance optimizations
 - `langs/`: Language-specific configurations
@@ -130,7 +139,7 @@ The configuration is organized into several directories:
 
 ## Customization
 
-You can put your own customizations in either your `.emacs` file or in `~/.emacs.d/_0x17de/custom.el`, which will be automatically loaded if it exists.
+You can put your own customizations in either your `.emacs` file or in `custom.el` at the root of this repository (git-ignored), which is used as `custom-file` and loaded automatically if it exists.
 
 ## Hotkeys
 
@@ -147,9 +156,14 @@ You can put your own customizations in either your `.emacs` file or in `~/.emacs
 | `C-M-S-w`       | Close current buffer and window without asking                       |
 | `C-M-\|`        | Pipe region through shell command and replace with result            |
 | `S-<tab>`       | Insert a real tab character instead of spaces                        |
-| `<f1>`          | Show documentation for item at point (context-dependent)             |
+| `<f1>`          | Show documentation for item at point (LSP; candidate docs in popup)  |
+| `<f12>`         | LSP: go to definition                                                |
+| `S-<f12>`       | LSP: find references                                                 |
+| `C-S-j`         | Go to definition (xref; dumb-jump where no LSP is running)           |
 | `<f5>`          | Generic compile command (project-specific actions in some modes)     |
-| `<tab>`         | Auto-indentation and completion (intelligent context handling)       |
+| `<tab>`         | Indent, then complete; expands a snippet key before point            |
+| `C-<tab>`       | Complete at point                                                    |
+| `C-x u`         | Visual undo tree (vundo)                                             |
 | `C-x o`         | Smart navigation between windows/frames                              |
 | `M-<up/down>`   | Move the current line or region up/down                              |
 | `C-M-S-<arrows>`| Move the current buffer into the window in that direction            |
@@ -163,10 +177,10 @@ You can put your own customizations in either your `.emacs` file or in `~/.emacs
 Handled by `clangd` through lsp-mode. clangd resolves includes from a `compile_commands.json` in the project root, which CMake generates with `-DCMAKE_EXPORT_COMPILE_COMMANDS=ON` (symlink or copy it out of the build directory). Place a `.dir-locals.el` in the project root for project-specific configuration.
 
 ### Python Projects
-Requires `basedpyright` to be installed (recommended via `pipx install basedpyright`), plus `ruff` for formatting and import sorting.
+Requires `basedpyright` to be installed (recommended via `pipx install basedpyright`), plus `ruff`, which sorts imports and formats on save.
 
 ### Go Projects
-Automatically formats code with gofmt/goimports on save.
+Automatically formats code with goimports on save.
 
 ### LaTeX Projects
 Use the minor mode `latex-compile-on-save-mode` to automatically compile on saving.
@@ -198,7 +212,7 @@ The configuration uses a custom group called `_0x17de` with many customizable va
 ### Environment Options
 - **_0x17de/exec-path-from-shell:enable**: Import environment from shell (default: nil)
 
-You can customize these options either through the customize interface or by setting them in your `init/custom.el` file.
+You can customize these options either through the customize interface or by setting them in your `.emacs` file.
 
 ## Troubleshooting
 
