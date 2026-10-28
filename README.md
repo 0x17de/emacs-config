@@ -87,6 +87,12 @@ Here's how your `.emacs` file could be structured. The most critical element is 
 ;; (setq easy-hugo-basedir "~/hugo/0x17blog")
 ```
 
+Also load `early-init.el` from `~/.emacs.d/early-init.el`. It holds the startup GC settings, and hides the bars before the first frame is drawn:
+
+```elisp
+(load "/path/to/_0x17de-emacs/early-init" nil t)
+```
+
 ## First-Time Setup
 
 LSP and language features will need additional setup:
