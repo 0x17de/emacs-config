@@ -65,15 +65,9 @@ Each element of this list has the form:
   :hook ((c-mode . _0x17de/c-mode-common-init)
          (c++-mode . _0x17de/c-mode-common-init))
   :bind (:map c-mode-map
-              ([f1] . lsp-describe-thing-at-point)
               ([f5] . recompile)
-              ([f12] . lsp-find-definition)
-              ("S-<f12>" . lsp-find-references)
          :map c++-mode-map
-              ([f1] . lsp-describe-thing-at-point)
-              ([f5] . recompile)
-              ([f12] . lsp-find-definition)
-              ("S-<f12>" . lsp-find-references)))
+              ([f5] . recompile)))
 
 (defun defguard (guard)
   "Inserts guard header for C++"

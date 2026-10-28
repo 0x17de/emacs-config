@@ -15,9 +15,6 @@ Requires lsp-ruff package and `ruff server' in PATH (ruff >= 0.2.0)."
   (compile (format "uv run pytest %s" (buffer-file-name))))
 (defun _0x17de/python--setup-keys (map)
   "Define shared Python keybindings in MAP."
-  (define-key map [f1]            #'lsp-describe-thing-at-point)
-  (define-key map [f12]           #'lsp-find-definition)
-  (define-key map (kbd "S-<f12>") #'lsp-find-references)
   (define-key map (kbd "C-c i s") #'ruff-isort-buffer)
   (define-key map (kbd "C-c C-p") #'run-python)
   (define-key map (kbd "C-c C-r") #'python-shell-send-region)

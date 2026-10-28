@@ -19,11 +19,6 @@
     (message "All Go dependencies installed!")))
 (use-package go-mode
   :defer t
-  :bind
-  (:map go-mode-map
-        ([f1] . lsp-describe-thing-at-point)
-        ([f12] . lsp-find-definition)
-        ("S-<f12>" . lsp-find-references))
   :hook
   (go-mode . (lambda ()
                (setq-local tab-width 2)

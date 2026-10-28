@@ -76,6 +76,11 @@ selected: the key is still in the buffer then, and TAB cycles after."
   :defer t
   :commands (lsp lsp-deferred)
   :hook (lsp-completion-mode . _0x17de/lsp-completion-orderless)
+  ;; Same keys in every language with a server.
+  :bind (:map lsp-mode-map
+              ([f1] . lsp-describe-thing-at-point)
+              ([f12] . lsp-find-definition)
+              ("S-<f12>" . lsp-find-references))
   :config (setq lsp-prefer-flymake nil
                 ;; Plain capf for corfu; :capf would set up company.
                 lsp-completion-provider :none
