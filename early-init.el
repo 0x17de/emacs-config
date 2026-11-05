@@ -17,6 +17,19 @@
                   (delete-dups (append file-name-handler-alist
                                        _0x17de/file-name-handler-alist)))))
 
+;; During startup only pop up *Warnings* for errors; plain warnings are still
+;; logged there. Afterwards the normal threshold is restored, and the echo area
+;; mentions the buffer if startup left anything in it. Set here so it also
+;; covers package activation, which runs before the main config. warnings.el
+;; is not loaded yet, so this restores its default rather than reading it.
+(setq warning-minimum-level :error)
+(add-hook 'emacs-startup-hook
+          (lambda ()
+            (setq warning-minimum-level :warning)
+            (let ((buf (get-buffer "*Warnings*")))
+              (when (and buf (> (buffer-size buf) 0))
+                (message "Startup logged warnings, see the *Warnings* buffer")))))
+
 ;; Set the bars off in the frame parameters, so the first frame is never drawn
 ;; with them. init/gui.el still turns the modes off for setups without this
 ;; file.
